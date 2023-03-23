@@ -1,1 +1,1 @@
-export * from "./data/stores/auth.store";
+export * from "./data/auth.store";

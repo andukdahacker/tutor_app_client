@@ -1,6 +1,12 @@
+import { StoreContext } from "@/shared/arch/store_context";
 import Head from "next/head";
+import { useContext, useEffect } from "react";
 
-export default function Home() {
+const Home = () => {
+  const { authStore } = useContext(StoreContext);
+  useEffect(() => {
+    authStore.login();
+  }, [authStore]);
   return (
     <>
       <Head>
@@ -11,4 +17,6 @@ export default function Home() {
       </Head>
     </>
   );
-}
+};
+
+export default Home;

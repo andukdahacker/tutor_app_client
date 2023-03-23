@@ -1,12 +1,6 @@
-import { Client, createClient } from "urql";
-
-export class AppRepository {
-  private client: Client;
-
+export abstract class AppService {
   constructor() {
-    this.client = createClient({
-      url: "",
-    });
+    console.log("created client");
   }
 
   protected async query() {}
