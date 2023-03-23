@@ -1,5 +1,4 @@
-import { AuthStore } from "@/modules/auth/auth";
-import { AuthService } from "@/modules/auth/data/auth.service";
+import { authStore, AuthStore } from "@/modules/auth/auth";
 import { createContext } from "react";
 
 interface IStoreContext {
@@ -7,5 +6,5 @@ interface IStoreContext {
 }
 
 export const StoreContext = createContext<IStoreContext>({
-  authStore: new AuthStore(new AuthService()),
+  authStore: authStore,
 });

@@ -10,3 +10,5 @@ export class AuthStore {
     this.service.login();
   }
 }
+
+export const authStore = new AuthStore(new AuthService());
