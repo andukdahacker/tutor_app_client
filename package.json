@@ -14,12 +14,12 @@
     "@emotion/styled": "^11.10.6",
     "framer-motion": "^10.2.4",
     "graphql": "^16.6.0",
-    "graphql-request": "^5.2.0",
-    "graphql-ws": "^5.12.0",
     "mobx": "^6.8.0",
     "next": "13.2.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "tsyringe": "^4.7.0",
+    "urql": "^3.0.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^3.2.2",
