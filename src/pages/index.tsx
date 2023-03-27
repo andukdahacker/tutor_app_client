@@ -1,12 +1,7 @@
-import { StoreContext } from "@/shared/arch/store_context";
+import NavBar from "@/shared/components/navbar";
 import Head from "next/head";
-import { useContext, useEffect } from "react";
 
 const Home = () => {
-  const { authStore } = useContext(StoreContext);
-  useEffect(() => {
-    authStore.login();
-  }, [authStore]);
   return (
     <>
       <Head>
@@ -15,6 +10,7 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <NavBar />
     </>
   );
 };

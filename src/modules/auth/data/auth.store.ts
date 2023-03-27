@@ -1,14 +1,23 @@
-import { makeAutoObservable } from "mobx";
+import { proxy } from "valtio";
 import { AuthService } from "./auth.service";
 
-export class AuthStore {
-  constructor(private readonly service: AuthService) {
-    makeAutoObservable(this);
-  }
+class AuthStore {
+  isAuthenticated = false;
+  isLoading = false;
+  error = false;
 
-  login() {
-    this.service.login();
+  constructor(private authService: AuthService) {}
+
+  async login() {
+    this.isLoading = true;
+    const result = await this.authService.login({ email: "", password: "" });
+    this.isLoading = false;
+    if (result.error) {
+      this.error = true;
+    } else {
+      this.isAuthenticated = true;
+    }
   }
 }
 
-export const authStore = new AuthStore(new AuthService());
+export const authStore = proxy(new AuthStore(new AuthService()));
