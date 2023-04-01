@@ -2,9 +2,9 @@ mutation Login($loginInput: LoginInput!) {
   login(loginInput: $loginInput) {
     access_token
     user {
-      username
-      email
       id
+      email
+      username
       createdAt
     }
   }
