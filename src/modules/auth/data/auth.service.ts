@@ -2,6 +2,7 @@ import {
   LoginDocument,
   LoginInput,
   LogoutDocument,
+  MeDocument,
   RefreshAccessTokenDocument,
   SignUpDocument,
   SignUpInput,
@@ -38,6 +39,10 @@ export class AuthService {
 
   async refreshAccessToken() {
     return await client.mutation(RefreshAccessTokenDocument, {}).toPromise();
+  }
+
+  async me() {
+    return await client.query(MeDocument, {}).toPromise();
   }
 }
 

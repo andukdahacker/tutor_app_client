@@ -5,7 +5,6 @@ import { AppRoutes } from "@/shared/app_routes";
 
 import { IError } from "@/shared/types/IError";
 import { CombinedError } from "@urql/core";
-import jwtDecode, { JwtPayload } from "jwt-decode";
 import Router from "next/router";
 import { proxy } from "valtio";
 import { authService, AuthService } from "./auth.service";
@@ -108,16 +107,15 @@ class AuthStore {
     }
   }
 
-  async checkIfAuthenticated(token: string | null) {
-    if (!token) {
-      this.isAuthenticated = false;
-      return;
-    }
+  async checkIfAuthenticated() {
+    const result = await this.authService.me();
 
-    const decodedJwt = jwtDecode<JwtPayload>(token);
-    console.log(decodedJwt.exp && Date.now() < decodedJwt.exp);
-    if (decodedJwt.exp && decodedJwt.exp < Date.now()) {
-      await this.refreshAccessToken();
+    if (result.data?.me.user) {
+      this.isAuthenticated = true;
+      this.user = result.data.me.user;
+    } else if (result.error) {
+      this.isAuthenticated = false;
+      this.handleError(result.error);
     }
   }
 
