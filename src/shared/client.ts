@@ -32,10 +32,7 @@ export const client = createClient({
           const decodedJwt = jwtDecode<JwtPayload>(token);
           if (decodedJwt.exp) {
             var now = Math.floor(Date.now() / 1000);
-            console.log("decoded", decodedJwt.exp);
-            console.log("now", now);
             if (decodedJwt.exp < now) {
-              console.log("willAuthError");
               return true;
             }
           }

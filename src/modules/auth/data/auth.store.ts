@@ -124,9 +124,13 @@ class AuthStore {
       error.graphQLErrors.forEach((e) => {
         if (e.extensions.originalError) {
           const error = e.extensions.originalError as IError;
-          toast({
-            title: error.message,
-          });
+          if (typeof error.message === "string") {
+            toast({
+              title: error.message,
+            });
+          } else {
+            error.message.forEach((err) => toast({ title: err }));
+          }
         } else {
           toast({
             title: e.message,
