@@ -10,7 +10,7 @@ const SignUpButton = () => {
       onClick={() =>
         authStore.signUp({
           username: "anduc",
-          email: "duc@gmail.com",
+          email: "doanduc227@gmail.com",
           password: "Ducdeptraino1@",
         })
       }

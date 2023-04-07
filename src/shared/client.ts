@@ -1,6 +1,5 @@
 import { RefreshAccessTokenDocument } from "@/generated/graphql";
 import { ACCESS_TOKEN_KEY } from "@/modules/auth.constants";
-import { authStore } from "@/modules/auth/data/auth.store";
 import { createClient, fetchExchange } from "@urql/core";
 import { authExchange } from "@urql/exchange-auth";
 import jwtDecode, { JwtPayload } from "jwt-decode";
@@ -22,7 +21,9 @@ export const client = createClient({
         },
         didAuthError: (error, _operation) => {
           return error.graphQLErrors.some(
-            (e) => e.extensions?.code === "UNAUTHORIZED"
+            (e) =>
+              e.extensions?.code === "UNAUTHORIZED" ||
+              e.extensions?.code === "UNAUTHENTICATED"
           );
         },
         willAuthError: (_operation) => {
@@ -45,7 +46,7 @@ export const client = createClient({
             token = result.data.refreshAccessToken.access_token;
             localStorage.setItem(ACCESS_TOKEN_KEY, token);
           } else {
-            await authStore.logOut();
+            localStorage.removeItem(ACCESS_TOKEN_KEY);
           }
         },
       };

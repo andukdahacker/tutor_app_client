@@ -26,6 +26,7 @@ interface LogOutState {
 class AuthStore {
   isAuthenticated = false;
   user: User | null = null;
+  isLoading = false;
 
   loginState: LoginState = {
     isLoading: false,
@@ -91,10 +92,10 @@ class AuthStore {
   }
 
   async refreshAccessToken() {
+    this.isLoading = true;
     const result = await this.authService.refreshAccessToken();
-
+    this.isLoading = false;
     if (result.data) {
-      localStorage.removeItem(ACCESS_TOKEN_KEY);
       localStorage.setItem(
         ACCESS_TOKEN_KEY,
         result.data.refreshAccessToken.access_token
@@ -103,13 +104,15 @@ class AuthStore {
     } else if (result.error) {
       localStorage.removeItem(ACCESS_TOKEN_KEY);
       this.isAuthenticated = false;
+      await this.logOut();
       Router.push(AppRoutes.HOME_ROUTE);
     }
   }
 
   async checkIfAuthenticated() {
+    this.isLoading = true;
     const result = await this.authService.me();
-
+    this.isLoading = false;
     if (result.data?.me.user) {
       this.isAuthenticated = true;
       this.user = result.data.me.user;
