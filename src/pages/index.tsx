@@ -1,7 +1,5 @@
-import LoginButton from "@/modules/auth/components/login-button.component";
-import LogOutButton from "@/modules/auth/components/logout-button.component";
-import SignUpButton from "@/modules/auth/components/signup-button.component";
 import { authStore } from "@/modules/auth/data/auth.store";
+import NavBar from "@/shared/components/navbar";
 import Head from "next/head";
 import { useSnapshot } from "valtio";
 
@@ -15,11 +13,7 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <LoginButton />
-      <SignUpButton />
-      <LogOutButton />
-      <div>{snapShot.user?.username}</div>
-      <div>{snapShot.user?.email}</div>
+      <NavBar />
     </>
   );
 };

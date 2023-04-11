@@ -1,15 +1,13 @@
-import { Button, CircularProgress } from "@chakra-ui/react";
+import { Button, Spinner } from "@chakra-ui/react";
 import { useSnapshot } from "valtio";
-import { authStore } from "../data/auth.store";
+import { logOutStore } from "../data/logout.store";
 
 const LogOutButton = () => {
-  const snapShot = useSnapshot(authStore);
-
-  if (!snapShot.isAuthenticated) return null;
+  const logOutState = useSnapshot(logOutStore);
 
   return (
-    <Button onClick={() => authStore.logOut()}>
-      {snapShot.logOutState.isLoading ? <CircularProgress /> : <>Log out</>}
+    <Button onClick={() => logOutStore.logOut()}>
+      {logOutState.isLoading ? <Spinner /> : <>Log out</>}
     </Button>
   );
 };

@@ -1,21 +1,21 @@
-import { Button, CircularProgress } from "@chakra-ui/react";
+import { Button, Spinner } from "@chakra-ui/react";
 import { useSnapshot } from "valtio";
-import { authStore } from "../data/auth.store";
+import { signUpStore } from "../data/signup.store";
 
 const SignUpButton = () => {
-  const snapShot = useSnapshot(authStore);
-  if (snapShot.isAuthenticated) return null;
+  const signUpState = useSnapshot(signUpStore);
+
   return (
     <Button
       onClick={() =>
-        authStore.signUp({
+        signUpStore.signUp({
           username: "anduc",
           email: "doanduc227@gmail.com",
           password: "Ducdeptraino1@",
         })
       }
     >
-      {snapShot.signUpState.isLoading ? <CircularProgress /> : <>Sign Up</>}
+      {signUpState.isLoading ? <Spinner /> : <>Sign Up</>}
     </Button>
   );
 };

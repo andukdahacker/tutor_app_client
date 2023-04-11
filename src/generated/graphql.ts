@@ -16,6 +16,22 @@ export type Scalars = {
   Timestamp: any;
 };
 
+export type CreateLeanerProfileResponse = {
+  __typename?: 'CreateLeanerProfileResponse';
+  leanerProfile?: Maybe<LearnerProfile>;
+};
+
+export type CreateLearnerProfileInput = {
+  bio: Scalars['String'];
+};
+
+export type LearnerProfile = {
+  __typename?: 'LearnerProfile';
+  bio?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  userId: Scalars['String'];
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -39,10 +55,16 @@ export type MeResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createLearnerProfile: CreateLeanerProfileResponse;
   login: LoginResponse;
   logout: LogoutResponse;
   refreshAccessToken: RefreshAccessTokenResponse;
   signUp: SignUpResponse;
+};
+
+
+export type MutationCreateLearnerProfileArgs = {
+  createLearnerProfileInput: CreateLearnerProfileInput;
 };
 
 

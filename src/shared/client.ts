@@ -1,5 +1,6 @@
 import { RefreshAccessTokenDocument } from "@/generated/graphql";
 import { ACCESS_TOKEN_KEY } from "@/modules/auth.constants";
+import { authStore } from "@/modules/auth/data/auth.store";
 import { createClient, fetchExchange } from "@urql/core";
 import { authExchange } from "@urql/exchange-auth";
 import jwtDecode, { JwtPayload } from "jwt-decode";
@@ -32,8 +33,7 @@ export const client = createClient({
           if (!token) return false;
           const decodedJwt = jwtDecode<JwtPayload>(token);
           if (decodedJwt.exp) {
-            var now = Math.floor(Date.now() / 1000);
-            if (decodedJwt.exp < now) {
+            if (decodedJwt.exp < Math.floor(Date.now() / 1000)) {
               return true;
             }
           }
@@ -41,7 +41,9 @@ export const client = createClient({
         },
         refreshAuth: async () => {
           let token;
+          authStore.showLoading();
           const result = await utils.mutate(RefreshAccessTokenDocument, {});
+          authStore.hideLoading();
           if (result.data?.refreshAccessToken) {
             token = result.data.refreshAccessToken.access_token;
             localStorage.setItem(ACCESS_TOKEN_KEY, token);
