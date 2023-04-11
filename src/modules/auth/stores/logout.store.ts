@@ -3,7 +3,8 @@ import { AppRoutes } from "@/shared/app_routes";
 import { Store } from "@/shared/store";
 import Router from "next/router";
 import { proxy } from "valtio";
-import { AuthService, authService } from "./auth.service";
+import { authService, AuthService } from "../data/auth.service";
+
 import { authStore } from "./auth.store";
 
 class LogOutStore extends Store {

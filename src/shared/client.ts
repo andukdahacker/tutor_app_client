@@ -1,6 +1,6 @@
 import { RefreshAccessTokenDocument } from "@/generated/graphql";
 import { ACCESS_TOKEN_KEY } from "@/modules/auth.constants";
-import { authStore } from "@/modules/auth/data/auth.store";
+import { authStore } from "@/modules/auth/stores/auth.store";
 import { createClient, fetchExchange } from "@urql/core";
 import { authExchange } from "@urql/exchange-auth";
 import jwtDecode, { JwtPayload } from "jwt-decode";

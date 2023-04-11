@@ -2,7 +2,7 @@ import { SignUpInput } from "@/generated/graphql";
 import { toast } from "@/pages/_app";
 import { Store } from "@/shared/store";
 import { proxy } from "valtio";
-import { AuthService, authService } from "./auth.service";
+import { AuthService, authService } from "../data/auth.service";
 
 class SignUpStore extends Store {
   isLoading: boolean = false;

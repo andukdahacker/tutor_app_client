@@ -1,6 +1,6 @@
 import { Button, Spinner } from "@chakra-ui/react";
 import { useSnapshot } from "valtio";
-import { loginStore } from "../data/login.store";
+import { loginStore } from "../stores/login.store";
 
 const LoginButton = () => {
   const loginState = useSnapshot(loginStore);

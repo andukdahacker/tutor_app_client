@@ -2,7 +2,7 @@ import { LoginInput } from "@/generated/graphql";
 import { ACCESS_TOKEN_KEY } from "@/modules/auth.constants";
 import { Store } from "@/shared/store";
 import { proxy } from "valtio";
-import { AuthService, authService } from "./auth.service";
+import { AuthService, authService } from "../data/auth.service";
 import { authStore } from "./auth.store";
 
 class LoginStore extends Store {

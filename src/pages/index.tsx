@@ -1,4 +1,4 @@
-import { authStore } from "@/modules/auth/data/auth.store";
+import { authStore } from "@/modules/auth/stores/auth.store";
 import NavBar from "@/shared/components/navbar";
 import Head from "next/head";
 import { useSnapshot } from "valtio";
