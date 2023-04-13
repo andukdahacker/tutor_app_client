@@ -9,25 +9,31 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import LoginForm from "./login-form.component";
+import SignUpForm from "./sign-up-form.component";
 
-const LoginButton = () => {
+const JoinButton = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
-      <Button variant="ghost" onClick={onOpen}>
-        Sign in
+      <Button
+        variant="outline"
+        borderColor={"cyan.500"}
+        color={"cyan.500"}
+        onClick={onOpen}
+      >
+        Join
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            <Center>Sign into Sparkle</Center>
+            <Center>Join Sparkle</Center>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <LoginForm />
+            <SignUpForm />
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -35,4 +41,4 @@ const LoginButton = () => {
   );
 };
 
-export default LoginButton;
+export default JoinButton;

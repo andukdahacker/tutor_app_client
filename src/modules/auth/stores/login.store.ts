@@ -20,6 +20,7 @@ class LoginStore {
       this.error = true;
       StoreUtils.handleError(result.errors);
     } else if (result.data) {
+      StoreUtils.successToast("Logged in successfully");
       localStorage.setItem(ACCESS_TOKEN_KEY, result.data.login.access_token);
       authStore.isAuthenticated = true;
       authStore.user = result.data.login.user;

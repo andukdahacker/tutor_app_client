@@ -10,9 +10,11 @@
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.18",
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@hookform/resolvers": "^3.0.1",
     "@urql/core": "^4.0.1",
     "@urql/exchange-auth": "^2.1.0",
     "framer-motion": "^10.2.4",
@@ -23,7 +25,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
-    "valtio": "^1.10.3"
+    "valtio": "^1.10.3",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "3.2.2",

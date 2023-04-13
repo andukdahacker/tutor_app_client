@@ -1,5 +1,4 @@
 import { SignUpInput } from "@/generated/graphql";
-import { toast } from "@/pages/_app";
 import StoreUtils from "@/shared/utils/store.utils";
 import { proxy } from "valtio";
 import authService from "../data/auth.service";
@@ -16,9 +15,7 @@ class SignUpStore {
     this.isLoading = false;
 
     if (result.data) {
-      toast({
-        title: "Signed up successfully",
-      });
+      StoreUtils.successToast("Signed up successfully");
     } else if (result.errors) {
       StoreUtils.handleError(result.errors);
     }

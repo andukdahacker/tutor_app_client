@@ -14,9 +14,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSnapshot } from "valtio";
 import * as z from "zod";
-import loginStore from "../stores/login.store";
+import signUpStore from "../stores/signup.store";
 
 const schema = z.object({
+  username: z.string().min(4, "Username must consist at least 4 characters"),
   email: z.string().email("Invalid email"),
   password: z
     .string()
@@ -27,26 +28,40 @@ const schema = z.object({
     ),
 });
 
-type SignInData = z.infer<typeof schema>;
+type SignUpData = z.infer<typeof schema>;
 
-const LoginForm = () => {
+const SignUpForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignInData>({
+  } = useForm<SignUpData>({
     resolver: zodResolver(schema),
   });
-  const loginState = useSnapshot(loginStore);
+  const signUpState = useSnapshot(signUpStore);
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <Center>
       <form
         onSubmit={handleSubmit((data) =>
-          loginStore.logIn({ email: data.email, password: data.password })
+          signUpStore.signUp({
+            username: data.username,
+            email: data.email,
+            password: data.password,
+          })
         )}
       >
+        <FormControl isInvalid={errors.username ? true : false}>
+          <FormLabel htmlFor="username">Username</FormLabel>
+          <Input
+            id="username"
+            placeholder="username"
+            {...register("username")}
+          />
+          <FormErrorMessage>{errors?.username?.message}</FormErrorMessage>
+        </FormControl>
+
         <FormControl isInvalid={errors.email ? true : false} mt={2}>
           <FormLabel htmlFor="email">Email</FormLabel>
           <Input id="email" placeholder="email" {...register("email")} />
@@ -75,11 +90,11 @@ const LoginForm = () => {
           <Button
             colorScheme={"cyan"}
             textColor={"white"}
-            isLoading={loginState.isLoading}
+            isLoading={signUpState.isLoading}
             mt="4"
             type="submit"
           >
-            Sign In
+            Sign up
           </Button>
         </Center>
       </form>
@@ -87,4 +102,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignUpForm;

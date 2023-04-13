@@ -1,11 +1,9 @@
 import { User } from "@/generated/graphql";
 import { ACCESS_TOKEN_KEY } from "@/modules/auth.constants";
 import AppRoutes from "@/shared/app_routes";
-import StoreUtils from "@/shared/utils/store.utils";
 import Router from "next/router";
 import { proxy } from "valtio";
 import authService from "../data/auth.service";
-import logOutStore from "./logout.store";
 
 class AuthStore {
   isAuthenticated = false;
@@ -33,7 +31,6 @@ class AuthStore {
     } else if (result.errors) {
       localStorage.removeItem(ACCESS_TOKEN_KEY);
       this.isAuthenticated = false;
-      await logOutStore.logOut();
       Router.push(AppRoutes.HOME_ROUTE);
     }
   }
@@ -47,7 +44,6 @@ class AuthStore {
       this.user = result.data.me.user;
     } else if (result.errors) {
       this.isAuthenticated = false;
-      StoreUtils.handleError(result.errors);
     }
   }
 }

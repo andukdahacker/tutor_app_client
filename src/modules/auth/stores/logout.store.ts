@@ -15,6 +15,7 @@ class LogOutStore {
     const result = await authService.logOut();
     this.isLoading = false;
     if (result.data) {
+      StoreUtils.successToast("Logged out successfully");
       authStore.isAuthenticated = false;
       authStore.user = null;
       localStorage.removeItem(ACCESS_TOKEN_KEY);
