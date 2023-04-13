@@ -1,11 +1,52 @@
 import { RefreshAccessTokenDocument } from "@/generated/graphql";
 import { ACCESS_TOKEN_KEY } from "@/modules/auth.constants";
-import { authStore } from "@/modules/auth/stores/auth.store";
-import { createClient, fetchExchange } from "@urql/core";
+import authStore from "@/modules/auth/stores/auth.store";
+import { TypedDocumentNode } from "@graphql-typed-document-node/core";
+import {
+  AnyVariables,
+  Client,
+  createClient,
+  fetchExchange,
+  subscriptionExchange,
+} from "@urql/core";
 import { authExchange } from "@urql/exchange-auth";
+import { GraphQLError } from "graphql";
+import { Client as WsClient, createClient as createWsClient } from "graphql-ws";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
-export const client = createClient({
+type GqlVariables = AnyVariables | Record<string, any> | void | undefined;
+
+export type GqlError = Error | GraphQLError[];
+
+type GqlFetchResult<T = any> = {
+  data?: T;
+  errors?: GqlError;
+};
+
+interface GqlClient {
+  query<T = any, V extends GqlVariables = GqlVariables>(
+    query: TypedDocumentNode<T, V>,
+    variables: V
+  ): Promise<GqlFetchResult<T>>;
+  mutation<T = any, V extends GqlVariables = GqlVariables>(
+    mutation: TypedDocumentNode<T, V>,
+    variables: V
+  ): Promise<GqlFetchResult<T>>;
+  subscription<T = any, V extends GqlVariables = GqlVariables>(
+    subscription: TypedDocumentNode<T, V>,
+    variables: V
+  ): Promise<GqlFetchResult<T>>;
+}
+
+let wsClient: WsClient;
+
+if (typeof window !== "undefined") {
+  wsClient = createWsClient({
+    url: "http://localhost:4000/graphql",
+  });
+}
+
+const urqlClient = createClient({
   url: "http://localhost:4000/graphql",
   fetchOptions: {
     credentials: "include",
@@ -54,5 +95,61 @@ export const client = createClient({
       };
     }),
     fetchExchange,
+    subscriptionExchange({
+      forwardSubscription: (request) => {
+        const input = { ...request, query: request.query || "" };
+        return {
+          subscribe(sink) {
+            const unsubscribe = wsClient.subscribe(input, sink);
+            return { unsubscribe };
+          },
+        };
+      },
+    }),
   ],
 });
+
+class UrqlClientAdapter implements GqlClient {
+  private client: Client;
+  constructor() {
+    this.client = urqlClient;
+  }
+
+  async query<T = any, V extends GqlVariables = GqlVariables>(
+    query: TypedDocumentNode<T, V>,
+    variables: V
+  ): Promise<GqlFetchResult<T>> {
+    const result = await this.client.query(query, variables).toPromise();
+    return {
+      data: result.data,
+      errors: result.error?.graphQLErrors ?? result.error?.networkError,
+    };
+  }
+
+  async mutation<T = any, V extends GqlVariables = GqlVariables>(
+    mutation: TypedDocumentNode<T, V>,
+    variables: V
+  ): Promise<GqlFetchResult<T>> {
+    const result = await this.client.mutation(mutation, variables).toPromise();
+    return {
+      data: result.data,
+      errors: result.error?.graphQLErrors ?? result.error?.networkError,
+    };
+  }
+
+  async subscription<T = any, V extends GqlVariables = GqlVariables>(
+    subscription: TypedDocumentNode<T, V>,
+    variables: V
+  ): Promise<GqlFetchResult<T>> {
+    const result = await this.client
+      .subscription(subscription, variables)
+      .toPromise();
+
+    return {
+      data: result.data,
+      errors: result.error?.graphQLErrors ?? result.error?.networkError,
+    };
+  }
+}
+
+export const urql = new UrqlClientAdapter();

@@ -1,6 +1,6 @@
 import { Button, Spinner } from "@chakra-ui/react";
 import { useSnapshot } from "valtio";
-import { logOutStore } from "../stores/logout.store";
+import logOutStore from "../stores/logout.store";
 
 const LogOutButton = () => {
   const logOutState = useSnapshot(logOutStore);

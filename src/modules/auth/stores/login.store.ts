@@ -1,28 +1,24 @@
 import { LoginInput } from "@/generated/graphql";
 import { ACCESS_TOKEN_KEY } from "@/modules/auth.constants";
-import { Store } from "@/shared/store";
+import StoreUtils from "@/shared/utils/store.utils";
 import { proxy } from "valtio";
-import { AuthService, authService } from "../data/auth.service";
-import { authStore } from "./auth.store";
+import authService from "../data/auth.service";
+import authStore from "./auth.store";
 
-class LoginStore extends Store {
+class LoginStore {
   isLoading: boolean = false;
   error: boolean = false;
-
-  constructor(private readonly authService: AuthService) {
-    super();
-  }
 
   async logIn(loginInput: LoginInput) {
     this.isLoading = true;
 
-    const result = await this.authService.logIn(loginInput);
+    const result = await authService.logIn(loginInput);
 
     this.isLoading = false;
 
-    if (result.error) {
+    if (result.errors) {
       this.error = true;
-      this.handleError(result.error);
+      StoreUtils.handleError(result.errors);
     } else if (result.data) {
       localStorage.setItem(ACCESS_TOKEN_KEY, result.data.login.access_token);
       authStore.isAuthenticated = true;
@@ -31,4 +27,6 @@ class LoginStore extends Store {
   }
 }
 
-export const loginStore = proxy(new LoginStore(authService));
+const loginStore = proxy(new LoginStore());
+
+export default loginStore;

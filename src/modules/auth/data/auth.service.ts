@@ -7,43 +7,41 @@ import {
   SignUpDocument,
   SignUpInput,
 } from "@/generated/graphql";
-import { client } from "@/shared/client";
+import { urql } from "@/shared/client";
 
-export class AuthService {
+class AuthService {
   async logIn(loginInput: LoginInput) {
-    return await client
-      .mutation(LoginDocument, {
-        loginInput: {
-          email: loginInput.email,
-          password: loginInput.password,
-        },
-      })
-      .toPromise();
+    return await urql.mutation(LoginDocument, {
+      loginInput: {
+        email: loginInput.email,
+        password: loginInput.password,
+      },
+    });
   }
 
   async signUp(signUpInput: SignUpInput) {
-    return await client
-      .mutation(SignUpDocument, {
-        signUpInput: {
-          username: signUpInput.username,
-          email: signUpInput.email,
-          password: signUpInput.password,
-        },
-      })
-      .toPromise();
+    return await urql.mutation(SignUpDocument, {
+      signUpInput: {
+        username: signUpInput.username,
+        email: signUpInput.email,
+        password: signUpInput.password,
+      },
+    });
   }
 
   async logOut() {
-    return await client.mutation(LogoutDocument, {}).toPromise();
+    return await urql.mutation(LogoutDocument, {});
   }
 
   async refreshAccessToken() {
-    return await client.mutation(RefreshAccessTokenDocument, {}).toPromise();
+    return await urql.mutation(RefreshAccessTokenDocument, {});
   }
 
   async me() {
-    return await client.query(MeDocument, {}).toPromise();
+    return await urql.query(MeDocument, {});
   }
 }
 
-export const authService = new AuthService();
+const authService = new AuthService();
+
+export default authService;

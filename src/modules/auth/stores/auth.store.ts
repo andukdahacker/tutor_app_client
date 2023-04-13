@@ -1,21 +1,16 @@
 import { User } from "@/generated/graphql";
 import { ACCESS_TOKEN_KEY } from "@/modules/auth.constants";
-import { AppRoutes } from "@/shared/app_routes";
-
-import { Store } from "@/shared/store";
+import AppRoutes from "@/shared/app_routes";
+import StoreUtils from "@/shared/utils/store.utils";
 import Router from "next/router";
 import { proxy } from "valtio";
-import { authService, AuthService } from "../data/auth.service";
-import { logOutStore } from "./logout.store";
+import authService from "../data/auth.service";
+import logOutStore from "./logout.store";
 
-class AuthStore extends Store {
+class AuthStore {
   isAuthenticated = false;
   user: User | null = null;
   isLoading = true;
-
-  constructor(private authService: AuthService) {
-    super();
-  }
 
   hideLoading() {
     this.isLoading = false;
@@ -27,7 +22,7 @@ class AuthStore extends Store {
 
   async refreshAccessToken() {
     this.isLoading = true;
-    const result = await this.authService.refreshAccessToken();
+    const result = await authService.refreshAccessToken();
     this.isLoading = false;
     if (result.data) {
       localStorage.setItem(
@@ -35,7 +30,7 @@ class AuthStore extends Store {
         result.data.refreshAccessToken.access_token
       );
       this.isAuthenticated = true;
-    } else if (result.error) {
+    } else if (result.errors) {
       localStorage.removeItem(ACCESS_TOKEN_KEY);
       this.isAuthenticated = false;
       await logOutStore.logOut();
@@ -45,16 +40,18 @@ class AuthStore extends Store {
 
   async checkIfAuthenticated() {
     this.isLoading = true;
-    const result = await this.authService.me();
+    const result = await authService.me();
     this.isLoading = false;
     if (result.data?.me.user) {
       this.isAuthenticated = true;
       this.user = result.data.me.user;
-    } else if (result.error) {
+    } else if (result.errors) {
       this.isAuthenticated = false;
-      this.handleError(result.error);
+      StoreUtils.handleError(result.errors);
     }
   }
 }
 
-export const authStore = proxy(new AuthStore(authService));
+const authStore = proxy(new AuthStore());
+
+export default authStore;

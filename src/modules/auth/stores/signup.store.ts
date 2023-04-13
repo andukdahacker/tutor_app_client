@@ -1,21 +1,17 @@
 import { SignUpInput } from "@/generated/graphql";
 import { toast } from "@/pages/_app";
-import { Store } from "@/shared/store";
+import StoreUtils from "@/shared/utils/store.utils";
 import { proxy } from "valtio";
-import { AuthService, authService } from "../data/auth.service";
+import authService from "../data/auth.service";
 
-class SignUpStore extends Store {
+class SignUpStore {
   isLoading: boolean = false;
   error: boolean = false;
-
-  constructor(private readonly authService: AuthService) {
-    super();
-  }
 
   async signUp(signUpInput: SignUpInput) {
     this.isLoading = true;
 
-    const result = await this.authService.signUp(signUpInput);
+    const result = await authService.signUp(signUpInput);
 
     this.isLoading = false;
 
@@ -23,10 +19,12 @@ class SignUpStore extends Store {
       toast({
         title: "Signed up successfully",
       });
-    } else if (result.error) {
-      this.handleError(result.error);
+    } else if (result.errors) {
+      StoreUtils.handleError(result.errors);
     }
   }
 }
 
-export const signUpStore = proxy(new SignUpStore(authService));
+const signUpStore = proxy(new SignUpStore());
+
+export default signUpStore;

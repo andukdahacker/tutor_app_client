@@ -1,0 +1,41 @@
+import { toast } from "@/pages/_app";
+import { GraphQLError } from "graphql";
+import { GqlError } from "../client";
+import { IError } from "../types/IError";
+
+namespace StoreUtils {
+  function isGraphqlError(error: GqlError): error is GraphQLError[] {
+    return (error as GraphQLError[]).every((e) => e.message !== undefined);
+  }
+
+  function isNetworkError(error: GqlError): error is Error {
+    return (error as Error).message !== undefined;
+  }
+
+  export function handleError(error: GqlError) {
+    if (isGraphqlError(error)) {
+      error.forEach((e) => {
+        if (e.extensions.originalError) {
+          const error = e.extensions.originalError as IError;
+          if (typeof error.message === "string") {
+            toast({
+              title: error.message,
+            });
+          } else {
+            error.message.forEach((err) => toast({ title: err }));
+          }
+        } else {
+          toast({
+            title: e.message,
+          });
+        }
+      });
+    }
+
+    if (isNetworkError(error)) {
+      console.log(error.message);
+    }
+  }
+}
+
+export default StoreUtils;

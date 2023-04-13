@@ -1,10 +1,7 @@
-import { authStore } from "@/modules/auth/stores/auth.store";
-import NavBar from "@/shared/components/navbar";
+import AppLayout from "@/shared/components/layouts/app-layout.component";
 import Head from "next/head";
-import { useSnapshot } from "valtio";
 
 const Home = () => {
-  const snapShot = useSnapshot(authStore);
   return (
     <>
       <Head>
@@ -13,7 +10,7 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavBar />
+      <AppLayout></AppLayout>
     </>
   );
 };

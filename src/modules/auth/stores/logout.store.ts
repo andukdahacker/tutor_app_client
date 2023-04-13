@@ -1,33 +1,30 @@
 import { ACCESS_TOKEN_KEY } from "@/modules/auth.constants";
-import { AppRoutes } from "@/shared/app_routes";
-import { Store } from "@/shared/store";
+import AppRoutes from "@/shared/app_routes";
+import StoreUtils from "@/shared/utils/store.utils";
 import Router from "next/router";
 import { proxy } from "valtio";
-import { authService, AuthService } from "../data/auth.service";
+import authService from "../data/auth.service";
+import authStore from "./auth.store";
 
-import { authStore } from "./auth.store";
-
-class LogOutStore extends Store {
+class LogOutStore {
   isLoading: boolean = false;
   error: boolean = false;
 
-  constructor(private readonly authService: AuthService) {
-    super();
-  }
-
   async logOut() {
     this.isLoading = true;
-    const result = await this.authService.logOut();
+    const result = await authService.logOut();
     this.isLoading = false;
     if (result.data) {
       authStore.isAuthenticated = false;
       authStore.user = null;
       localStorage.removeItem(ACCESS_TOKEN_KEY);
       Router.push(AppRoutes.HOME_ROUTE);
-    } else if (result.error) {
-      this.handleError(result.error);
+    } else if (result.errors) {
+      StoreUtils.handleError(result.errors);
     }
   }
 }
 
-export const logOutStore = proxy(new LogOutStore(authService));
+const logOutStore = proxy(new LogOutStore());
+
+export default logOutStore;

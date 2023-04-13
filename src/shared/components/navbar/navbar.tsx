@@ -1,7 +1,7 @@
 import LoginButton from "@/modules/auth/components/login-button.component";
 import LogOutButton from "@/modules/auth/components/logout-button.component";
 import SignUpButton from "@/modules/auth/components/signup-button.component";
-import { authStore } from "@/modules/auth/stores/auth.store";
+import authStore from "@/modules/auth/stores/auth.store";
 import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useSnapshot } from "valtio";
