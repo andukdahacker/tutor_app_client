@@ -1,3 +1,8 @@
+import HomeBanner from "@/modules/home/components/home.banner.component";
+import HomeExplore from "@/modules/home/components/home.explore.component";
+import HomeKickStart from "@/modules/home/components/home.kick-start.component";
+import HomeQuestions from "@/modules/home/components/home.questions.component";
+import Footer from "@/shared/components/footer/footer.component";
 import AppLayout from "@/shared/components/layouts/app-layout.component";
 import Head from "next/head";
 
@@ -10,7 +15,13 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <AppLayout>body</AppLayout>
+      <AppLayout>
+        <HomeBanner />
+        <HomeExplore />
+        <HomeQuestions />
+        <HomeKickStart />
+        <Footer />
+      </AppLayout>
     </>
   );
 };

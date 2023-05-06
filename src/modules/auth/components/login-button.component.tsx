@@ -1,12 +1,15 @@
 import {
+  Box,
   Button,
   Center,
+  Link,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import LoginForm from "./login-form.component";
@@ -16,14 +19,28 @@ const LoginButton = () => {
   return (
     <>
       <Button variant="ghost" onClick={onOpen}>
-        Sign in
+        Login
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            <Center>Sign into Sparkle</Center>
+            <Box textAlign={"center"}>
+              <Text color={"purple.500"} fontWeight={"extrabold"} m="4">
+                Sign in to your account
+              </Text>
+
+              <Text color={"purple.500"} fontWeight={"medium"} fontSize="sm">
+                <Text display={"inline-block"} color={"#4B5563"}>
+                  Or&nbsp;
+                </Text>
+
+                <Link textDecoration="underline" href={"/"} textDecorationColor="purple.500">
+                  sign up a free account
+                </Link>
+              </Text>
+            </Box>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>

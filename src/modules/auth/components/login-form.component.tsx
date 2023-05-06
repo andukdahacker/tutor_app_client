@@ -2,12 +2,15 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
   Button,
   Center,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   IconButton,
   Input,
   InputGroup,
+  Radio,
+  Text,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -39,15 +42,21 @@ const LoginForm = () => {
   });
   const loginState = useSnapshot(loginStore);
   const [showPassword, setShowPassword] = useState(false);
+  const [isChecked, setIsChecked] = useState("");
 
   return (
-    <Center>
+    <>
       <form
         onSubmit={handleSubmit((data) =>
           loginStore.logIn({ email: data.email, password: data.password })
         )}
       >
-        <FormControl isInvalid={errors.email ? true : false} mt={2}>
+        <FormControl
+          isInvalid={errors.email ? true : false}
+          py={7}
+          borderTop="1px"
+          borderColor={"gray.100"}
+        >
           <FormLabel htmlFor="email">Email</FormLabel>
           <Input id="email" placeholder="email" {...register("email")} />
           <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
@@ -59,6 +68,7 @@ const LoginForm = () => {
             <Input
               type={showPassword ? "text" : "password"}
               id="password"
+              placeholder="password"
               {...register("password")}
             />
             <IconButton
@@ -71,19 +81,27 @@ const LoginForm = () => {
           <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
         </FormControl>
 
+        <Flex justifyContent={"space-between"} mt="5" mb="30px">
+          <Radio checked={isChecked === "remember"} value={isChecked}>
+            Remember me
+          </Radio>
+          <Text>Forgot password?</Text>
+        </Flex>
+
         <Center>
           <Button
-            colorScheme={"cyan"}
-            textColor={"white"}
+            w="100%"
+            h={12}
+            colorScheme={"purple"}
             isLoading={loginState.isLoading}
-            mt="4"
+            my="4"
             type="submit"
           >
-            Sign In
+            Log In
           </Button>
         </Center>
       </form>
-    </Center>
+    </>
   );
 };
 

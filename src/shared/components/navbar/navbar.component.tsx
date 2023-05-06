@@ -1,13 +1,9 @@
-import Account from "@/modules/auth/components/account.component";
-import JoinButton from "@/modules/auth/components/join-button.component";
-import LoginButton from "@/modules/auth/components/login-button.component";
 import authStore from "@/modules/auth/stores/auth.store";
-import AppRoutes from "@/shared/app_routes";
-import { Box, Flex, Spinner } from "@chakra-ui/react";
-import Link from "next/link";
+import { Flex, Spinner } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useSnapshot } from "valtio";
-import Logo from "./logo.component";
+import Logged from "./logged.component";
+import NoLogin from "./no-login.component";
 
 const NavBar = () => {
   const authState = useSnapshot(authStore);
@@ -22,35 +18,18 @@ const NavBar = () => {
   return (
     <Flex
       w="100%"
-      justifyContent={"space-around"}
-      alignItems="center"
+      justifyContent={"space-between"}
+      alignItems={"center"}
       bg={"white"}
       borderBottom={"1px"}
       borderBottomColor={"gray.200"}
       padding={"4"}
     >
-      <Box flex={2}>
-        <Logo />
-      </Box>
-
-      <Box flex={1}>
-        {authState.isLoading ? (
-          <Spinner />
-        ) : (
-          <>
-            {authState.isAuthenticated ? (
-              <Account />
-            ) : (
-              <Flex justify={"space-around"} align="center">
-                <Link href={AppRoutes.HOME_ROUTE}>How Sparkle works</Link>
-                <Link href={AppRoutes.HOME_ROUTE}>Become a Tutor</Link>
-                <LoginButton />
-                <JoinButton />
-              </Flex>
-            )}
-          </>
-        )}
-      </Box>
+      {authState.isLoading ? (
+        <Spinner />
+      ) : (
+        <>{authState.isAuthenticated ? <Logged /> : <NoLogin />}</>
+      )}
     </Flex>
   );
 };

@@ -42,7 +42,7 @@ const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <Center>
+    <>
       <form
         onSubmit={handleSubmit((data) =>
           signUpStore.signUp({
@@ -52,13 +52,14 @@ const SignUpForm = () => {
           })
         )}
       >
-        <FormControl isInvalid={errors.username ? true : false}>
+        <FormControl
+          borderTop="1px"
+          borderColor={"gray.100"}
+          pt={7}
+          isInvalid={errors.username ? true : false}
+        >
           <FormLabel htmlFor="username">Username</FormLabel>
-          <Input
-            id="username"
-            placeholder="username"
-            {...register("username")}
-          />
+          <Input id="username" placeholder="username" {...register("username")} />
           <FormErrorMessage>{errors?.username?.message}</FormErrorMessage>
         </FormControl>
 
@@ -74,6 +75,7 @@ const SignUpForm = () => {
             <Input
               type={showPassword ? "text" : "password"}
               id="password"
+              placeholder="password"
               {...register("password")}
             />
             <IconButton
@@ -88,17 +90,19 @@ const SignUpForm = () => {
 
         <Center>
           <Button
-            colorScheme={"cyan"}
+            colorScheme={"purple"}
             textColor={"white"}
             isLoading={signUpState.isLoading}
-            mt="4"
+            my={6}
             type="submit"
+            w="100%"
+            h={12}
           >
             Sign up
           </Button>
         </Center>
       </form>
-    </Center>
+    </>
   );
 };
 

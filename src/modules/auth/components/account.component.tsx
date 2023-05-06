@@ -1,5 +1,6 @@
 import {
   Avatar,
+  AvatarBadge,
   Menu,
   MenuButton,
   MenuDivider,
@@ -12,7 +13,9 @@ const Account = () => {
   return (
     <Menu>
       <MenuButton>
-        <Avatar />
+        <Avatar size="sm">
+          <AvatarBadge boxSize="1.25em" bg="green.500" />
+        </Avatar>
       </MenuButton>
       <MenuList>
         <MenuItem>Learner profile</MenuItem>
