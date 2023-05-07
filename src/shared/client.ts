@@ -42,12 +42,12 @@ let wsClient: WsClient;
 
 if (typeof window !== "undefined") {
   wsClient = createWsClient({
-    url: "http://localhost:4000/graphql",
+    url: "ws://tutorappserver-production.up.railway.app/graphql",
   });
 }
 
 const urqlClient = createClient({
-  url: "http://localhost:4000/graphql",
+  url: "https://tutorappserver-production.up.railway.app/graphql",
   fetchOptions: {
     credentials: "include",
   },
