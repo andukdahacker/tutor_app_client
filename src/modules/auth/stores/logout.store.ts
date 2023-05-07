@@ -18,6 +18,7 @@ class LogOutStore {
       StoreUtils.successToast("Logged out successfully");
       authStore.isAuthenticated = false;
       authStore.user = null;
+      console.log("logged out");
       localStorage.removeItem(ACCESS_TOKEN_KEY);
       Router.push(AppRoutes.HOME_ROUTE);
     } else if (result.errors) {
