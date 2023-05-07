@@ -1,5 +1,5 @@
 import { RefreshAccessTokenDocument } from "@/generated/graphql";
-import { ACCESS_TOKEN_KEY } from "@/modules/auth.constants";
+import { ACCESS_TOKEN_KEY } from "@/modules/auth/auth.constants";
 import authStore from "@/modules/auth/stores/auth.store";
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import {

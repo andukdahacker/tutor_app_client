@@ -1,8 +1,8 @@
 import { User } from "@/generated/graphql";
-import { ACCESS_TOKEN_KEY } from "@/modules/auth.constants";
 import AppRoutes from "@/shared/app_routes";
 import Router from "next/router";
 import { proxy } from "valtio";
+import { ACCESS_TOKEN_KEY } from "../auth.constants";
 import authService from "../data/auth.service";
 
 class AuthStore {
