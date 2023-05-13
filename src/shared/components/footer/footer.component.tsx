@@ -1,31 +1,25 @@
 import AppRoutes from "@/shared/app_routes";
-import {
-  Box,
-  Container,
-  Image,
-  Link,
-  SimpleGrid,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Container, Image, Link, SimpleGrid, Text } from "@chakra-ui/react";
 
 const Footer = () => {
   return (
     <>
-      <Container maxW="container.lg">
+      <Container
+        maxW="container.lg"
+        display={{ base: "flex", sm: "block" }}
+        justifyContent={{ base: "center" }}
+      >
         <Box
           display="flex"
           flexDirection={{ base: "column", sm: "row" }}
           alignItems={"flex-start"}
           justifyContent="space-between"
           my="44px"
-          gap={{ base: "30px", sm: "0px" }}
+          gap={{ base: "30px", sm: "20px" }}
         >
           <Box display="flex" gap={"14px"} alignItems="center">
             <Link href={AppRoutes.HOME_ROUTE}>
-              <Box
-                w={{ base: "26px", sm: "40px" }}
-                h={{ base: "42px", sm: "56px" }}
-              >
+              <Box w={{ base: "26px", sm: "40px" }} h={{ base: "42px", sm: "56px" }}>
                 <Image boxSize="100%" src="/logo.png" alt="Sparkle" />
               </Box>
             </Link>
@@ -48,12 +42,7 @@ const Footer = () => {
           </Box>
 
           <Box>
-            <Text
-              textTransform="uppercase"
-              fontWeight="bold"
-              fontSize="20px"
-              mb="8px"
-            >
+            <Text textTransform="uppercase" fontWeight="bold" fontSize="20px" mb="8px">
               WITH SPARKLE
             </Text>
             <SimpleGrid spacing="20px">
@@ -78,36 +67,17 @@ const Footer = () => {
           </Box>
 
           <Box>
-            <Text
-              textTransform="uppercase"
-              fontWeight="bold"
-              fontSize="20px"
-              mb="8px"
-            >
+            <Text textTransform="uppercase" fontWeight="bold" fontSize="20px" mb="8px">
               SOCIAL MEDIA
             </Text>
             <Link style={{ textDecoration: "none" }} href="/">
-              <Image
-                w="30px"
-                h="30px"
-                objectFit="cover"
-                src="/Home/facebook.png"
-                alt="Facebook"
-              />
+              <Image w="30px" h="30px" objectFit="cover" src="/Home/facebook.png" alt="Facebook" />
             </Link>
           </Box>
         </Box>
       </Container>
-      <Box
-        fontSize="13px"
-        textAlign="center"
-        py="20px"
-        borderTop="1px"
-        borderColor="#C9C9C9"
-      >
-        <Text fontWeight="light">
-          *Illustration credited to: UOL Edtech Behance.
-        </Text>
+      <Box fontSize="13px" textAlign="center" py="20px" borderTop="1px" borderColor="#C9C9C9">
+        <Text fontWeight="light">*Illustration credited to: UOL Edtech Behance.</Text>
         <Text fontWeight="bold">All rights reserved @ StudBud 2022.</Text>
       </Box>
     </>

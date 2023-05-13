@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  Container,
   Link,
   Modal,
   ModalBody,
@@ -19,11 +20,16 @@ const JoinButton = () => {
 
   return (
     <>
-      <Button colorScheme={"purple"} onClick={onOpen} display={{ base: "inline-block" }}>
+      <Button
+        colorScheme={"purple"}
+        onClick={onOpen}
+        display={{ base: "inline-block" }}
+        w={{ base: "100%", sm: "fit-content" }}
+      >
         Sign up
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered size={{ base: "xs", sm: "md" }}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>

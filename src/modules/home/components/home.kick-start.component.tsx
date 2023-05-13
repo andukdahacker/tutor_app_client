@@ -15,7 +15,7 @@ const HomeKickStart = () => {
       gap="20px"
       mt="44px"
     >
-      <Text fontWeight="bold" fontSize="30px" color="#3DC7F4">
+      <Text fontWeight="bold" fontSize="30px" color="white">
         Kick-start your learning today!
       </Text>
       <Button colorScheme={"cyan"} color="white" size="lg">
