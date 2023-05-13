@@ -1,6 +1,5 @@
 import authStore from "@/modules/auth/stores/auth.store";
 import AppRoutes from "@/shared/app_routes";
-import { HamburgerIcon } from "@chakra-ui/icons";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSnapshot } from "valtio";
@@ -12,9 +11,6 @@ const Logo = () => {
     <>
       {authState.isAuthenticated ? (
         <>
-          <Box>
-            <HamburgerIcon w={8} h={8} />
-          </Box>
           <Link href={AppRoutes.HOME_ROUTE}>
             <Box w="32px" h="48px">
               <Image boxSize="100%" src="/logo.png" alt="Sparkle" />

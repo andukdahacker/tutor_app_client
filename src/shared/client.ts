@@ -47,7 +47,8 @@ if (typeof window !== "undefined") {
 }
 
 const urqlClient = createClient({
-  url: "https://tutorappserver-production.up.railway.app/graphql",
+  // url: "https://tutorappserver-production.up.railway.app/graphql",
+  url: "http://localhost:4000/graphql/graphql",
   fetchOptions: {
     credentials: "include",
   },
@@ -63,9 +64,7 @@ const urqlClient = createClient({
         },
         didAuthError: (error, _operation) => {
           return error.graphQLErrors.some(
-            (e) =>
-              e.extensions?.code === "UNAUTHORIZED" ||
-              e.extensions?.code === "UNAUTHENTICATED"
+            (e) => e.extensions?.code === "UNAUTHORIZED" || e.extensions?.code === "UNAUTHENTICATED"
           );
         },
         willAuthError: (_operation) => {
@@ -141,9 +140,7 @@ class UrqlClientAdapter implements GqlClient {
     subscription: TypedDocumentNode<T, V>,
     variables: V
   ): Promise<GqlFetchResult<T>> {
-    const result = await this.client
-      .subscription(subscription, variables)
-      .toPromise();
+    const result = await this.client.subscription(subscription, variables).toPromise();
 
     return {
       data: result.data,

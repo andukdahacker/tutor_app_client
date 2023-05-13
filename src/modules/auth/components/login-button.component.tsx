@@ -18,11 +18,11 @@ const LoginButton = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Button variant="ghost" onClick={onOpen}>
+      <Button variant="ghost" onClick={onOpen} w={{ base: "100%", sm: "fit-content" }}>
         Login
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered size={{ base: "xs", sm: "md" }}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
