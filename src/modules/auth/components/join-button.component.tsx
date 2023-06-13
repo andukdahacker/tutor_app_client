@@ -1,8 +1,6 @@
 import {
   Box,
   Button,
-  Center,
-  Container,
   Link,
   Modal,
   ModalBody,
@@ -26,10 +24,15 @@ const JoinButton = () => {
         display={{ base: "inline-block" }}
         w={{ base: "100%", sm: "fit-content" }}
       >
-        Sign up
+        Join
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size={{ base: "xs", sm: "md" }}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        isCentered
+        size={{ base: "xs", sm: "md" }}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -38,15 +41,18 @@ const JoinButton = () => {
                 Sign up an account
               </Text>
 
-              <Text color={"purple.500"} fontWeight={"medium"} fontSize="sm">
-                <Text display={"inline-block"} color={"#4B5563"}>
-                  Or&nbsp;
-                </Text>
-
-                <Link textDecoration="underline" href={"/"} textDecorationColor="purple.500">
-                  sign in to your account
-                </Link>
+              <Text display={"inline-block"} color={"#4B5563"} fontSize={"sm"}>
+                Or&nbsp;
               </Text>
+
+              <Link
+                textDecoration="underline"
+                href={"/"}
+                textColor={"purple.500"}
+                fontSize={"sm"}
+              >
+                sign in to your account
+              </Link>
             </Box>
           </ModalHeader>
           <ModalCloseButton />

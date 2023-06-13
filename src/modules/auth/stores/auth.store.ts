@@ -31,7 +31,7 @@ class AuthStore {
     } else if (result.errors) {
       localStorage.removeItem(ACCESS_TOKEN_KEY);
       this.isAuthenticated = false;
-      Router.push(AppRoutes.HOME_ROUTE);
+      Router.push(AppRoutes.HOME);
     }
   }
 

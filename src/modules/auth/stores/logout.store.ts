@@ -19,7 +19,7 @@ class LogOutStore {
       authStore.isAuthenticated = false;
       authStore.user = null;
       localStorage.removeItem(ACCESS_TOKEN_KEY);
-      Router.push(AppRoutes.HOME_ROUTE);
+      Router.push(AppRoutes.HOME);
     } else if (result.errors) {
       StoreUtils.handleError(result.errors);
     }

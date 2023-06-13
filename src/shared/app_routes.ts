@@ -1,5 +1,6 @@
 namespace AppRoutes {
-  export const HOME_ROUTE = "/";
+  export const HOME = "/";
+  export const FIND = "/find";
 }
 
 export default AppRoutes;

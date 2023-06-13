@@ -1,4 +1,6 @@
-import { Box, Button, Container, Flex, Image, Text } from "@chakra-ui/react";
+import AppRoutes from "@/shared/app_routes";
+import { Link } from "@chakra-ui/next-js";
+import { Box, Container, Flex, Image, Text } from "@chakra-ui/react";
 
 const HomeBanner = () => {
   return (
@@ -10,7 +12,10 @@ const HomeBanner = () => {
           textAlign={{ base: "center", sm: "left" }}
           mt={{ base: "30px", sm: "0px" }}
         >
-          <Box fontWeight="bold" fontSize={{ base: "14px", sm: "20px", md: "30px", lg: "36px" }}>
+          <Box
+            fontWeight="bold"
+            fontSize={{ base: "14px", sm: "20px", md: "30px", lg: "36px" }}
+          >
             <Text as="span" color="white">
               Kick-start
             </Text>
@@ -23,7 +28,8 @@ const HomeBanner = () => {
             </Text>
 
             <Box>
-              <Button
+              <Link
+                href={AppRoutes.FIND}
                 mt={"20px"}
                 fontSize={{ base: "12px", sm: "16px" }}
                 size={{ base: "sm", md: "md" }}
@@ -31,12 +37,17 @@ const HomeBanner = () => {
                 color="white"
               >
                 Get Started
-              </Button>
+              </Link>
             </Box>
           </Box>
 
           <Box w="100%" h="auto" maxW={"600px"}>
-            <Image boxSize="100%" objectFit="cover" src="/Home/home-banner.png" alt="Banner" />
+            <Image
+              boxSize="100%"
+              objectFit="cover"
+              src="/Home/home-banner.png"
+              alt="Banner"
+            />
           </Box>
         </Flex>
       </Container>

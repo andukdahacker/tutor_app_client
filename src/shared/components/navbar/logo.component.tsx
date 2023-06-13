@@ -11,7 +11,7 @@ const Logo = () => {
     <>
       {authState.isAuthenticated ? (
         <>
-          <Link href={AppRoutes.HOME_ROUTE}>
+          <Link href={AppRoutes.HOME}>
             <Box w="32px" h="48px">
               <Image boxSize="100%" src="/logo.png" alt="Sparkle" />
             </Box>
@@ -19,8 +19,11 @@ const Logo = () => {
         </>
       ) : (
         <Flex gap={"14px"} alignItems="center">
-          <Link href={AppRoutes.HOME_ROUTE}>
-            <Box w={{ base: "26px", sm: "32px" }} h={{ base: "42px", sm: "48px" }}>
+          <Link href={AppRoutes.HOME}>
+            <Box
+              w={{ base: "26px", sm: "32px" }}
+              h={{ base: "42px", sm: "48px" }}
+            >
               <Image boxSize="100%" src="/logo.png" alt="Sparkle" />
             </Box>
           </Link>
@@ -35,7 +38,11 @@ const Logo = () => {
             >
               Sparkle
             </Text>
-            <Text display={{ base: "none", sm: "block" }} fontWeight="medium" fontSize="sm">
+            <Text
+              display={{ base: "none", sm: "block" }}
+              fontWeight="medium"
+              fontSize="sm"
+            >
               Spark up your learning journey
             </Text>
           </Box>
