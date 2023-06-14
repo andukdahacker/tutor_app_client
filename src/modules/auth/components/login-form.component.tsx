@@ -15,9 +15,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSnapshot } from "valtio";
 import * as z from "zod";
-import loginStore from "../stores/login.store";
+import authStore from "../auth.store";
 
 const schema = z.object({
   email: z.string().email("Invalid email"),
@@ -40,16 +39,18 @@ const LoginForm = () => {
   } = useForm<SignInData>({
     resolver: zodResolver(schema),
   });
-  const loginState = useSnapshot(loginStore);
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
       <form
-        onSubmit={handleSubmit((data) =>
-          loginStore.logIn({ email: data.email, password: data.password })
-        )}
+        onSubmit={handleSubmit(async (data) => {
+          setIsLoading(true);
+          return await authStore
+            .logIn({ email: data.email, password: data.password })
+            .then(() => setIsLoading(false));
+        })}
       >
         <FormControl
           isInvalid={errors.email ? true : false}
@@ -93,7 +94,7 @@ const LoginForm = () => {
             w="100%"
             h={12}
             colorScheme={"purple"}
-            isLoading={loginState.isLoading}
+            isLoading={isLoading}
             my="4"
             type="submit"
           >

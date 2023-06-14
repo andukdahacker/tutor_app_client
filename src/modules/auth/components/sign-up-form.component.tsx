@@ -12,9 +12,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSnapshot } from "valtio";
 import * as z from "zod";
-import signUpStore from "../stores/signup.store";
+import authStore from "../auth.store";
 
 const schema = z.object({
   username: z.string().min(4, "Username must consist at least 4 characters"),
@@ -38,19 +37,22 @@ const SignUpForm = () => {
   } = useForm<SignUpData>({
     resolver: zodResolver(schema),
   });
-  const signUpState = useSnapshot(signUpStore);
-  const [showPassword, setShowPassword] = useState(false);
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
       <form
-        onSubmit={handleSubmit((data) =>
-          signUpStore.signUp({
-            username: data.username,
-            email: data.email,
-            password: data.password,
-          })
-        )}
+        onSubmit={handleSubmit(async (data) => {
+          setIsLoading(true);
+          return authStore
+            .signUp({
+              username: data.username,
+              email: data.email,
+              password: data.password,
+            })
+            .then(() => setIsLoading(false));
+        })}
       >
         <FormControl
           borderTop="1px"
@@ -59,7 +61,11 @@ const SignUpForm = () => {
           isInvalid={errors.username ? true : false}
         >
           <FormLabel htmlFor="username">Username</FormLabel>
-          <Input id="username" placeholder="username" {...register("username")} />
+          <Input
+            id="username"
+            placeholder="username"
+            {...register("username")}
+          />
           <FormErrorMessage>{errors?.username?.message}</FormErrorMessage>
         </FormControl>
 
@@ -92,7 +98,7 @@ const SignUpForm = () => {
           <Button
             colorScheme={"purple"}
             textColor={"white"}
-            isLoading={signUpState.isLoading}
+            isLoading={isLoading}
             my={6}
             type="submit"
             w="100%"

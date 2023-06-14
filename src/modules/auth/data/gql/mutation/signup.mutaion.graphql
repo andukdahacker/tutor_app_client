@@ -5,6 +5,7 @@ mutation SignUp($signUpInput: SignUpInput!) {
       username
       email
       createdAt
+      isVerified
     }
   }
 }

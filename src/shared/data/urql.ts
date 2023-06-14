@@ -1,54 +1,22 @@
 import { RefreshAccessTokenDocument } from "@/generated/graphql";
 import { ACCESS_TOKEN_KEY } from "@/modules/auth/auth.constants";
-import authStore from "@/modules/auth/stores/auth.store";
-import { TypedDocumentNode } from "@graphql-typed-document-node/core";
+import authStore from "@/modules/auth/auth.store";
 import {
-  AnyVariables,
   Client,
   createClient,
   fetchExchange,
   subscriptionExchange,
+  TypedDocumentNode,
 } from "@urql/core";
 import { authExchange } from "@urql/exchange-auth";
-import { GraphQLError } from "graphql";
-import { Client as WsClient, createClient as createWsClient } from "graphql-ws";
+
 import jwtDecode, { JwtPayload } from "jwt-decode";
-
-type GqlVariables = AnyVariables | Record<string, any> | void | undefined;
-
-export type GqlError = Error | GraphQLError[];
-
-type GqlFetchResult<T = any> = {
-  data?: T;
-  errors?: GqlError;
-};
-
-interface GqlClient {
-  query<T = any, V extends GqlVariables = GqlVariables>(
-    query: TypedDocumentNode<T, V>,
-    variables: V
-  ): Promise<GqlFetchResult<T>>;
-  mutation<T = any, V extends GqlVariables = GqlVariables>(
-    mutation: TypedDocumentNode<T, V>,
-    variables: V
-  ): Promise<GqlFetchResult<T>>;
-  subscription<T = any, V extends GqlVariables = GqlVariables>(
-    subscription: TypedDocumentNode<T, V>,
-    variables: V
-  ): Promise<GqlFetchResult<T>>;
-}
-
-let wsClient: WsClient;
-
-if (typeof window !== "undefined") {
-  wsClient = createWsClient({
-    url: "ws://tutorappserver-production.up.railway.app/graphql",
-  });
-}
+import { GqlClient, GqlFetchResult, GqlVariables } from "./client";
+import { wsClient } from "./ws";
 
 const urqlClient = createClient({
   // url: "https://tutorappserver-production.up.railway.app/graphql",
-  url: "http://localhost:4000/graphql/graphql",
+  url: "http://localhost:4000/graphql",
   fetchOptions: {
     credentials: "include",
   },
@@ -64,7 +32,9 @@ const urqlClient = createClient({
         },
         didAuthError: (error, _operation) => {
           return error.graphQLErrors.some(
-            (e) => e.extensions?.code === "UNAUTHORIZED" || e.extensions?.code === "UNAUTHENTICATED"
+            (e) =>
+              e.extensions?.code === "UNAUTHORIZED" ||
+              e.extensions?.code === "UNAUTHENTICATED"
           );
         },
         willAuthError: (_operation) => {
@@ -140,7 +110,9 @@ class UrqlClientAdapter implements GqlClient {
     subscription: TypedDocumentNode<T, V>,
     variables: V
   ): Promise<GqlFetchResult<T>> {
-    const result = await this.client.subscription(subscription, variables).toPromise();
+    const result = await this.client
+      .subscription(subscription, variables)
+      .toPromise();
 
     return {
       data: result.data,

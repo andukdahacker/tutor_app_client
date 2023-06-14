@@ -1,0 +1,18 @@
+query FindManyJobs($findManyJobsInput: FindManyJobsInput!) {
+  jobs(findManyJobsInput: $findManyJobsInput) {
+    nodes {
+      id
+      learner {
+        userId
+        id
+        bio
+      }
+      subject {
+        id
+        name
+        description
+      }
+      createdAt
+    }
+  }
+}

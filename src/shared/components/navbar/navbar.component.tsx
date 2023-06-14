@@ -1,12 +1,13 @@
-import authStore from "@/modules/auth/stores/auth.store";
+import authStore from "@/modules/auth/auth.store";
 import { Flex, Spinner } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useSnapshot } from "valtio";
-import Logged from "./logged.component";
-import NoLogin from "./no-login.component";
+import AuthenticatedNavBar from "./auth-navbar.component";
+import UnauthenticatedNavBar from "./unauth-navbar.component";
 
 const NavBar = () => {
   const authState = useSnapshot(authStore);
+
   useEffect(() => {
     async function checkAuth() {
       await authStore.checkIfAuthenticated();
@@ -28,7 +29,13 @@ const NavBar = () => {
       {authState.isLoading ? (
         <Spinner />
       ) : (
-        <>{authState.isAuthenticated ? <Logged /> : <NoLogin />}</>
+        <>
+          {authState.isAuthenticated ? (
+            <AuthenticatedNavBar />
+          ) : (
+            <UnauthenticatedNavBar />
+          )}
+        </>
       )}
     </Flex>
   );

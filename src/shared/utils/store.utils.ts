@@ -1,6 +1,6 @@
 import { toast } from "@/pages/_app";
 import { GraphQLError } from "graphql";
-import { GqlError } from "../client";
+import { GqlError } from "../data/client";
 import { IError } from "../types/IError";
 
 namespace StoreUtils {

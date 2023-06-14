@@ -3,7 +3,7 @@ import LoginButton from "@/modules/auth/components/login-button.component";
 import { Box, Show } from "@chakra-ui/react";
 import Logo from "./logo.component";
 
-const NoLogin = () => {
+const UnauthenticatedNavBar = () => {
   return (
     <>
       <Logo />
@@ -22,4 +22,4 @@ const NoLogin = () => {
   );
 };
 
-export default NoLogin;
+export default UnauthenticatedNavBar;

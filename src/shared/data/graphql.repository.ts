@@ -1,4 +1,7 @@
 import {
+  FindManyJobsDocument,
+  FindManyJobsInput,
+  FindManyJobsQuery,
   LoginDocument,
   LoginInput,
   LogoutDocument,
@@ -7,9 +10,22 @@ import {
   SignUpDocument,
   SignUpInput,
 } from "@/generated/graphql";
-import { urql } from "@/shared/client";
+import { AuthRepository } from "@/modules/auth/data/auth.repository";
+import { JobRepository } from "@/modules/find/job/data/job.repository";
+import { GqlFetchResult } from "./client";
+import { urql } from "./urql";
 
-class AuthService {
+export class GqlRepository implements AuthRepository, JobRepository {
+  async findManyJobs(
+    input: FindManyJobsInput
+  ): Promise<GqlFetchResult<FindManyJobsQuery>> {
+    return await urql.mutation(FindManyJobsDocument, {
+      findManyJobsInput: {
+        ...input,
+      },
+    });
+  }
+
   async logIn(loginInput: LoginInput) {
     return await urql.mutation(LoginDocument, {
       loginInput: {
@@ -41,7 +57,3 @@ class AuthService {
     return await urql.query(MeDocument, {});
   }
 }
-
-const authService = new AuthService();
-
-export default authService;

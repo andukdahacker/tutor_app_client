@@ -8,19 +8,22 @@ import {
   Button,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useRef } from "react";
-import { useSnapshot } from "valtio";
-import logOutStore from "../stores/logout.store";
+import { useRef, useState } from "react";
+import authStore from "../auth.store";
 
 const LogOutButton = () => {
-  const logOutState = useSnapshot(logOutStore);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoading, setIsLoading] = useState(false);
   const cancelRef = useRef(null);
   return (
     <>
       <Button onClick={onOpen}>Log out</Button>
 
-      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
@@ -35,10 +38,14 @@ const LogOutButton = () => {
               </Button>
               <Button
                 colorScheme="red"
-                onClick={() => {
-                  logOutStore.logOut().then(() => onClose());
+                onClick={async () => {
+                  setIsLoading(true);
+                  authStore.logOut().then(() => {
+                    setIsLoading(false);
+                    return onClose();
+                  });
                 }}
-                isLoading={logOutState.isLoading}
+                isLoading={isLoading}
                 ml={3}
               >
                 Log out

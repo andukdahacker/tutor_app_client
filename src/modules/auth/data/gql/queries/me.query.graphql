@@ -5,6 +5,7 @@ query Me {
       username
       email
       createdAt
+      isVerified
     }
   }
 }
