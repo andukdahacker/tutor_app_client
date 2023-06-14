@@ -1,5 +1,7 @@
+import { SortBy } from "@/generated/graphql";
 import CardDetail from "@/shared/components/Card/CardDetail.component";
 import Footer from "@/shared/components/footer/footer.component";
+import useDebounce from "@/shared/hooks/useDebounce";
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -9,10 +11,10 @@ import {
   Input,
   InputGroup,
   InputRightAddon,
-  Stack,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import { useEffect, useState } from "react";
+import { jobStore } from "../job.store";
 
 const FindTutorJob = () => {
   const suggested = [
@@ -41,6 +43,28 @@ const FindTutorJob = () => {
       title: "Web dev",
     },
   ];
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [searchString, setSearchString] = useState("");
+
+  const debouncedSearch = useDebounce(searchString, 500);
+
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      await jobStore.findManyJobs({
+        searchString: debouncedSearch,
+        take: 5,
+        sortBy: SortBy.Asc,
+      });
+
+      setIsLoading(false);
+    }
+
+    fetchData();
+  }, [debouncedSearch]);
+
   return (
     <>
       <Container maxW="container.xl">
@@ -56,7 +80,14 @@ const FindTutorJob = () => {
 
         <Box maxW="500px" m="0 auto">
           <InputGroup size="sm">
-            <Input type="text" placeholder="Enter a subject" borderRadius="4px" />
+            <Input
+              type="text"
+              placeholder="Enter a subject"
+              borderRadius="4px"
+              onChange={(e) => {
+                setSearchString(e.target.value);
+              }}
+            />
             <InputRightAddon borderRadius="0 4px 4px 0">
               <SearchIcon />
             </InputRightAddon>
@@ -81,7 +112,11 @@ const FindTutorJob = () => {
           >
             {suggested.map((item) => (
               <Box key={item.id}>
-                <Button size={{ base: "sm", lg: "md" }} variant="outline" colorScheme="gray">
+                <Button
+                  size={{ base: "sm", lg: "md" }}
+                  variant="outline"
+                  colorScheme="gray"
+                >
                   {item.title}
                 </Button>
               </Box>

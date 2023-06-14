@@ -219,7 +219,7 @@ export type FindManyJobsInput = {
   jobMethod?: InputMaybe<Scalars['String']>;
   jobType?: InputMaybe<Scalars['String']>;
   searchString: Scalars['String'];
-  sortOrder: Scalars['String'];
+  sortBy: SortBy;
   stringCursor?: InputMaybe<Scalars['String']>;
   take: Scalars['Int'];
 };
@@ -639,6 +639,11 @@ export type SignUpResponse = {
   __typename?: 'SignUpResponse';
   user: User;
 };
+
+export enum SortBy {
+  Asc = 'asc',
+  Desc = 'desc'
+}
 
 export type StringCursor = {
   __typename?: 'StringCursor';

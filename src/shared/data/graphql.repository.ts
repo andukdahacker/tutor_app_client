@@ -19,7 +19,7 @@ export class GqlRepository implements AuthRepository, JobRepository {
   async findManyJobs(
     input: FindManyJobsInput
   ): Promise<GqlFetchResult<FindManyJobsQuery>> {
-    return await urql.mutation(FindManyJobsDocument, {
+    return await urql.query(FindManyJobsDocument, {
       findManyJobsInput: {
         ...input,
       },
