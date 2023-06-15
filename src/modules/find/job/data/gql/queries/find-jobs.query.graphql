@@ -12,6 +12,9 @@ query FindManyJobs($findManyJobsInput: FindManyJobsInput!) {
         name
         description
       }
+      title
+      description
+      fee
       createdAt
     }
   }

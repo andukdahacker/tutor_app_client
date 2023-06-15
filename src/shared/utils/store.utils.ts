@@ -3,6 +3,9 @@ import { GraphQLError } from "graphql";
 import { GqlError } from "../data/client";
 import { IError } from "../types/IError";
 
+declare module "valtio" {
+  function useSnapshot<T extends object>(p: T): T;
+}
 namespace StoreUtils {
   function isGraphqlError(error: GqlError): error is GraphQLError[] {
     return (error as GraphQLError[]).every((e) => e.message !== undefined);

@@ -1,5 +1,4 @@
-import { SortBy } from "@/generated/graphql";
-import CardDetail from "@/shared/components/Card/CardDetail.component";
+import JobCard from "@/shared/components/Card/JobCard.component";
 import Footer from "@/shared/components/footer/footer.component";
 import useDebounce from "@/shared/hooks/useDebounce";
 import { SearchIcon } from "@chakra-ui/icons";
@@ -14,6 +13,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useSnapshot } from "valtio";
 import { jobStore } from "../job.store";
 
 const FindTutorJob = () => {
@@ -44,6 +44,8 @@ const FindTutorJob = () => {
     },
   ];
 
+  const jobState = useSnapshot(jobStore);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [searchString, setSearchString] = useState("");
@@ -53,11 +55,8 @@ const FindTutorJob = () => {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      await jobStore.findManyJobs({
-        searchString: debouncedSearch,
-        take: 5,
-        sortBy: SortBy.Asc,
-      });
+
+      await jobStore.findManyJobs(debouncedSearch);
 
       setIsLoading(false);
     }
@@ -124,17 +123,9 @@ const FindTutorJob = () => {
           </Box>
         </Flex>
 
-        <CardDetail
-          title1="Most Recent Jobs in "
-          title2={"Web Programming"}
-          cardTitle="Job Title"
-        />
-
-        <CardDetail
-          title1="Most Recent Jobs in "
-          title2={"Web Programming"}
-          cardTitle="Job Title"
-        />
+        {jobState.jobs.map((job) => (
+          <JobCard job={job} key={job.id}></JobCard>
+        ))}
 
         <Footer />
       </Container>

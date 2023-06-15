@@ -12,6 +12,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
+  BigInt: any;
   /** `Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch. */
   DateScalar: any;
   /** `Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch. */
@@ -102,7 +104,7 @@ export type CreateJobConnectResponse = {
 
 export type CreateJobInput = {
   description?: InputMaybe<Scalars['String']>;
-  fee: Scalars['Int'];
+  fee: Scalars['BigInt'];
   jobMethod: Scalars['String'];
   jobType: Scalars['String'];
   learnerId: Scalars['String'];
@@ -210,13 +212,13 @@ export type Education = {
 
 export type FindJobResponse = {
   __typename?: 'FindJobResponse';
-  nodes?: Maybe<Array<Maybe<Job>>>;
+  nodes: Array<Job>;
   pageInfo: PageInfo;
 };
 
 export type FindManyJobsInput = {
   fee?: InputMaybe<Scalars['Int']>;
-  jobMethod?: InputMaybe<Scalars['String']>;
+  jobMethod?: InputMaybe<JobMethod>;
   jobType?: InputMaybe<Scalars['String']>;
   searchString: Scalars['String'];
   sortBy: SortBy;
@@ -232,7 +234,7 @@ export type FindManySubjectsInput = {
 
 export type FindManySubjectsRespones = {
   __typename?: 'FindManySubjectsRespones';
-  nodes?: Maybe<Array<Maybe<Subject>>>;
+  nodes: Array<Subject>;
   pageInfo: PageInfo;
 };
 
@@ -244,7 +246,7 @@ export type FindManyTutorProfilesInput = {
 
 export type FindManyTutorProfilesResponse = {
   __typename?: 'FindManyTutorProfilesResponse';
-  nodes?: Maybe<Array<Maybe<TutorProfile>>>;
+  nodes: Array<TutorProfile>;
   pageInfo: PageInfo;
 };
 
@@ -261,7 +263,7 @@ export type GetChatsInput = {
 
 export type GetChatsResponse = {
   __typename?: 'GetChatsResponse';
-  nodes?: Maybe<Array<Maybe<Chat>>>;
+  nodes: Array<Chat>;
   pageInfo: PageInfo;
 };
 
@@ -272,19 +274,19 @@ export type GetManyNotificationsInput = {
 
 export type GetManyNotificationsResponse = {
   __typename?: 'GetManyNotificationsResponse';
-  nodes?: Maybe<Array<Maybe<Notification>>>;
+  nodes: Array<Notification>;
   pageInfo: PageInfo;
 };
 
 export type GetMessagesResponse = {
   __typename?: 'GetMessagesResponse';
-  nodes?: Maybe<Array<Maybe<ChatMessage>>>;
+  nodes: Array<ChatMessage>;
   pageInfo: PageInfo;
 };
 
 export type GetRequestedJobsForTutorResponse = {
   __typename?: 'GetRequestedJobsForTutorResponse';
-  nodes?: Maybe<Array<Maybe<JobConnection>>>;
+  nodes: Array<JobConnection>;
   pageInfo: PageInfo;
 };
 
@@ -297,9 +299,12 @@ export type Job = {
   __typename?: 'Job';
   connections?: Maybe<Array<Maybe<JobConnection>>>;
   createdAt: Scalars['Timestamp'];
+  description?: Maybe<Scalars['String']>;
+  fee: Scalars['BigInt'];
   id: Scalars['String'];
   learner: LearnerProfile;
   subject: Subject;
+  title: Scalars['String'];
 };
 
 export enum JobConnectType {
@@ -323,6 +328,12 @@ export type JobConnectionWhereInput = {
   tutorId?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
 };
+
+export enum JobMethod {
+  Both = 'BOTH',
+  Offline = 'OFFLINE',
+  Online = 'ONLINE'
+}
 
 export type LearnerProfile = {
   __typename?: 'LearnerProfile';
@@ -786,7 +797,7 @@ export type FindManyJobsQueryVariables = Exact<{
 }>;
 
 
-export type FindManyJobsQuery = { __typename?: 'Query', jobs: { __typename?: 'FindJobResponse', nodes?: Array<{ __typename?: 'Job', id: string, createdAt: any, learner: { __typename?: 'LearnerProfile', userId: string, id: string, bio?: string | null }, subject: { __typename?: 'Subject', id: string, name: string, description?: string | null } } | null> | null } };
+export type FindManyJobsQuery = { __typename?: 'Query', jobs: { __typename?: 'FindJobResponse', nodes: Array<{ __typename?: 'Job', id: string, title: string, description?: string | null, fee: any, createdAt: any, learner: { __typename?: 'LearnerProfile', userId: string, id: string, bio?: string | null }, subject: { __typename?: 'Subject', id: string, name: string, description?: string | null } }> } };
 
 
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"loginInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LoginInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"loginInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"loginInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"access_token"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"isVerified"}}]}}]}}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
@@ -794,4 +805,4 @@ export const LogoutDocument = {"kind":"Document","definitions":[{"kind":"Operati
 export const RefreshAccessTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RefreshAccessToken"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refreshAccessToken"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"access_token"}}]}}]}}]} as unknown as DocumentNode<RefreshAccessTokenMutation, RefreshAccessTokenMutationVariables>;
 export const SignUpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SignUp"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"signUpInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SignUpInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"signUp"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"signUpInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"signUpInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"isVerified"}}]}}]}}]}}]} as unknown as DocumentNode<SignUpMutation, SignUpMutationVariables>;
 export const MeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"isVerified"}}]}}]}}]}}]} as unknown as DocumentNode<MeQuery, MeQueryVariables>;
-export const FindManyJobsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FindManyJobs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"findManyJobsInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FindManyJobsInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"jobs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"findManyJobsInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"findManyJobsInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"learner"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}}]}},{"kind":"Field","name":{"kind":"Name","value":"subject"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]}}]} as unknown as DocumentNode<FindManyJobsQuery, FindManyJobsQueryVariables>;
+export const FindManyJobsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FindManyJobs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"findManyJobsInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FindManyJobsInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"jobs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"findManyJobsInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"findManyJobsInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"learner"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}}]}},{"kind":"Field","name":{"kind":"Name","value":"subject"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"fee"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]}}]} as unknown as DocumentNode<FindManyJobsQuery, FindManyJobsQueryVariables>;
