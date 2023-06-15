@@ -15,6 +15,7 @@ query FindManyJobs($findManyJobsInput: FindManyJobsInput!) {
       title
       description
       fee
+      numberOfSessions
       createdAt
     }
   }

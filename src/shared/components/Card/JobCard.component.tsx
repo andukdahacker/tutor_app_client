@@ -1,14 +1,32 @@
 import { Job } from "@/generated/graphql";
 import { CurrencyUtils } from "@/shared/utils/currency.utils";
 import { DateTimeUtils } from "@/shared/utils/datetime.utils";
-import { Badge, Box, Button, Flex, Grid, Text } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  Flex,
+  Grid,
+  Input,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { useRef } from "react";
 
 interface CardProps {
   job: Job;
 }
 
 const JobCard = (props: CardProps) => {
-  console.log(CurrencyUtils.format(props.job.fee));
+  const btnRef = useRef(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <Flex direction="column" gap="20px">
@@ -49,49 +67,36 @@ const JobCard = (props: CardProps) => {
 
               <Box>
                 <Text fontWeight="bold" fontSize="12px">
-                  Beginner
+                  {props.job.numberOfSessions ?? "Unknown"}
                 </Text>
                 <Text
                   fontWeight="normal"
                   fontSize="12px"
                   color="blackAlpha.500"
                 >
-                  Tutee Level
-                </Text>
-              </Box>
-
-              <Box>
-                <Text fontWeight="bold" fontSize="12px">
-                  2 months
-                </Text>
-                <Text
-                  fontWeight="normal"
-                  fontSize="12px"
-                  color="blackAlpha.500"
-                >
-                  Duration
+                  Number of sessions
                 </Text>
               </Box>
             </Flex>
 
             <Text color="gray.500" fontSize="12px" noOfLines={2}>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae
-              atque tempora officiis. Aspernatur voluptatum consectetur
-              exercitationem facilis libero, vero quia soluta. Fuga obcaecati
-              vel ad blanditiis voluptate. Inventore, voluptate soluta?
+              {props.job.description ?? "No description"}
             </Text>
 
             <Flex gap="10px" my={4}>
               <Badge backgroundColor="cyan.500" color="white">
-                Subject label
-              </Badge>
-              <Badge backgroundColor="blue.500" color="white">
-                hashtag
+                {props.job.subject.name}
               </Badge>
             </Flex>
 
             <Flex justifyContent="flex-end" gap="6px">
-              <Button size="sm" variant="outline" colorScheme="blue">
+              <Button
+                size="sm"
+                variant="outline"
+                colorScheme="blue"
+                ref={btnRef}
+                onClick={onOpen}
+              >
                 See more
               </Button>
               <Button size="sm" variant="solid" colorScheme="blue">
@@ -101,6 +106,31 @@ const JobCard = (props: CardProps) => {
           </Box>
         </Grid>
       </Flex>
+
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+        size={"xl"}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Create your account</DrawerHeader>
+
+          <DrawerBody>
+            <Input placeholder="Type here..." />
+          </DrawerBody>
+
+          <DrawerFooter>
+            <Button variant="outline" mr={3} onClick={onClose}>
+              Cancel
+            </Button>
+            <Button colorScheme="blue">Save</Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };
