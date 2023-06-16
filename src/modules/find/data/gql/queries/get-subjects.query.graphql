@@ -1,0 +1,19 @@
+query GetSubjects($findManySubjectsInput: FindManySubjectsInput!) {
+  subjects(findManySubjectsInput: $findManySubjectsInput) {
+    nodes {
+      id
+      description
+      name
+    }
+    pageInfo {
+      cursor {
+        ... on StringCursor {
+          value
+        }
+      }
+      hasNextPage
+      lastTake
+      totalAmount
+    }
+  }
+}

@@ -2,6 +2,9 @@ import {
   FindManyJobsDocument,
   FindManyJobsInput,
   FindManyJobsQuery,
+  FindManySubjectsInput,
+  GetSubjectsDocument,
+  GetSubjectsQuery,
   LoginDocument,
   LoginInput,
   LogoutDocument,
@@ -12,10 +15,23 @@ import {
 } from "@/generated/graphql";
 import { AuthRepository } from "@/modules/auth/data/auth.repository";
 import { JobRepository } from "@/modules/find/job/data/job.repository";
+import { SubjectRepository } from "@/modules/find/subjects/data/subject.repository";
 import { GqlFetchResult } from "./client";
 import { urql } from "./urql";
 
-export class GqlRepository implements AuthRepository, JobRepository {
+export class GqlRepository
+  implements AuthRepository, JobRepository, SubjectRepository
+{
+  async getSubjects(
+    input: FindManySubjectsInput
+  ): Promise<GqlFetchResult<GetSubjectsQuery>> {
+    return await urql.query(GetSubjectsDocument, {
+      findManySubjectsInput: {
+        ...input,
+      },
+    });
+  }
+
   async findManyJobs(
     input: FindManyJobsInput
   ): Promise<GqlFetchResult<FindManyJobsQuery>> {
