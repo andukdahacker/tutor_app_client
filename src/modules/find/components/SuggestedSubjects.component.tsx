@@ -1,11 +1,26 @@
-import { Subject } from "@/generated/graphql";
-import { Box, Flex, Tag, Text } from "@chakra-ui/react";
+import { Flex, Tag, Text, Wrap } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useSnapshot } from "valtio";
+import { subscribeKey } from "valtio/utils";
+import { findStore } from "../stores/find.store";
 
-interface SuggestedSubjectsProps {
-  subjects: Subject[] | null | undefined;
-}
+const SuggestedSubjects = () => {
+  const findState = useSnapshot(findStore);
 
-const SuggestedSubjects = (props: SuggestedSubjectsProps) => {
+  useEffect(() => {
+    async function fetchData() {
+      await findStore.getSubjects();
+    }
+
+    fetchData();
+
+    subscribeKey(findStore, "searchString", () => {
+      setTimeout(async () => {
+        await fetchData();
+      }, 500);
+    });
+  }, []);
+
   return (
     <>
       <Flex alignItems="center" m="35px 0">
@@ -17,19 +32,20 @@ const SuggestedSubjects = (props: SuggestedSubjectsProps) => {
         >
           Suggested
         </Text>
-        <Box
-          display="flex"
-          flexDirection="row"
-          gap="4"
-          flexWrap={{ base: "nowrap", sm: "wrap" }}
-          overflow={{ base: "scroll", sm: "auto" }}
-        >
-          {props.subjects?.map((subject) => (
-            <Tag key={subject.id} cursor={"pointer"}>
-              {subject.name}
-            </Tag>
-          ))}
-        </Box>
+        <Wrap>
+          {findState.subjects?.map((subject) => {
+            if (subject.name == findState.searchString) return null;
+            return (
+              <Tag
+                key={subject.id}
+                cursor={"pointer"}
+                onClick={() => findStore.changeSearchString(subject.name)}
+              >
+                {subject.name}
+              </Tag>
+            );
+          })}
+        </Wrap>
       </Flex>
     </>
   );

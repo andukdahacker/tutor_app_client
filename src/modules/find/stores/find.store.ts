@@ -3,15 +3,14 @@ import { appRepository } from "@/shared/data/app.repository";
 import StoreUtils from "@/shared/utils/store.utils";
 import { proxy } from "valtio";
 
-export enum FindTarget {
-  JOBS,
-  TUTORS,
-}
+export const findTargets = ["Jobs", "Tutors"] as const;
+
+export type FindTarget = (typeof findTargets)[number];
 
 class FindStore {
   jobs: Job[] = [];
   subjects: Subject[] = [];
-  findTarget: FindTarget = FindTarget.JOBS;
+  findTarget: FindTarget = "Jobs";
   searchString = "";
 
   changeSearchString(value: string) {
@@ -22,11 +21,23 @@ class FindStore {
     this.findTarget = target;
   }
 
-  async findManyJobs(searchString: string) {
+  async find() {
+    switch (this.findTarget) {
+      case "Jobs":
+        await this.findManyJobs();
+        break;
+      case "Tutors":
+        break;
+      default:
+        break;
+    }
+  }
+
+  async findManyJobs() {
     const result = await appRepository.findManyJobs({
-      searchString,
+      searchString: this.searchString,
       sortBy: SortBy.Asc,
-      take: 5,
+      take: 10,
       jobMethod: JobMethod.Both,
     });
 
@@ -37,10 +48,10 @@ class FindStore {
     }
   }
 
-  async getSubjects(searchString: string) {
+  async getSubjects() {
     const result = await appRepository.getSubjects({
-      searchString,
-      take: 5,
+      searchString: this.searchString,
+      take: 10,
     });
 
     if (result.errors) {

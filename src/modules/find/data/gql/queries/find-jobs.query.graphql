@@ -13,6 +13,7 @@ query FindManyJobs($findManyJobsInput: FindManyJobsInput!) {
         description
       }
       createdAt
+      updatedAt
       fee
       description
       numberOfSessions

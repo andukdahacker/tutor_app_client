@@ -26,6 +26,11 @@ interface CardProps {
 const JobCard = (props: CardProps) => {
   const btnRef = useRef(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const job = props.job;
+  const latestUpdate =
+    job.createdAt == job.updatedAt
+      ? `Posted ${DateTimeUtils.ago(job.createdAt)} ago`
+      : `Updated ${DateTimeUtils.ago(job.updatedAt)} ago`;
   return (
     <>
       <Box
@@ -38,7 +43,7 @@ const JobCard = (props: CardProps) => {
         <Text fontWeight="bold">{props.job.title}</Text>
 
         <Text my="2" color="blackAlpha.500" fontSize="12px">
-          Posted {DateTimeUtils.ago(props.job.createdAt)} ago
+          {latestUpdate}
         </Text>
 
         <Flex gap="24px" my="2">
@@ -53,10 +58,10 @@ const JobCard = (props: CardProps) => {
 
           <Box>
             <Text fontWeight="bold" fontSize="12px">
-              {props.job.numberOfSessions ?? "Unknown"}
+              {props.job.numberOfSessions ?? "Unknown number of"}
             </Text>
             <Text fontWeight="normal" fontSize="12px" color="blackAlpha.500">
-              Number of sessions
+              Sessions
             </Text>
           </Box>
         </Flex>

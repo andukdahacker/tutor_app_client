@@ -1,31 +1,44 @@
 import JobCard from "@/modules/find/components/JobCard.component";
 import Footer from "@/shared/components/footer/footer.component";
-import useDebounce from "@/shared/hooks/useDebounce";
-import { SearchIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
+  Button,
   Container,
   Input,
   InputGroup,
-  InputRightAddon,
+  InputRightElement,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSnapshot } from "valtio";
 import { subscribeKey } from "valtio/utils";
-import { findStore } from "../stores/find.store";
+import { findStore, findTargets } from "../stores/find.store";
+import SuggestedSubjects from "./SuggestedSubjects.component";
 
 const FindTutorJob = () => {
   const findState = useSnapshot(findStore);
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const debouncedSearch = useDebounce(findState.searchString, 500);
-
   useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      await findStore.find();
+      setIsLoading(false);
+    }
+
+    fetchData();
+
     subscribeKey(findStore, "searchString", () => {
-      console.log("asd");
+      setTimeout(async () => {
+        await fetchData();
+      }, 500);
     });
   }, []);
 
@@ -43,7 +56,7 @@ const FindTutorJob = () => {
         </Text>
 
         <Box maxW="500px" m="0 auto">
-          <InputGroup size="sm">
+          <InputGroup size={"md"}>
             <Input
               type="text"
               placeholder="Enter a subject"
@@ -51,12 +64,31 @@ const FindTutorJob = () => {
               onChange={(e) => {
                 findStore.changeSearchString(e.target.value);
               }}
+              value={findState.searchString}
             />
-            <InputRightAddon borderRadius="0 4px 4px 0">
-              <SearchIcon />
-            </InputRightAddon>
+            <InputRightElement w="fit-content">
+              <Menu>
+                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                  {findState.findTarget}
+                </MenuButton>
+                <MenuList>
+                  {findTargets.map((target) => {
+                    return (
+                      <MenuItem
+                        key={target}
+                        onClick={() => findStore.changeFindTarget(target)}
+                      >
+                        {target}
+                      </MenuItem>
+                    );
+                  })}
+                </MenuList>
+              </Menu>
+            </InputRightElement>
           </InputGroup>
         </Box>
+
+        <SuggestedSubjects />
 
         <SimpleGrid columns={[1, 2, 3]} spacing={[20, 16]}>
           {findState.jobs.map((job) => (
