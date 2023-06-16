@@ -14,8 +14,8 @@ import {
   SignUpInput,
 } from "@/generated/graphql";
 import { AuthRepository } from "@/modules/auth/data/auth.repository";
-import { JobRepository } from "@/modules/find/job/data/job.repository";
-import { SubjectRepository } from "@/modules/find/subjects/data/subject.repository";
+import { JobRepository } from "@/modules/find/data/job.repository";
+import { SubjectRepository } from "@/modules/find/data/subject.repository";
 import { GqlFetchResult } from "./client";
 import { urql } from "./urql";
 
