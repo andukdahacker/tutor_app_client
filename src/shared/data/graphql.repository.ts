@@ -3,6 +3,9 @@ import {
   FindManyJobsInput,
   FindManyJobsQuery,
   FindManySubjectsInput,
+  FindManyTutorProfilesInput,
+  FindManyTutorsDocument,
+  FindManyTutorsQuery,
   GetSubjectsDocument,
   GetSubjectsQuery,
   LoginDocument,
@@ -14,14 +17,21 @@ import {
   SignUpInput,
 } from "@/generated/graphql";
 import { AuthRepository } from "@/modules/auth/data/auth.repository";
-import { JobRepository } from "@/modules/find/data/job.repository";
-import { SubjectRepository } from "@/modules/find/data/subject.repository";
+import { FindRepository } from "@/modules/find/shared/data/find.repository";
 import { GqlFetchResult } from "./client";
 import { urql } from "./urql";
 
-export class GqlRepository
-  implements AuthRepository, JobRepository, SubjectRepository
-{
+export class GqlRepository implements AuthRepository, FindRepository {
+  async findManyTutors(
+    input: FindManyTutorProfilesInput
+  ): Promise<GqlFetchResult<FindManyTutorsQuery>> {
+    return await urql.query(FindManyTutorsDocument, {
+      findManyTutorProfilesInput: {
+        ...input,
+      },
+    });
+  }
+
   async getSubjects(
     input: FindManySubjectsInput
   ): Promise<GqlFetchResult<GetSubjectsQuery>> {

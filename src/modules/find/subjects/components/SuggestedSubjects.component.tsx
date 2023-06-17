@@ -2,14 +2,16 @@ import { Flex, Tag, Text, Wrap } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useSnapshot } from "valtio";
 import { subscribeKey } from "valtio/utils";
-import { findStore } from "../stores/find.store";
+import { findStore } from "../../shared/find.store";
+import { subjectStore } from "../subject.store";
 
 const SuggestedSubjects = () => {
+  const subjectState = useSnapshot(subjectStore);
   const findState = useSnapshot(findStore);
 
   useEffect(() => {
     async function fetchData() {
-      await findStore.getSubjects();
+      await subjectStore.getSubjects();
     }
 
     fetchData();
@@ -33,7 +35,7 @@ const SuggestedSubjects = () => {
           Suggested
         </Text>
         <Wrap>
-          {findState.subjects?.map((subject) => {
+          {subjectState.subjects.map((subject) => {
             if (subject.name == findState.searchString) return null;
             return (
               <Tag

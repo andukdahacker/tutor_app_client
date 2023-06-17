@@ -31,6 +31,7 @@ const JobCard = (props: CardProps) => {
     job.createdAt == job.updatedAt
       ? `Posted ${DateTimeUtils.ago(job.createdAt)} ago`
       : `Updated ${DateTimeUtils.ago(job.updatedAt)} ago`;
+
   return (
     <>
       <Box

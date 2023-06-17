@@ -1,0 +1,24 @@
+query FindManyTutors($findManyTutorProfilesInput: FindManyTutorProfilesInput!) {
+  tutorProfiles(findManyTutorProfilesInput: $findManyTutorProfilesInput) {
+    nodes {
+      bio
+      id
+      tutorProfileSubjects {
+        subject {
+          description
+          id
+          name
+        }
+      }
+      user {
+        username
+        updatedAt
+        isVerified
+        id
+        email
+        createdAt
+        avatar
+      }
+    }
+  }
+}
