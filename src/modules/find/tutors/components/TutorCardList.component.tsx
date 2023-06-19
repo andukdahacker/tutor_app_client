@@ -1,7 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useSnapshot } from "valtio";
-import { findStore } from "../../shared/find.store";
-import { tutorStore } from "../tutor.store";
+import { findStore } from "../../shared/data/find.store";
+import { tutorStore } from "../data/tutor.store";
 
 const TutorCardList = () => {
   const tutorState = useSnapshot(tutorStore);
@@ -12,7 +12,7 @@ const TutorCardList = () => {
         <div key={tutor.id}>{tutor.user.username}</div>
       ))}
 
-      {findState.showLoadMoreJobs ? (
+      {findState.showLoadMoreTutors ? (
         <Flex align={"center"} justify={"center"}>
           <Button w={"50%"} onClick={() => {}}>
             Load more

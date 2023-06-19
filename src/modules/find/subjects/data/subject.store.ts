@@ -2,7 +2,7 @@ import { PageInfo, Subject } from "@/generated/graphql";
 import { appRepository } from "@/shared/data/app.repository";
 import StoreUtils from "@/shared/utils/store.utils";
 import { proxy } from "valtio";
-import { findStore } from "../shared/find.store";
+import { findStore } from "../../shared/data/find.store";
 
 class SubjectStore {
   subjects: Subject[] = [];

@@ -2,11 +2,12 @@ import { PageInfo, TutorProfile } from "@/generated/graphql";
 import { appRepository } from "@/shared/data/app.repository";
 import StoreUtils from "@/shared/utils/store.utils";
 import { proxy } from "valtio";
-import { findStore } from "../shared/find.store";
+import { findStore } from "../../shared/data/find.store";
 
 class TutorStore {
   tutors: TutorProfile[] = [];
   tutorPageInfo?: PageInfo;
+  isLoadingMore = false;
 
   get canLoadMore() {
     return this.tutorPageInfo?.hasNextPage == true;
@@ -24,8 +25,11 @@ class TutorStore {
       StoreUtils.handleError(result.errors);
     } else if (result.data) {
       this.tutors = result.data.tutorProfiles.nodes;
+      this.tutorPageInfo = result.data.tutorProfiles.pageInfo;
     }
   }
+
+  async loadMoreTutors() {}
 }
 
 export const tutorStore = proxy(new TutorStore());

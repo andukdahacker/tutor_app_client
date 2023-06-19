@@ -2,8 +2,8 @@ import { Flex, Tag, Text, Wrap } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useSnapshot } from "valtio";
 import { subscribeKey } from "valtio/utils";
-import { findStore } from "../../shared/find.store";
-import { subjectStore } from "../subject.store";
+import { findStore } from "../../shared/data/find.store";
+import { subjectStore } from "../data/subject.store";
 
 const SuggestedSubjects = () => {
   const subjectState = useSnapshot(subjectStore);

@@ -3,7 +3,6 @@ import {
   AvatarBadge,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
@@ -20,7 +19,6 @@ const Account = () => {
       <MenuList>
         <MenuItem>Learner profile</MenuItem>
         <MenuItem>Tutor profile</MenuItem>
-        <MenuDivider />
         <MenuItem>
           <LogOutButton />
         </MenuItem>

@@ -11,7 +11,7 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { useSnapshot } from "valtio";
-import { findStore, findTargets } from "../find.store";
+import { findStore, findTargets } from "../data/find.store";
 
 const FindSearchBar = () => {
   const findState = useSnapshot(findStore);

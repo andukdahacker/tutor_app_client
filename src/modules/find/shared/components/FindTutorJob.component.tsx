@@ -6,7 +6,7 @@ import { subscribeKey } from "valtio/utils";
 import JobCardList from "../../jobs/components/JobCardList.component";
 import SuggestedSubjects from "../../subjects/components/SuggestedSubjects.component";
 import TutorCardList from "../../tutors/components/TutorCardList.component";
-import { findStore } from "../find.store";
+import { findStore } from "../data/find.store";
 import FindSearchBar from "./FindSearchBar.component";
 
 const FindTutorJob = () => {

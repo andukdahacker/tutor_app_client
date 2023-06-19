@@ -5,6 +5,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Box,
   Button,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -17,7 +18,7 @@ const LogOutButton = () => {
   const cancelRef = useRef(null);
   return (
     <>
-      <Button onClick={onOpen}>Log out</Button>
+      <Box onClick={onOpen}>Log out</Box>
 
       <AlertDialog
         isOpen={isOpen}

@@ -20,5 +20,15 @@ query FindManyTutors($findManyTutorProfilesInput: FindManyTutorProfilesInput!) {
         avatar
       }
     }
+    pageInfo {
+      cursor {
+        ... on StringCursor {
+          value
+        }
+      }
+      hasNextPage
+      lastTake
+      totalAmount
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { proxy } from "valtio";
-import { jobStore } from "../jobs/job.store";
-import { tutorStore } from "../tutors/tutor.store";
+import { jobStore } from "../../jobs/data/job.store";
+import { tutorStore } from "../../tutors/data/tutor.store";
 
 export const findTargets = ["Jobs", "Tutors"] as const;
 

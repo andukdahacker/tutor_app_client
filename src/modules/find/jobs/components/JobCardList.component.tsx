@@ -1,7 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useSnapshot } from "valtio";
-import { findStore } from "../../shared/find.store";
-import { jobStore } from "../job.store";
+import { findStore } from "../../shared/data/find.store";
+import { jobStore } from "../data/job.store";
 import JobCard from "./JobCard.component";
 
 const JobCardList = () => {
