@@ -2,6 +2,7 @@ import { Job } from "@/generated/graphql";
 import { CurrencyUtils } from "@/shared/utils/currency.utils";
 import { DateTimeUtils } from "@/shared/utils/datetime.utils";
 import {
+  Avatar,
   Badge,
   Box,
   Button,
@@ -13,9 +14,10 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  Input,
+  HStack,
   Text,
   useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 
@@ -103,17 +105,68 @@ const JobCard = (props: CardProps) => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
+          <DrawerHeader>Save button</DrawerHeader>
 
           <DrawerBody>
-            <Input placeholder="Type here..." />
+            <VStack>
+              <Flex
+                border={"1px"}
+                borderRadius={10}
+                justifyContent="center"
+                align="center"
+                w={"100%"}
+              >
+                <HStack p={10}>
+                  <Avatar size={["lg", "xl", "xl"]} />
+                  <VStack>
+                    <Text>{job.learner.user.username}</Text>
+                    <Text>Name</Text>
+                    <Text>Name</Text>
+                  </VStack>
+                </HStack>
+              </Flex>
+              <Flex
+                border={"1px"}
+                borderRadius={10}
+                justifyContent="center"
+                align="center"
+                w={"100%"}
+              >
+                <HStack p={10}>
+                  <Avatar size={["lg", "xl", "xl"]} />
+                  <VStack>
+                    <Text>{job.learner.user.username}</Text>
+                    <Text>Name</Text>
+                    <Text>Name</Text>
+                  </VStack>
+                </HStack>
+              </Flex>
+              <Flex
+                border={"1px"}
+                borderRadius={10}
+                justifyContent="center"
+                align="center"
+                w={"100%"}
+              >
+                <HStack p={10}>
+                  <Avatar size={["lg", "xl", "xl"]} />
+                  <VStack>
+                    <Text>{job.learner.user.username}</Text>
+                    <Text>Name</Text>
+                    <Text>Name</Text>
+                  </VStack>
+                </HStack>
+              </Flex>
+            </VStack>
           </DrawerBody>
 
           <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
+            <Button variant="outline" mr={3} onClick={onClose} w={"30%"}>
+              Chat
             </Button>
-            <Button colorScheme="blue">Save</Button>
+            <Button colorScheme="blue" w={"50%"}>
+              Apply
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

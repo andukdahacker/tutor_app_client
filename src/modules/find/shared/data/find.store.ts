@@ -40,7 +40,7 @@ class FindStore {
   }
 
   get showLoadMoreTutors() {
-    return this.isFindingTutors && jobStore.canLoadMore;
+    return this.isFindingTutors && tutorStore.canLoadMore;
   }
 
   async find() {

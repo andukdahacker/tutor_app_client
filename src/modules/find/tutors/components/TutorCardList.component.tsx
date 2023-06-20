@@ -14,7 +14,13 @@ const TutorCardList = () => {
 
       {findState.showLoadMoreTutors ? (
         <Flex align={"center"} justify={"center"}>
-          <Button w={"50%"} onClick={() => {}}>
+          <Button
+            w={"50%"}
+            onClick={async () => {
+              await tutorStore.loadMoreTutors();
+            }}
+            isLoading={tutorState.isLoadingMore}
+          >
             Load more
           </Button>
         </Flex>

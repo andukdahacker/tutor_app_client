@@ -29,7 +29,22 @@ class TutorStore {
     }
   }
 
-  async loadMoreTutors() {}
+  async loadMoreTutors() {
+    findStore.showLoading();
+    const result = await appRepository.findManyTutors({
+      searchString: findStore.searchString,
+      take: 10,
+      stringCursor: this.tutorPageInfo?.cursor?.value as string,
+    });
+    findStore.hideLoading();
+
+    if (result.errors) {
+      StoreUtils.handleError(result.errors);
+    } else if (result.data) {
+      this.tutors = [...this.tutors, ...result.data.tutorProfiles.nodes];
+      this.tutorPageInfo = result.data.tutorProfiles.pageInfo;
+    }
+  }
 }
 
 export const tutorStore = proxy(new TutorStore());

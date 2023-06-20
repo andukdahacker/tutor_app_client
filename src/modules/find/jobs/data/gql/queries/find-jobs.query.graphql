@@ -6,6 +6,14 @@ query FindManyJobs($findManyJobsInput: FindManyJobsInput!) {
         userId
         id
         bio
+        user {
+          id
+          email
+          username
+          avatar
+          createdAt
+          isVerified
+        }
       }
       subject {
         id
