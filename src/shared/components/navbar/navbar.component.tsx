@@ -1,7 +1,8 @@
 import authStore from "@/modules/auth/auth.store";
 import Account from "@/modules/auth/components/account.component";
-import { AddIcon, BellIcon, ChatIcon } from "@chakra-ui/icons";
-import { Button, Flex, HStack } from "@chakra-ui/react";
+import CreateJobButton from "@/modules/find/jobs/components/CreateJobButton.component";
+import { BellIcon, ChatIcon } from "@chakra-ui/icons";
+import { Flex, HStack, Show } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useSnapshot } from "valtio";
 import Logo from "./logo.component";
@@ -29,26 +30,13 @@ const NavBar = () => {
     >
       <Logo />
       <HStack>
-        <Button
-          leftIcon={<AddIcon />}
-          colorScheme="purple"
-          size={{ md: "sm", lg: "md" }}
-          display={{ base: "none", md: "flex" }}
-        >
-          Post a Job
-        </Button>
+        <Show above="sm">
+          <CreateJobButton />
+        </Show>
         <ChatIcon w={6} h={6} />
         <BellIcon w={6} h={6} />
         <Account />
       </HStack>
-
-      {/* 
-
-   
-
-
-
-      <HamburgerIcon w={8} h={8} /> */}
     </Flex>
   );
 };
