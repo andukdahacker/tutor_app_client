@@ -3,6 +3,7 @@ import { User } from "../../auth/data/domain/entities";
 
 import { FindRepository } from "../data/find_repository";
 import { Job, PageInfo } from "../data/types/entities";
+import { FindManyJobsInput } from "../data/types/inputs";
 
 export class JobStore {
   jobs: Job[] = [];
@@ -22,14 +23,9 @@ export class JobStore {
     this.isLoadingMore = false;
   }
 
-  async findManyJobs(searchString: string) {
+  async findManyJobs(input: FindManyJobsInput) {
     this.isLoading = true;
-    const result = await FindRepository.findManyJobs({
-      searchString: searchString,
-      sortBy: "asc",
-      take: 10,
-      jobMethod: "BOTH",
-    });
+    const result = await FindRepository.findManyJobs({ ...input });
 
     this.isLoading = false;
 
@@ -41,14 +37,11 @@ export class JobStore {
     }
   }
 
-  async loadMoreJobs(searchString: string) {
+  async loadMoreJobs(input: FindManyJobsInput) {
     this.showLoadingMore();
     const result = await FindRepository.findManyJobs({
-      searchString: searchString,
-      sortBy: "asc",
-      take: 10,
-      jobMethod: "BOTH",
-      stringCursor: this.jobPageInfo?.cursor.toString(),
+      ...input,
+      stringCursor: this.jobPageInfo?.cursor?.toString(),
     });
 
     this.hideLoadingMore();

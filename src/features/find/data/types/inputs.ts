@@ -11,3 +11,6 @@ export type FindManyTutorsInput =
 
 export type FindManySubjectsInput =
   operations["SubjectController_subjects"]["parameters"]["query"];
+
+export type CreateSubjectInput =
+  operations["SubjectController_createSubject"]["requestBody"]["content"]["application/json"];

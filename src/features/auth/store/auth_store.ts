@@ -1,4 +1,3 @@
-import { proxy } from "valtio";
 import { RoutesPath, router } from "../../../routes/router";
 import StoreUtils from "../../../shared/utils/store_utils";
 import AuthRepository from "../data/auth_repository";
@@ -60,8 +59,8 @@ export class AuthStore {
     if (result.ok) {
       StoreUtils.successToast("Logged in successfully");
       localStorage.setItem(ACCESS_TOKEN_KEY, result.value?.access_token ?? "");
-      authStore.isAuthenticated = true;
-      authStore.user = result.value?.user;
+      this.isAuthenticated = true;
+      this.user = result.value?.user;
       router.navigate(RoutesPath.findPage);
     } else {
       StoreUtils.errorToast("Log in failed", result.error.message);
@@ -74,8 +73,8 @@ export class AuthStore {
 
     if (result.ok) {
       StoreUtils.successToast("Logged out successfully");
-      authStore.isAuthenticated = false;
-      authStore.user = null;
+      this.isAuthenticated = false;
+      this.user = null;
       localStorage.removeItem(ACCESS_TOKEN_KEY);
       router.navigate(RoutesPath.root);
     } else {
@@ -93,5 +92,3 @@ export class AuthStore {
     }
   }
 }
-
-const authStore = proxy(new AuthStore());

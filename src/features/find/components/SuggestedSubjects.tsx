@@ -6,6 +6,7 @@ interface SuggestedSubjectsProps {
   searchString: string;
   onSubjectClick: (subject: Subject) => void;
   isLoading: boolean;
+  showSuggectedText?: boolean;
 }
 
 const SuggestedSubjects = ({
@@ -13,18 +14,22 @@ const SuggestedSubjects = ({
   searchString,
   onSubjectClick,
   isLoading,
+  showSuggectedText = true,
 }: SuggestedSubjectsProps) => {
   return (
     <>
-      <Flex alignItems="center" m="35px 0">
-        <Text
-          fontWeight="bold"
-          lineHeight="7"
-          mr={{ base: "10px", sm: "30px" }}
-          display={{ base: "none", sm: "block" }}
-        >
-          Suggested
-        </Text>
+      <Flex alignItems="center" mt={4}>
+        {showSuggectedText && (
+          <Text
+            fontWeight="bold"
+            lineHeight="7"
+            mr={{ base: "10px", sm: "30px" }}
+            display={{ base: "none", sm: "block" }}
+          >
+            Suggested
+          </Text>
+        )}
+
         {isLoading ? (
           <Spinner />
         ) : (
@@ -35,7 +40,10 @@ const SuggestedSubjects = ({
                 <Tag
                   key={subject.id}
                   cursor={"pointer"}
-                  onClick={() => onSubjectClick(subject)}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    return onSubjectClick(subject);
+                  }}
                 >
                   {subject.name}
                 </Tag>

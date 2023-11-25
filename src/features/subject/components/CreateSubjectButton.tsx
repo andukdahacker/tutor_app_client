@@ -9,10 +9,9 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import { CreateJobFormProvider } from "../context/create_job_form_provider";
-import CreateJobForm from "./CreateJobForm";
+import CreateSubjectForm from "./CreateSubjectForm";
 
-const CreateJobButton = () => {
+const CreateSubjectButton = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -24,7 +23,7 @@ const CreateJobButton = () => {
         display="flex"
         onClick={onOpen}
       >
-        Post a Job
+        Create new subject
       </Button>
 
       <Modal
@@ -36,12 +35,10 @@ const CreateJobButton = () => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create a job</ModalHeader>
+          <ModalHeader>Create a new subject</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <CreateJobFormProvider>
-              <CreateJobForm onCreateJobSuccess={onClose} />
-            </CreateJobFormProvider>
+            <CreateSubjectForm onCreateSubjectSuccess={onClose} />
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -49,4 +46,4 @@ const CreateJobButton = () => {
   );
 };
 
-export default CreateJobButton;
+export default CreateSubjectButton;

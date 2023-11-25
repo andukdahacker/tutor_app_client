@@ -19,6 +19,7 @@ import {
 import { useRef } from "react";
 import { CurrencyUtils } from "../../../shared/utils/currency_utils";
 import { DateTimeUtils } from "../../../shared/utils/datetime_utils";
+import ConnectJobButton from "../../job/components/ConnectJobButton";
 import { Job } from "../data/types/entities";
 
 interface CardProps {
@@ -90,9 +91,7 @@ const JobCard = (props: CardProps) => {
           >
             See more
           </Button>
-          <Button size="sm" variant="solid" colorScheme="blue">
-            Connect
-          </Button>
+          <ConnectJobButton />
         </Flex>
       </Box>
 

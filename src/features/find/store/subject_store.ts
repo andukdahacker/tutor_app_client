@@ -27,5 +27,3 @@ export class SubjectStore {
     }
   }
 }
-
-// export const subjectStore = proxy(new SubjectStore());

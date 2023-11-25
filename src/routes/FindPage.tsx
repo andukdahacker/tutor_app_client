@@ -23,9 +23,13 @@ const FindPage = () => {
 
     fetchData();
 
-    subscribeKey(findStore, "searchString", async () => {
+    const unsub = subscribeKey(findStore, "searchString", async () => {
       fetchData();
     });
+
+    return () => {
+      unsub();
+    };
   }, []);
 
   return (
@@ -52,7 +56,7 @@ const FindPage = () => {
           isLoading={subjectState.isLoading}
         />
 
-        <SimpleGrid columns={[1, 2, 3]} spacing={[20, 16]}>
+        <SimpleGrid columns={[1, 2, 3]} spacing={[20, 16]} mt={8}>
           {findState.findTarget == "Jobs" ? <JobCardList /> : null}
           {findState.findTarget == "Tutors" ? <TutorCardList /> : null}
         </SimpleGrid>

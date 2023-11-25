@@ -197,16 +197,25 @@ export interface components {
     GetManyNotificationsInput: Record<string, never>;
     CreateChatInput: Record<string, never>;
     GetChatsInput: Record<string, never>;
-    CreateJobInput: Record<string, never>;
+    /** @enum {string} */
+    JobType: "QA" | "TUTOR";
+    /** @enum {string} */
+    JobMethod: "ONLINE" | "OFFLINE" | "BOTH";
+    CreateJobInput: {
+      subjectId: string;
+      description: string;
+      /** Format: int64 */
+      fee: number;
+      title: string;
+      numberOfSessions: number;
+      jobType: components["schemas"]["JobType"];
+      jobMethod: components["schemas"]["JobMethod"];
+    };
     SubjectEntity: {
       id: string;
       name: string;
       description: string;
     };
-    /** @enum {string} */
-    JobType: "QA" | "TUTOR";
-    /** @enum {string} */
-    JobMethod: "ONLINE" | "OFFLINE" | "BOTH";
     /** @enum {string} */
     JobStatus: "OPEN" | "EMPLOYED" | "DONE";
     JobEntity: {
@@ -677,6 +686,7 @@ export interface operations {
   JobController_jobs: {
     parameters: {
       query: {
+        tutorId: string;
         take: number;
         stringCursor?: string;
         searchString: string;
@@ -772,7 +782,7 @@ export interface operations {
       };
       401: {
         content: {
-          "application/json": components["schemas"]["SubjectEntity"];
+          "application/json": components["schemas"]["ErrorResponse"];
         };
       };
       500: {

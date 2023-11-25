@@ -1,9 +1,9 @@
 import { PropsWithChildren } from "react";
-import { AuthContext, initialAuthContext } from "./AuthContext";
+import { AuthContext, AuthInitialContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   return (
-    <AuthContext.Provider value={initialAuthContext}>
+    <AuthContext.Provider value={AuthInitialContext}>
       {children}
     </AuthContext.Provider>
   );
