@@ -1,14 +1,11 @@
-import { Subject } from "../../../domain/entities";
-import { CreateSubjectInput } from "../../../domain/inputs";
+import { LearnerProfile } from "../../../domain/entities";
 import client from "../../../shared/data/client";
 import { Result } from "../../../shared/data/result";
 
-class SubjectRepository {
-  static async createSubject(
-    input: CreateSubjectInput
-  ): Promise<Result<Subject>> {
+export class ProfileRepository {
+  static async updateBio(bio: string): Promise<Result<LearnerProfile>> {
     try {
-      const response = await client.POST("/subject", { body: { ...input } });
+      const response = await client.PUT("/learner-profile", { body: { bio } });
 
       if (response.error) {
         return {
@@ -22,7 +19,6 @@ class SubjectRepository {
         value: response.data,
       };
     } catch (error) {
-      console.log(error);
       return {
         ok: false,
         error: new Error(),
@@ -30,5 +26,3 @@ class SubjectRepository {
     }
   }
 }
-
-export default SubjectRepository;

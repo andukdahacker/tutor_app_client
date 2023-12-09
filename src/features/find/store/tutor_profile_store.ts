@@ -1,6 +1,6 @@
+import { PageInfo, TutorProfile } from "../../../domain/entities";
 import StoreUtils from "../../../shared/utils/store_utils";
 import { FindRepository } from "../data/find_repository";
-import { PageInfo, TutorProfile } from "../data/types/entities";
 
 export class TutorStore {
   tutors: TutorProfile[] = [];

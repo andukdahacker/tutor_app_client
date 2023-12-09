@@ -1,4 +1,7 @@
-import { components, operations } from "../../../../schema/schema";
+import { components, operations } from "../schema/schema";
+
+export type LoginInput = components["schemas"]["LoginInput"];
+export type SignUpInput = components["schemas"]["SignUpInput"];
 
 export type FindManyJobsInput =
   operations["JobController_jobs"]["parameters"]["query"];
@@ -14,3 +17,7 @@ export type FindManySubjectsInput =
 
 export type CreateSubjectInput =
   operations["SubjectController_createSubject"]["requestBody"]["content"]["application/json"];
+
+export type DeleteJobConnectionInput =
+  operations["JobConnectionController_deleteConnection"]["requestBody"]["content"]["application/json"];
+export type CreateJobInput = components["schemas"]["CreateJobInput"];

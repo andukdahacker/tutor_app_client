@@ -17,7 +17,7 @@ import { findTargets } from "../../store/find_store";
 import { FindContext } from "../context/FindContext";
 
 const FindSearchBar = () => {
-  const { findStore, jobStore, tutorStore } = useContext(FindContext);
+  const { findStore } = useContext(FindContext);
   const findState = useSnapshot(findStore);
   return (
     <Box maxW="500px" m="0 auto">
@@ -44,12 +44,6 @@ const FindSearchBar = () => {
                     if (findState.findTarget == target) return;
 
                     findStore.changeFindTarget(target);
-
-                    if (target == "Jobs") {
-                      await jobStore.findManyJobs(findState.searchString);
-                    } else if (target == "Tutors") {
-                      await tutorStore.findManyTutors(findState.searchString);
-                    }
                   }}
                 >
                   {target}

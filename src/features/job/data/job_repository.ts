@@ -1,7 +1,7 @@
+import { Job } from "../../../domain/entities";
+import { CreateJobInput } from "../../../domain/inputs";
 import client from "../../../shared/data/client";
 import { Result } from "../../../shared/data/result";
-import { Job } from "../../find/data/types/entities";
-import { CreateJobInput } from "./domain/inputs";
 
 export class JobRepository {
   static async createJob(input: CreateJobInput): Promise<Result<Job>> {

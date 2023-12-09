@@ -1,7 +1,7 @@
+import { Subject } from "../../../domain/entities";
+import { CreateJobInput } from "../../../domain/inputs";
 import { Store } from "../../../shared/types/store";
 import StoreUtils from "../../../shared/utils/store_utils";
-import { Subject } from "../../find/data/types/entities";
-import { CreateJobInput } from "../data/domain/inputs";
 import { JobRepository } from "../data/job_repository";
 
 export class CreateJobStore implements Store {

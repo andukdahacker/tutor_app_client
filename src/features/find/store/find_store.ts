@@ -1,6 +1,5 @@
+import { JobMethod, JobType, SortBy } from "../../../domain/entities";
 import { Store } from "../../../shared/types/store";
-import { JobMethod, JobType } from "../../job/data/domain/entities";
-import { SortBy } from "../data/types/entities";
 
 export const findTargets = ["Jobs", "Tutors"] as const;
 
@@ -10,9 +9,27 @@ export class FindStore implements Store {
   findTarget: FindTarget = "Jobs";
   searchString = "";
   isLoading = false;
+  maxFee = 1000000;
+  minFee = 100000;
   sortBy: SortBy = "asc";
   jobMethod: JobMethod = "BOTH";
   jobType: JobType = "TUTOR";
+
+  changeMaxFee(value: number) {
+    this.maxFee = value;
+  }
+
+  changeMinFee(value: number) {
+    this.minFee = value;
+  }
+
+  changeSortBy(value: SortBy) {
+    this.sortBy = value;
+  }
+
+  changeJobMethod(value: JobMethod) {
+    this.jobMethod = value;
+  }
 
   changeSearchString(value: string) {
     this.searchString = value;

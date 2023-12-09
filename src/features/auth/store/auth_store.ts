@@ -1,8 +1,13 @@
+import {
+  Education,
+  LearnerProfile,
+  User,
+  WorkExperience,
+} from "../../../domain/entities";
+import { LoginInput, SignUpInput } from "../../../domain/inputs";
 import { RoutesPath, router } from "../../../routes/router";
 import StoreUtils from "../../../shared/utils/store_utils";
 import AuthRepository from "../data/auth_repository";
-import { User } from "../data/domain/entities";
-import { LoginInput, SignUpInput } from "../data/domain/inputs";
 import { ACCESS_TOKEN_KEY } from "./constants";
 
 export class AuthStore {
@@ -17,6 +22,24 @@ export class AuthStore {
   isAuthenticated = false;
   user: User | null | undefined = null;
   isLoading = false;
+
+  updateLearnerProfile(learnerProfile: LearnerProfile) {
+    if (this.user) {
+      this.user.learnerProfile = learnerProfile;
+    }
+  }
+
+  updateWorkExperience(workExperience: WorkExperience[]) {
+    if (this.user) {
+      this.user.workExperience = workExperience;
+    }
+  }
+
+  updateEducation(education: Education[]) {
+    if (this.user) {
+      this.user.education = education;
+    }
+  }
 
   hideLoading() {
     this.isLoading = false;

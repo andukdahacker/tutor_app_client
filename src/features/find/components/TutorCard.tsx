@@ -8,7 +8,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { TutorProfile } from "../data/types/entities";
+import { TutorProfile } from "../../../domain/entities";
 
 const TutorCard = (tutor: TutorProfile) => {
   return (

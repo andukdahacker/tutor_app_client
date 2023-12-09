@@ -1,5 +1,8 @@
-import { components } from "../../../../schema/schema";
+import { components } from "../schema/schema";
 
+export type User = components["schemas"]["UserEntity"];
+export type LearnerProfile = components["schemas"]["LearnerProfileEntity"];
+export type WorkExperience = components["schemas"]["WorkExperienceEntity"];
 export type TutorProfile = components["schemas"]["TutorProfileEntity"];
 export type PageInfo = components["schemas"]["PageInfoType"];
 export type Job = components["schemas"]["JobEntity"];
@@ -12,3 +15,7 @@ export type Paginated<T> =
       pageInfo: components["schemas"]["PageInfoType"];
     }
   | undefined;
+export type JobMethod = components["schemas"]["JobMethod"];
+export type JobType = components["schemas"]["JobType"];
+
+export type Education = components["schemas"]["EducationEntity"];

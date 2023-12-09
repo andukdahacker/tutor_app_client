@@ -1,18 +1,19 @@
-import client from "../../../shared/data/client";
-import { Result } from "../../../shared/data/result";
 import {
   Job,
   JobConnection,
   Paginated,
   Subject,
   TutorProfile,
-} from "./types/entities";
+} from "../../../domain/entities";
 import {
   CreateJobConnectionInput,
+  DeleteJobConnectionInput,
   FindManyJobsInput,
   FindManySubjectsInput,
   FindManyTutorsInput,
-} from "./types/inputs";
+} from "../../../domain/inputs";
+import client from "../../../shared/data/client";
+import { Result } from "../../../shared/data/result";
 
 export class FindRepository {
   static async findManyJobs(
@@ -49,6 +50,37 @@ export class FindRepository {
     try {
       const response = await client.POST("/job-connection", {
         body: { ...input },
+      });
+
+      if (response.error) {
+        return {
+          ok: false,
+          error: new Error(response.error.message),
+        };
+      }
+
+      return {
+        ok: true,
+        value: response.data,
+      };
+    } catch (error) {
+      console.log(error);
+
+      return {
+        ok: false,
+        error: new Error(),
+      };
+    }
+  }
+
+  static async deleteJobConnection(
+    input: DeleteJobConnectionInput
+  ): Promise<Result<JobConnection>> {
+    try {
+      const response = await client.POST("/job-connection/delete", {
+        body: {
+          ...input,
+        },
       });
 
       if (response.error) {

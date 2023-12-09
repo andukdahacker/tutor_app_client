@@ -1,8 +1,8 @@
+import { User } from "../../../domain/entities";
+import { LoginInput, SignUpInput } from "../../../domain/inputs";
+import { LoginResponse, RefreshTokenResponse } from "../../../domain/responses";
 import client from "../../../shared/data/client";
 import { Result } from "../../../shared/data/result";
-import { User } from "./domain/entities";
-import { LoginInput, SignUpInput } from "./domain/inputs";
-import { LoginResponse, RefreshTokenResponse } from "./domain/response";
 
 class AuthRepository {
   static async signUp(input: SignUpInput): Promise<Result<User>> {
@@ -38,6 +38,7 @@ class AuthRepository {
       if (response.response.ok) {
         return {
           ok: true,
+          value: "Logged out successfully",
         };
       }
 
@@ -84,10 +85,15 @@ class AuthRepository {
   static async refreshAccessToken(): Promise<Result<RefreshTokenResponse>> {
     try {
       const response = await client.POST("/auth/refreshToken");
-
+      if (response.error) {
+        return {
+          ok: false,
+          error: new Error(response.error.message),
+        };
+      }
       return {
         ok: true,
-        value: response.data,
+        value: response.data ?? "",
       };
     } catch (error) {
       console.log(error);

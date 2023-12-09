@@ -1,4 +1,4 @@
-import { Container, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Container, SimpleGrid, Text } from "@chakra-ui/react";
 import { useContext, useEffect } from "react";
 import { useSnapshot } from "valtio";
 import { subscribeKey } from "valtio/utils";
@@ -7,6 +7,8 @@ import SuggestedSubjects from "../features/find/components/SuggestedSubjects";
 import TutorCardList from "../features/find/components/TutorCardList";
 import FindSearchBar from "../features/find/components/search_bar/SearchBar";
 
+import JobFilter from "../features/find/components/JobFilter";
+import TutorFilter from "../features/find/components/TutorFilter";
 import { FindContext } from "../features/find/components/context/FindContext";
 import { FindProvider } from "../features/find/components/context/FindProvider";
 import { debounce } from "../shared/utils/debounce";
@@ -47,14 +49,19 @@ const FindPage = () => {
 
         <FindSearchBar />
 
-        <SuggestedSubjects
-          subjects={subjectState.subjects}
-          searchString={findState.searchString}
-          onSubjectClick={(subject) =>
-            findStore.changeSearchString(subject.name)
-          }
-          isLoading={subjectState.isLoading}
-        />
+        <Box mt={4} mb={4}>
+          <SuggestedSubjects
+            subjects={subjectState.subjects}
+            searchString={findState.searchString}
+            onSubjectClick={(subject) =>
+              findStore.changeSearchString(subject.name)
+            }
+            isLoading={subjectState.isLoading}
+          />
+        </Box>
+
+        {findState.findTarget == "Jobs" && <JobFilter />}
+        {findState.findTarget == "Tutors" && <TutorFilter />}
 
         <SimpleGrid columns={[1, 2, 3]} spacing={[20, 16]} mt={8}>
           {findState.findTarget == "Jobs" ? <JobCardList /> : null}

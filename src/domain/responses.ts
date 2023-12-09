@@ -1,4 +1,4 @@
-import { components } from "../../../../schema/schema";
+import { components } from "../schema/schema";
 
 export type LoginResponse = components["schemas"]["LoginResponse"];
 export type RefreshTokenResponse =

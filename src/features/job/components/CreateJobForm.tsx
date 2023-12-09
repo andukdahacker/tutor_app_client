@@ -22,13 +22,12 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { useSnapshot } from "valtio";
 import { subscribeKey } from "valtio/utils";
+import { JobMethod, Subject } from "../../../domain/entities";
 import { CurrencyUtils } from "../../../shared/utils/currency_utils";
 import { debounce } from "../../../shared/utils/debounce";
 import SuggestedSubjects from "../../find/components/SuggestedSubjects";
-import { Subject } from "../../find/data/types/entities";
 import CreateSubjectButton from "../../subject/components/CreateSubjectButton";
 import { CreateJobFormContext } from "../context/create_job_form_context";
-import { JobMethod } from "../data/domain/entities";
 
 interface CreateJobFormProps {
   onCreateJobSuccess: () => void;

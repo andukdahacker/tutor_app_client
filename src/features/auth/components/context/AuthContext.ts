@@ -5,5 +5,4 @@ import { AuthStore } from "../../store/auth_store";
 export const AuthInitialContext = {
   authStore: proxy(new AuthStore()),
 };
-
 export const AuthContext = createContext(AuthInitialContext);

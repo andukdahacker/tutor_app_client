@@ -17,10 +17,10 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useRef } from "react";
+import { Job } from "../../../domain/entities";
 import { CurrencyUtils } from "../../../shared/utils/currency_utils";
 import { DateTimeUtils } from "../../../shared/utils/datetime_utils";
-import ConnectJobButton from "../../job/components/ConnectJobButton";
-import { Job } from "../data/types/entities";
+import JobActionButton from "../../job/components/JobActionButton";
 
 interface CardProps {
   job: Job;
@@ -91,7 +91,12 @@ const JobCard = (props: CardProps) => {
           >
             See more
           </Button>
-          <ConnectJobButton />
+          <JobActionButton
+            job={job}
+            jobConnection={
+              job.jobConnections.length > 0 ? job.jobConnections[0] : undefined
+            }
+          />
         </Flex>
       </Box>
 

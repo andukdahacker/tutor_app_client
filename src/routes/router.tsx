@@ -9,7 +9,7 @@ import Root from "./Root";
 export const RoutesPath = {
   root: "/",
   findPage: "find",
-  profilePage: "profile/:profileId",
+  profilePage: "profile/:userId",
 };
 
 export const router = createBrowserRouter([

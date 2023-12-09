@@ -1,6 +1,6 @@
+import { PageInfo, Subject } from "../../../domain/entities";
 import StoreUtils from "../../../shared/utils/store_utils";
 import { FindRepository } from "../data/find_repository";
-import { PageInfo, Subject } from "../data/types/entities";
 
 export class SubjectStore {
   subjects: Subject[] = [];

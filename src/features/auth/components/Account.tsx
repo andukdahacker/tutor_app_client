@@ -15,6 +15,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useContext, useRef, useState } from "react";
+import { useSnapshot } from "valtio";
+import { router } from "../../../routes/router";
 import LogOutButton from "./LogOutButton";
 import { AuthContext } from "./context/AuthContext";
 
@@ -23,6 +25,7 @@ const Account = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
   const cancelRef = useRef(null);
+  const authState = useSnapshot(authStore);
   return (
     <>
       <Menu>
@@ -32,7 +35,11 @@ const Account = () => {
           </Avatar>
         </MenuButton>
         <MenuList>
-          <MenuItem>Profile</MenuItem>
+          <MenuItem
+            onClick={() => router.navigate(`/profile/${authState.user?.id}`)}
+          >
+            Profile
+          </MenuItem>
           <MenuItem>Dashboard</MenuItem>
           <MenuItem onClick={onOpen}>
             <LogOutButton />

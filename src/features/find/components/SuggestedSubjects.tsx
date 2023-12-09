@@ -1,5 +1,5 @@
 import { Flex, Spinner, Tag, Text, Wrap } from "@chakra-ui/react";
-import { Subject } from "../data/types/entities";
+import { Subject } from "../../../domain/entities";
 
 interface SuggestedSubjectsProps {
   subjects: Subject[];

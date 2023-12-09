@@ -57,6 +57,9 @@ export interface paths {
   "/job-connection/decline": {
     put: operations["JobConnectionController_declineJobConnection"];
   };
+  "/job-connection/delete": {
+    post: operations["JobConnectionController_deleteConnection"];
+  };
   "/notification": {
     get: operations["NotificationController_getManyNotifications"];
   };
@@ -110,6 +113,25 @@ export interface components {
       bio: string;
       user?: components["schemas"]["UserEntity"];
     };
+    WorkExperienceEntity: {
+      description: string;
+      userId: string;
+      id: string;
+      position: string;
+      workplace: string;
+      workplaceUrl: string;
+      fromDate: number;
+      toDate: number;
+    };
+    EducationEntity: {
+      userId: string;
+      id: string;
+      educationEntity: string;
+      educationEntityUrl: string;
+      fromDate: number;
+      toDate: number;
+      description: string;
+    };
     UserEntity: {
       id: string;
       username: string;
@@ -119,6 +141,8 @@ export interface components {
       learnerProfile: components["schemas"]["LearnerProfileEntity"];
       tutorProfile: components["schemas"]["TutorProfileEntity"];
       createdAt: number;
+      workExperience: components["schemas"]["WorkExperienceEntity"][];
+      education: components["schemas"]["EducationEntity"][];
       updatedAt: number;
     };
     ErrorResponse: {
@@ -182,6 +206,10 @@ export interface components {
     };
     AcceptJobConnectionInput: Record<string, never>;
     DeclineJobConnectionInput: Record<string, never>;
+    DeleteJobConnectionInput: {
+      jobId: string;
+      tutorId: string;
+    };
     /** @enum {string} */
     NotificationType: "TUTOR_REQUEST" | "TUTOR_ACCEPT" | "TUTOR_DECLINE" | "LEARNER_REQUEST" | "LEARNER_ACCEPT" | "LEARNER_DECLINE";
     NotificationEntity: {
@@ -234,6 +262,7 @@ export interface components {
       jobType: components["schemas"]["JobType"];
       jobMethod: components["schemas"]["JobMethod"];
       jobStatus: components["schemas"]["JobStatus"];
+      jobConnections: components["schemas"]["JobConnectionEntity"][];
     };
     /** @enum {string} */
     SortBy: "asc" | "desc";
@@ -242,16 +271,6 @@ export interface components {
       description?: string;
     };
     CreateWorkExperienceInput: Record<string, never>;
-    WorkExperienceEntity: {
-      description: string;
-      userId: string;
-      id: string;
-      position: string;
-      workplace: string;
-      workplaceUrl: string;
-      fromDate: number;
-      toDate: number;
-    };
     UpdateWorkExperienceInput: Record<string, never>;
     CreateEducationInput: {
       position: string;
@@ -263,15 +282,6 @@ export interface components {
       fromDate: number;
       toDate: number;
     };
-    EducationEntity: {
-      userId: string;
-      id: string;
-      educationEntity: string;
-      educationEntityUrl: string;
-      fromDate: number;
-      toDate: number;
-      description: string;
-    };
     UpdateEducationInput: {
       id: string;
       educationEntity: string;
@@ -281,6 +291,18 @@ export interface components {
       description?: string;
     };
     CreateRatingInput: Record<string, never>;
+    RatingEntity: {
+      score: number;
+      comment: string;
+      rater: components["schemas"]["UserEntity"];
+      raterId: string;
+      rated: components["schemas"]["UserEntity"];
+      ratedId: string;
+      job: components["schemas"]["JobEntity"];
+      jobId: string;
+      createdAt: number;
+      updatedAt: number;
+    };
     UpdateRatingInput: Record<string, never>;
     DeleteRatingInput: Record<string, never>;
   };
@@ -482,6 +504,11 @@ export interface operations {
           "application/json": components["schemas"]["RefreshTokenResponse"];
         };
       };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
     };
   };
   AuthController_logout: {
@@ -638,6 +665,30 @@ export interface operations {
       };
     };
   };
+  JobConnectionController_deleteConnection: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DeleteJobConnectionInput"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["JobConnectionEntity"];
+        };
+      };
+      401: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
   NotificationController_getManyNotifications: {
     requestBody: {
       content: {
@@ -690,7 +741,8 @@ export interface operations {
         take: number;
         stringCursor?: string;
         searchString: string;
-        fee?: number;
+        minFee: number;
+        maxFee: number;
         jobType?: components["schemas"]["JobType"];
         jobMethod?: components["schemas"]["JobMethod"];
         sortBy: components["schemas"]["SortBy"];
@@ -929,7 +981,19 @@ export interface operations {
     };
     responses: {
       200: {
-        content: never;
+        content: {
+          "application/json": components["schemas"]["RatingEntity"];
+        };
+      };
+      401: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
       };
     };
   };
@@ -940,8 +1004,20 @@ export interface operations {
       };
     };
     responses: {
-      201: {
-        content: never;
+      200: {
+        content: {
+          "application/json": components["schemas"]["RatingEntity"];
+        };
+      };
+      401: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
       };
     };
   };
@@ -953,7 +1029,19 @@ export interface operations {
     };
     responses: {
       200: {
-        content: never;
+        content: {
+          "application/json": components["schemas"]["RatingEntity"];
+        };
+      };
+      401: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
       };
     };
   };

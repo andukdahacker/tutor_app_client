@@ -9,4 +9,8 @@ export namespace DateTimeUtils {
 
     return timeAgo;
   }
+
+  export function fromSeconds(seconds: number) {
+    return new Date(seconds * 1000);
+  }
 }

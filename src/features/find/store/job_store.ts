@@ -1,9 +1,11 @@
+import { Job, PageInfo, User } from "../../../domain/entities";
+import {
+  DeleteJobConnectionInput,
+  FindManyJobsInput,
+} from "../../../domain/inputs";
 import StoreUtils from "../../../shared/utils/store_utils";
-import { User } from "../../auth/data/domain/entities";
 
 import { FindRepository } from "../data/find_repository";
-import { Job, PageInfo } from "../data/types/entities";
-import { FindManyJobsInput } from "../data/types/inputs";
 
 export class JobStore {
   jobs: Job[] = [];
@@ -66,6 +68,23 @@ export class JobStore {
     if (!result.ok) {
       StoreUtils.handleError(result.error);
     } else {
+      StoreUtils.successToast("Success", "Apply for job successfully");
+      const newJob = this.jobs.findIndex((e) => e.id == job.id);
+      this.jobs[newJob].jobConnections.push(result.value);
+    }
+  }
+
+  async deleteJobConnection(input: DeleteJobConnectionInput) {
+    const result = await FindRepository.deleteJobConnection({
+      ...input,
+    });
+
+    if (result.ok) {
+      StoreUtils.successToast("Success", "Remove application successfully");
+      const newJob = this.jobs.findIndex((e) => e.id == input.jobId);
+      this.jobs[newJob].jobConnections = [];
+    } else {
+      StoreUtils.handleError(result.error);
     }
   }
 }

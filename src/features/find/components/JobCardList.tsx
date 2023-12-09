@@ -2,6 +2,7 @@ import { Button, Flex } from "@chakra-ui/react";
 import { useContext, useEffect } from "react";
 import { useSnapshot } from "valtio";
 
+import { subscribeKey } from "valtio/utils";
 import { debounce } from "../../../shared/utils/debounce";
 import { AuthContext } from "../../auth/components/context/AuthContext";
 import JobCard from "./JobCard";
@@ -22,11 +23,23 @@ const JobCardList = () => {
         sortBy: findState.sortBy,
         jobMethod: findState.jobMethod,
         jobType: findState.jobType,
-        tutorId: authState.user?.tutorProfile.id ?? "",
+        tutorId: authStore.user?.tutorProfile.id ?? "",
+        minFee: findState.minFee,
+        maxFee: findState.maxFee,
       });
     }, 500);
     fetchData();
-  }, [findState.searchString]);
+
+    subscribeKey(jobStore, "jobPageInfo", (data) =>
+      console.log(data?.lastTake)
+    );
+  }, [
+    findState.searchString,
+    findState.minFee,
+    findState.maxFee,
+    findState.jobMethod,
+    findState.sortBy,
+  ]);
 
   return (
     <>
@@ -34,7 +47,7 @@ const JobCardList = () => {
         <JobCard job={job} key={job.id} />
       ))}
 
-      {jobState.canLoadMore ? (
+      {jobState.jobPageInfo?.hasNextPage ? (
         <Flex align={"center"} justify={"center"}>
           <Button
             isLoading={jobState.isLoadingMore}
@@ -42,11 +55,13 @@ const JobCardList = () => {
             onClick={async () =>
               await jobStore.loadMoreJobs({
                 searchString: findState.searchString,
-                take: 10,
+                take: jobState.jobPageInfo?.lastTake ?? 10,
                 sortBy: findState.sortBy,
                 jobMethod: findState.jobMethod,
                 jobType: findState.jobType,
                 tutorId: authState.user?.tutorProfile.id ?? "",
+                maxFee: findState.maxFee,
+                minFee: findState.minFee,
               })
             }
           >
