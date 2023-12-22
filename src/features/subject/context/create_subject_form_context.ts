@@ -1,11 +1,9 @@
 import { createContext } from "react";
-import { proxy } from "valtio";
 import { CreateSubjectStore } from "../store/create_subject_store";
 
-export const CreateSubjectFormInitialContext = {
-  createSubjectStore: proxy(new CreateSubjectStore()),
-};
+interface CreateSubjectFormInitialContext {
+  createSubjectStore: CreateSubjectStore;
+}
 
-export const CreateSubjectFormContext = createContext(
-  CreateSubjectFormInitialContext
-);
+export const CreateSubjectFormContext =
+  createContext<CreateSubjectFormInitialContext | null>(null);

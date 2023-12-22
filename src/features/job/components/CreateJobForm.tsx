@@ -19,10 +19,11 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSnapshot } from "valtio";
 import { subscribeKey } from "valtio/utils";
 import { JobMethod, Subject } from "../../../domain/entities";
+import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { CurrencyUtils } from "../../../shared/utils/currency_utils";
 import { debounce } from "../../../shared/utils/debounce";
 import SuggestedSubjects from "../../find/components/SuggestedSubjects";
@@ -42,7 +43,8 @@ const CreateJobForm = ({ onCreateJobSuccess }: CreateJobFormProps) => {
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
   const [fee, setFee] = useState("200000");
 
-  const { subjectStore, createJobStore } = useContext(CreateJobFormContext);
+  const { subjectStore, createJobStore } =
+    useStoreContext(CreateJobFormContext);
 
   const subjectsState = useSnapshot(subjectStore);
 

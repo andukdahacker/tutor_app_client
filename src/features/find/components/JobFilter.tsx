@@ -18,14 +18,14 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useContext } from "react";
 import { BiMoney } from "react-icons/bi";
 import { useSnapshot } from "valtio";
 import { JobMethod, SortBy } from "../../../domain/entities";
+import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { FindContext } from "./context/FindContext";
 
 const JobFilter = () => {
-  const { findStore } = useContext(FindContext);
+  const { findStore } = useStoreContext(FindContext);
   const findState = useSnapshot(findStore);
   return (
     <>

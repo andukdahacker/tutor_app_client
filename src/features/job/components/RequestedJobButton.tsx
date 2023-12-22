@@ -11,8 +11,9 @@ import {
   Portal,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Job } from "../../../domain/entities";
+import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { AuthContext } from "../../auth/components/context/AuthContext";
 import { FindContext } from "../../find/components/context/FindContext";
 
@@ -23,8 +24,8 @@ interface RequestedJobButtonProps {
 const RequestedJobButton = ({ job }: RequestedJobButtonProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
-  const { jobStore } = useContext(FindContext);
-  const { authStore } = useContext(AuthContext);
+  const { jobStore } = useStoreContext(FindContext);
+  const { authStore } = useStoreContext(AuthContext);
   return (
     <>
       <Popover isOpen={isOpen} onClose={onClose}>

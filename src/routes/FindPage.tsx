@@ -1,5 +1,5 @@
 import { Box, Container, SimpleGrid, Text } from "@chakra-ui/react";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useSnapshot } from "valtio";
 import { subscribeKey } from "valtio/utils";
 import JobCardList from "../features/find/components/JobCardList";
@@ -10,11 +10,11 @@ import FindSearchBar from "../features/find/components/search_bar/SearchBar";
 import JobFilter from "../features/find/components/JobFilter";
 import TutorFilter from "../features/find/components/TutorFilter";
 import { FindContext } from "../features/find/components/context/FindContext";
-import { FindProvider } from "../features/find/components/context/FindProvider";
+import useStoreContext from "../shared/hooks/useStoreContext";
 import { debounce } from "../shared/utils/debounce";
 
 const FindPage = () => {
-  const { findStore, subjectStore } = useContext(FindContext);
+  const { findStore, subjectStore } = useStoreContext(FindContext);
   const findState = useSnapshot(findStore);
   const subjectState = useSnapshot(subjectStore);
 
@@ -35,7 +35,7 @@ const FindPage = () => {
   }, []);
 
   return (
-    <FindProvider>
+    <>
       <Container maxW="container.xl">
         <Text
           textAlign={"center"}
@@ -68,7 +68,7 @@ const FindPage = () => {
           {findState.findTarget == "Tutors" ? <TutorCardList /> : null}
         </SimpleGrid>
       </Container>
-    </FindProvider>
+    </>
   );
 };
 

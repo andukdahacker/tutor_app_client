@@ -20,4 +20,17 @@ export type CreateSubjectInput =
 
 export type DeleteJobConnectionInput =
   operations["JobConnectionController_deleteConnection"]["requestBody"]["content"]["application/json"];
+
 export type CreateJobInput = components["schemas"]["CreateJobInput"];
+
+export type CreateWorkExperienceInput =
+  components["schemas"]["CreateWorkExperienceInput"];
+
+export type UpdateWorkExperienceInput =
+  components["schemas"]["UpdateWorkExperienceInput"];
+
+export type CreateEducationInput =
+  components["schemas"]["CreateEducationInput"];
+
+export type UpdateEducationInput =
+  components["schemas"]["UpdateEducationInput"];

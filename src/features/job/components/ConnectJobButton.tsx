@@ -18,10 +18,11 @@ import {
   Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useContext, useState } from "react";
+import { useState } from "react";
+import { Job } from "../../../domain/entities";
+import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { AuthContext } from "../../auth/components/context/AuthContext";
 import { FindContext } from "../../find/components/context/FindContext";
-import { Job } from "../../find/data/types/entities";
 
 interface ConnectJobButtonProps {
   job: Job;
@@ -33,8 +34,8 @@ const ConnectJobButton = ({ job }: ConnectJobButtonProps) => {
   const [fee, setFee] = useState("200000");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { jobStore } = useContext(FindContext);
-  const { authStore } = useContext(AuthContext);
+  const { jobStore } = useStoreContext(FindContext);
+  const { authStore } = useStoreContext(AuthContext);
   return (
     <>
       <Button size="sm" variant="solid" colorScheme="blue" onClick={onOpen}>

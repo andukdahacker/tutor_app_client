@@ -122,14 +122,17 @@ export interface components {
       workplaceUrl: string;
       fromDate: number;
       toDate: number;
+      isCurrent: boolean;
     };
     EducationEntity: {
       userId: string;
       id: string;
+      title: string;
       educationEntity: string;
       educationEntityUrl: string;
       fromDate: number;
       toDate: number;
+      isCurrent: boolean;
       description: string;
     };
     UserEntity: {
@@ -270,24 +273,41 @@ export interface components {
       name: string;
       description?: string;
     };
-    CreateWorkExperienceInput: Record<string, never>;
-    UpdateWorkExperienceInput: Record<string, never>;
-    CreateEducationInput: {
+    CreateWorkExperienceInput: {
       position: string;
       workplace: string;
       workplaceUrl?: string;
       description?: string;
+      fromDate: string;
+      toDate?: string | null;
+      isCurrent: boolean;
+    };
+    UpdateWorkExperienceInput: {
+      workExperienceId: string;
+      position: string;
+      workplace: string;
+      workplaceUrl?: string;
+      description?: string;
+      fromDate: string;
+      toDate?: string | null;
+      isCurrent: boolean;
+    };
+    CreateEducationInput: {
+      title: string;
+      description?: string;
       educationEntity: string;
       educationEntityUrl?: string;
-      fromDate: number;
-      toDate: number;
+      fromDate: string;
+      toDate?: string | null;
+      isCurrent: boolean;
     };
     UpdateEducationInput: {
       id: string;
+      title: string;
       educationEntity: string;
       educationEntityUrl?: string;
-      fromDate: number;
-      toDate: number;
+      fromDate: string;
+      toDate?: string | null;
       description?: string;
     };
     CreateRatingInput: Record<string, never>;
@@ -928,6 +948,11 @@ export interface operations {
           "application/json": components["schemas"]["EducationEntity"];
         };
       };
+      401: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
       500: {
         content: {
           "application/json": components["schemas"]["ErrorResponse"];
@@ -945,6 +970,11 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["EducationEntity"];
+        };
+      };
+      401: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
         };
       };
       500: {

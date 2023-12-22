@@ -1,6 +1,7 @@
 import {
   Avatar,
   Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardFooter,
@@ -8,16 +9,16 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useContext } from "react";
 import { useSnapshot } from "valtio";
+import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { AuthContext } from "../../auth/components/context/AuthContext";
 
 const ProfileCard = () => {
-  const { authStore } = useContext(AuthContext);
+  const { authStore } = useStoreContext(AuthContext);
   const { user } = useSnapshot(authStore);
   return (
     <>
-      <Card m={10}>
+      <Card w={{ base: 270, sm: 300, md: 400 }}>
         <CardBody>
           <VStack>
             <HStack>
@@ -32,11 +33,11 @@ const ProfileCard = () => {
             </HStack>
           </VStack>
         </CardBody>
-        <CardFooter>
-          <HStack>
+        <CardFooter justify={"center"}>
+          <ButtonGroup justifyContent={"center"} justifyItems={"center"}>
             <Button>Message</Button>
             <Button>Invite to a job</Button>
-          </HStack>
+          </ButtonGroup>
         </CardFooter>
       </Card>
     </>

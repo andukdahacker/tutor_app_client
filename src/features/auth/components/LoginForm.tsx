@@ -13,9 +13,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { AuthContext } from "./context/AuthContext";
 
 const schema = z.object({
@@ -32,7 +33,7 @@ const schema = z.object({
 type SignInData = z.infer<typeof schema>;
 
 const LoginForm = () => {
-  const { authStore } = useContext(AuthContext);
+  const { authStore } = useStoreContext(AuthContext);
   const {
     register,
     handleSubmit,

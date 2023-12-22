@@ -1,16 +1,17 @@
 import { Button, Flex } from "@chakra-ui/react";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useSnapshot } from "valtio";
 
 import { subscribeKey } from "valtio/utils";
+import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { debounce } from "../../../shared/utils/debounce";
 import { AuthContext } from "../../auth/components/context/AuthContext";
 import JobCard from "./JobCard";
 import { FindContext } from "./context/FindContext";
 
 const JobCardList = () => {
-  const { jobStore, findStore } = useContext(FindContext);
-  const { authStore } = useContext(AuthContext);
+  const { jobStore, findStore } = useStoreContext(FindContext);
+  const { authStore } = useStoreContext(AuthContext);
   const findState = useSnapshot(findStore);
   const jobState = useSnapshot(jobStore);
   const authState = useSnapshot(authStore);

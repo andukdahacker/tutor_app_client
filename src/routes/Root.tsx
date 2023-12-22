@@ -1,13 +1,13 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { Outlet } from "react-router";
 import { useSnapshot } from "valtio";
 
 import { AuthContext } from "../features/auth/components/context/AuthContext";
-import { AuthProvider } from "../features/auth/components/context/AuthProvider";
 import NavBar from "../shared/components/navbar/NavBar";
+import useStoreContext from "../shared/hooks/useStoreContext";
 
 const Root = () => {
-  const { authStore } = useContext(AuthContext);
+  const { authStore } = useStoreContext(AuthContext);
   const { isAuthenticated } = useSnapshot(authStore);
 
   useEffect(() => {
@@ -18,10 +18,10 @@ const Root = () => {
     checkAuth();
   }, []);
   return (
-    <AuthProvider>
+    <>
       <NavBar isAuthenticated={isAuthenticated} />
       <Outlet />
-    </AuthProvider>
+    </>
   );
 };
 

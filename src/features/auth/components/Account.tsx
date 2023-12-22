@@ -14,14 +14,15 @@ import {
   MenuList,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSnapshot } from "valtio";
 import { router } from "../../../routes/router";
+import useStoreContext from "../../../shared/hooks/useStoreContext";
 import LogOutButton from "./LogOutButton";
 import { AuthContext } from "./context/AuthContext";
 
 const Account = () => {
-  const { authStore } = useContext(AuthContext);
+  const { authStore } = useStoreContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
   const cancelRef = useRef(null);

@@ -1,8 +1,10 @@
 import { PropsWithChildren, useRef } from "react";
-import { AuthContext, AuthInitialContext } from "./AuthContext";
+import { proxy } from "valtio";
+import { AuthStore } from "../../store/auth_store";
+import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const authStore = useRef(AuthInitialContext.authStore).current;
+  const authStore = useRef(proxy(new AuthStore())).current;
   return (
     <AuthContext.Provider value={{ authStore }}>
       {children}

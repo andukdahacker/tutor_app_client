@@ -1,6 +1,11 @@
-import { HStack, Text, VStack } from "@chakra-ui/react";
+import { Flex, HStack, Spacer, Text } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
 import { WorkExperience } from "../../../domain/entities";
+import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { DateTimeUtils } from "../../../shared/utils/datetime_utils";
+import { AuthContext } from "../../auth/components/context/AuthContext";
+import WorkExperienceEditButton from "./WorkExperienceCardEdit";
+import WorkExperienceDeleteButton from "./WorkExperienceDeleteButton";
 
 interface WorkExperienceCardProps {
   workExperiece: WorkExperience;
@@ -13,17 +18,37 @@ const WorkExperienceCard = ({ workExperiece }: WorkExperienceCardProps) => {
   const toDate = workExperiece.toDate
     ? DateTimeUtils.fromSeconds(workExperiece.toDate).toLocaleDateString()
     : "??";
+
+  const params = useParams();
+
+  const { authStore } = useStoreContext(AuthContext);
+
+  const isOwner = authStore.user?.id == params.userId;
+
   return (
-    <VStack>
-      <HStack>
-        <Text>{workExperiece.position}</Text>
-        <Text>
-          {fromDate} - {toDate}
+    <>
+      <Flex w={"100%"} direction={"column"} pt={4} pb={4}>
+        <HStack>
+          <Text fontSize={"xl"} fontWeight={"bold"}>
+            {workExperiece.position}
+          </Text>
+          <Text fontSize={"lg"}>
+            {fromDate} - {workExperiece.isCurrent ? "Now" : toDate}
+          </Text>
+          <Spacer />
+          {isOwner && (
+            <HStack>
+              <WorkExperienceEditButton workExperience={workExperiece} />
+              <WorkExperienceDeleteButton workExperience={workExperiece} />
+            </HStack>
+          )}
+        </HStack>
+        <Text fontSize={"lg"} fontWeight={"bold"} pt={4} pb={4}>
+          {workExperiece.workplace ?? ""}
         </Text>
-      </HStack>
-      <Text>{workExperiece.workplace ?? ""}</Text>
-      <Text>{workExperiece.description ?? ""}</Text>
-    </VStack>
+        <Text>{workExperiece.description ?? ""}</Text>
+      </Flex>
+    </>
   );
 };
 

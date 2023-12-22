@@ -8,9 +8,9 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { CreateJobFormContext } from "../../job/context/create_job_form_context";
 
 const schema = z.object({
@@ -33,7 +33,7 @@ const CreateSubjectForm = ({
     formState: { errors },
   } = useForm<CreateSubjectFormInput>({ resolver: zodResolver(schema) });
   const { createSubjectStore, createJobStore } =
-    useContext(CreateJobFormContext);
+    useStoreContext(CreateJobFormContext);
 
   return (
     <form

@@ -1,14 +1,15 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useSnapshot } from "valtio";
 
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 
+import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { debounce } from "../../../shared/utils/debounce";
 import TutorCard from "./TutorCard";
 import { FindContext } from "./context/FindContext";
 
 const TutorCardList = () => {
-  const { tutorStore, findStore } = useContext(FindContext);
+  const { tutorStore, findStore } = useStoreContext(FindContext);
   const findState = useSnapshot(findStore);
   const tutorState = useSnapshot(tutorStore);
 

@@ -9,11 +9,12 @@ import {
   Button,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { AuthContext } from "./context/AuthContext";
 
 const LogOutButton = () => {
-  const { authStore } = useContext(AuthContext);
+  const { authStore } = useStoreContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
   const cancelRef = useRef(null);

@@ -10,14 +10,14 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { useContext } from "react";
 import { useSnapshot } from "valtio";
 
+import useStoreContext from "../../../../shared/hooks/useStoreContext";
 import { findTargets } from "../../store/find_store";
 import { FindContext } from "../context/FindContext";
 
 const FindSearchBar = () => {
-  const { findStore } = useContext(FindContext);
+  const { findStore } = useStoreContext(FindContext);
   const findState = useSnapshot(findStore);
   return (
     <Box maxW="500px" m="0 auto">

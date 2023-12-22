@@ -29,15 +29,57 @@ export class AuthStore {
     }
   }
 
-  updateWorkExperience(workExperience: WorkExperience[]) {
+  addWorkExperience(workExperience: WorkExperience) {
     if (this.user) {
-      this.user.workExperience = workExperience;
+      this.user.workExperience.push(workExperience);
     }
   }
 
-  updateEducation(education: Education[]) {
+  updateWorkExperience(workExperience: WorkExperience) {
     if (this.user) {
-      this.user.education = education;
+      const index = this.user.workExperience.findIndex(
+        (e) => e.id == workExperience.id
+      );
+
+      if (index > -1) {
+        this.user.workExperience[index] = workExperience;
+      }
+    }
+  }
+
+  deleteWorkExperience(workExperience: WorkExperience) {
+    if (this.user) {
+      const index = this.user.workExperience.findIndex(
+        (e) => e.id == workExperience.id
+      );
+
+      if (index > -1) {
+        this.user.workExperience.splice(index, 1);
+      }
+    }
+  }
+
+  addEducation(education: Education) {
+    if (this.user) {
+      this.user.education.push(education);
+    }
+  }
+
+  updateEducation(education: Education) {
+    if (this.user) {
+      const index = this.user.education.findIndex((e) => e.id == education.id);
+
+      this.user.education[index] = education;
+    }
+  }
+
+  deleteEducation(education: Education) {
+    if (this.user) {
+      const index = this.user.education.findIndex((e) => e.id == education.id);
+
+      if (index > -1) {
+        this.user.education.splice(index, 1);
+      }
     }
   }
 
