@@ -1,6 +1,7 @@
 import {
   Education,
   LearnerProfile,
+  TutorProfile,
   User,
   WorkExperience,
 } from "../../../domain/entities";
@@ -26,6 +27,13 @@ export class AuthStore {
   updateLearnerProfile(learnerProfile: LearnerProfile) {
     if (this.user) {
       this.user.learnerProfile = learnerProfile;
+    }
+  }
+
+  updateTutorProfile(tutorProfile: TutorProfile) {
+    if (this.user) {
+      this.user.tutorProfile = tutorProfile;
+      console.log(this.user.tutorProfile.tutorProfileSubject);
     }
   }
 

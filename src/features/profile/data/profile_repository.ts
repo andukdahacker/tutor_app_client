@@ -1,12 +1,14 @@
 import {
   Education,
   LearnerProfile,
+  TutorProfile,
   WorkExperience,
 } from "../../../domain/entities";
 import {
   CreateEducationInput,
   CreateWorkExperienceInput,
   UpdateEducationInput,
+  UpdateTutorProfileInput,
   UpdateWorkExperienceInput,
 } from "../../../domain/inputs";
 import client from "../../../shared/data/client";
@@ -185,6 +187,35 @@ export class ProfileRepository {
     try {
       const response = await client.DELETE("/education/{id}", {
         params: { path: { id: educationId } },
+      });
+
+      if (response.error) {
+        return {
+          ok: false,
+          error: new Error(response.error.message),
+        };
+      }
+
+      return {
+        ok: true,
+        value: response.data,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: new Error(),
+      };
+    }
+  }
+
+  static async updateTutorProfile(
+    input: UpdateTutorProfileInput
+  ): Promise<Result<TutorProfile>> {
+    try {
+      const response = await client.PUT("/tutor-profile", {
+        body: {
+          ...input,
+        },
       });
 
       if (response.error) {

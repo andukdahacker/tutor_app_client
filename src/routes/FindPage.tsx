@@ -1,7 +1,6 @@
 import { Box, Container, SimpleGrid, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useSnapshot } from "valtio";
-import { subscribeKey } from "valtio/utils";
 import JobCardList from "../features/find/components/JobCardList";
 import SuggestedSubjects from "../features/find/components/SuggestedSubjects";
 import TutorCardList from "../features/find/components/TutorCardList";
@@ -10,29 +9,31 @@ import FindSearchBar from "../features/find/components/search_bar/SearchBar";
 import JobFilter from "../features/find/components/JobFilter";
 import TutorFilter from "../features/find/components/TutorFilter";
 import { FindContext } from "../features/find/components/context/FindContext";
+import useDebounce from "../shared/hooks/useDebounce";
 import useStoreContext from "../shared/hooks/useStoreContext";
-import { debounce } from "../shared/utils/debounce";
 
 const FindPage = () => {
   const { findStore, subjectStore } = useStoreContext(FindContext);
   const findState = useSnapshot(findStore);
   const subjectState = useSnapshot(subjectStore);
 
+  const debounced = useDebounce(findStore.searchString, 500);
+
   useEffect(() => {
-    const fetchData = debounce(async () => {
+    async function fetchData() {
       await subjectStore.getSubjects(findStore.searchString);
-    }, 500);
+    }
 
     fetchData();
-
-    const unsub = subscribeKey(findStore, "searchString", async () => {
-      fetchData();
-    });
-
-    return () => {
-      unsub();
-    };
   }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      await subjectStore.getSubjects(findStore.searchString);
+    }
+
+    if (debounced) fetchData();
+  }, [debounced]);
 
   return (
     <>

@@ -3,8 +3,8 @@ import { useSnapshot } from "valtio";
 
 import { useEffect } from "react";
 
+import useDebounce from "../../../shared/hooks/useDebounce";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { debounce } from "../../../shared/utils/debounce";
 import TutorCard from "./TutorCard";
 import { FindContext } from "./context/FindContext";
 
@@ -13,13 +13,23 @@ const TutorCardList = () => {
   const findState = useSnapshot(findStore);
   const tutorState = useSnapshot(tutorStore);
 
+  const debounced = useDebounce(findState.searchString, 500);
+
   useEffect(() => {
-    const fetchData = debounce(async () => {
+    const fetchData = async () => {
       await tutorStore.findManyTutors(findState.searchString);
-    }, 500);
+    };
 
     fetchData();
-  }, [findState.searchString]);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await tutorStore.findManyTutors(findState.searchString);
+    };
+
+    if (debounced) fetchData();
+  }, [debounced]);
 
   return (
     <>

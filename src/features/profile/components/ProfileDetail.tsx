@@ -3,6 +3,7 @@ import { useSnapshot } from "valtio";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { AuthContext } from "../../auth/components/context/AuthContext";
 import ProfileAbout from "./ProfileAbout";
+import TutorProfile from "./TutorProfile";
 
 const ProfileDetail = () => {
   const { authStore } = useStoreContext(AuthContext);
@@ -19,7 +20,7 @@ const ProfileDetail = () => {
             <ProfileAbout />
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            <TutorProfile />
           </TabPanel>
         </TabPanels>
       </Tabs>

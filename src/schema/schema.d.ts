@@ -107,11 +107,23 @@ export interface components {
       userId: string;
       user: components["schemas"]["UserEntity"];
     };
+    SubjectEntity: {
+      id: string;
+      name: string;
+      description: string;
+    };
+    TutorProfileSubjectEntity: {
+      tutorId: string;
+      tutorProfile?: components["schemas"]["TutorProfileEntity"] | null;
+      subjectId: string;
+      subject?: components["schemas"]["SubjectEntity"] | null;
+    };
     TutorProfileEntity: {
       userId: string;
       id: string;
       bio: string;
       user?: components["schemas"]["UserEntity"];
+      tutorProfileSubject?: components["schemas"]["TutorProfileSubjectEntity"][] | null;
     };
     WorkExperienceEntity: {
       description: string;
@@ -153,7 +165,10 @@ export interface components {
       message: string;
       error: string;
     };
-    UpdateTutorProfileInput: Record<string, never>;
+    UpdateTutorProfileInput: {
+      bio?: string;
+      subjectIds?: string[];
+    };
     PageInfoType: {
       hasNextPage: boolean;
       cursor: string | number;
@@ -241,11 +256,6 @@ export interface components {
       numberOfSessions: number;
       jobType: components["schemas"]["JobType"];
       jobMethod: components["schemas"]["JobMethod"];
-    };
-    SubjectEntity: {
-      id: string;
-      name: string;
-      description: string;
     };
     /** @enum {string} */
     JobStatus: "OPEN" | "EMPLOYED" | "DONE";

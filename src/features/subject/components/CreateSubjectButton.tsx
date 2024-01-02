@@ -1,6 +1,6 @@
 import { AddIcon } from "@chakra-ui/icons";
 import {
-  Button,
+  IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -16,15 +16,14 @@ const CreateSubjectButton = () => {
 
   return (
     <>
-      <Button
-        leftIcon={<AddIcon />}
+      <IconButton
+        icon={<AddIcon />}
         colorScheme="purple"
         size="md"
         display="flex"
         onClick={onOpen}
-      >
-        Create new subject
-      </Button>
+        aria-label="Create new subject"
+      />
 
       <Modal
         isOpen={isOpen}

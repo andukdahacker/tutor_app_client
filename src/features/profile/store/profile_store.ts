@@ -2,6 +2,7 @@ import {
   CreateEducationInput,
   CreateWorkExperienceInput,
   UpdateEducationInput,
+  UpdateTutorProfileInput,
   UpdateWorkExperienceInput,
 } from "../../../domain/inputs";
 import { Store } from "../../../shared/types/store";
@@ -80,6 +81,17 @@ export class ProfileStore implements Store {
 
     if (result.ok) {
       StoreUtils.successToast("Deleted education successfully");
+      return result.value;
+    } else {
+      StoreUtils.handleError(result.error);
+    }
+  }
+
+  async updateTutorProfile(input: UpdateTutorProfileInput) {
+    const result = await ProfileRepository.updateTutorProfile(input);
+
+    if (result.ok) {
+      StoreUtils.successToast("Updated tutor profile successfully");
       return result.value;
     } else {
       StoreUtils.handleError(result.error);

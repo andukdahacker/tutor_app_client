@@ -23,9 +23,9 @@ import { useEffect, useState } from "react";
 import { useSnapshot } from "valtio";
 import { subscribeKey } from "valtio/utils";
 import { JobMethod, Subject } from "../../../domain/entities";
+import useDebounce from "../../../shared/hooks/useDebounce";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { CurrencyUtils } from "../../../shared/utils/currency_utils";
-import { debounce } from "../../../shared/utils/debounce";
 import SuggestedSubjects from "../../find/components/SuggestedSubjects";
 import CreateSubjectButton from "../../subject/components/CreateSubjectButton";
 import { CreateJobFormContext } from "../context/create_job_form_context";
@@ -52,13 +52,16 @@ const CreateJobForm = ({ onCreateJobSuccess }: CreateJobFormProps) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setSubject(event.target.value);
-
-    const debouncedCall = debounce(async () => {
-      await subjectStore.getSubjects(subject);
-    }, 1000);
-
-    debouncedCall();
   };
+
+  const debounced = useDebounce(subject, 500);
+
+  useEffect(() => {
+    const debouncedCall = async () => {
+      await subjectStore.getSubjects(subject);
+    };
+    if (debounced) debouncedCall();
+  }, [debounced]);
 
   useEffect(() => {
     const unsub = subscribeKey(createJobStore, "newSubject", (subject) => {

@@ -2,9 +2,8 @@ import { Button, Flex } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useSnapshot } from "valtio";
 
-import { subscribeKey } from "valtio/utils";
+import useDebounce from "../../../shared/hooks/useDebounce";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { debounce } from "../../../shared/utils/debounce";
 import { AuthContext } from "../../auth/components/context/AuthContext";
 import JobCard from "./JobCard";
 import { FindContext } from "./context/FindContext";
@@ -16,8 +15,10 @@ const JobCardList = () => {
   const jobState = useSnapshot(jobStore);
   const authState = useSnapshot(authStore);
 
+  const debounced = useDebounce(findState.searchString, 500);
+
   useEffect(() => {
-    const fetchData = debounce(async () => {
+    const fetchData = async () => {
       await jobStore.findManyJobs({
         searchString: findState.searchString,
         take: 10,
@@ -28,13 +29,28 @@ const JobCardList = () => {
         minFee: findState.minFee,
         maxFee: findState.maxFee,
       });
-    }, 500);
-    fetchData();
+    };
 
-    subscribeKey(jobStore, "jobPageInfo", (data) =>
-      console.log(data?.lastTake)
-    );
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await jobStore.findManyJobs({
+        searchString: findState.searchString,
+        take: 10,
+        sortBy: findState.sortBy,
+        jobMethod: findState.jobMethod,
+        jobType: findState.jobType,
+        tutorId: authStore.user?.tutorProfile.id ?? "",
+        minFee: findState.minFee,
+        maxFee: findState.maxFee,
+      });
+    };
+
+    if (debounced) fetchData();
   }, [
+    debounced,
     findState.searchString,
     findState.minFee,
     findState.maxFee,
