@@ -37,3 +37,6 @@ export type UpdateEducationInput =
 
 export type UpdateTutorProfileInput =
   components["schemas"]["UpdateTutorProfileInput"];
+
+export type DeleteTutorProfileSubjectInput =
+  components["schemas"]["DeleteTutorProfileSubjectInput"];

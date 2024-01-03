@@ -17,5 +17,6 @@ export type Paginated<T> =
   | undefined;
 export type JobMethod = components["schemas"]["JobMethod"];
 export type JobType = components["schemas"]["JobType"];
-
 export type Education = components["schemas"]["EducationEntity"];
+export type TutorProfileSubject =
+  components["schemas"]["TutorProfileSubjectEntity"];

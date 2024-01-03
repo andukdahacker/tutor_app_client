@@ -1,4 +1,5 @@
 import { Flex } from "@chakra-ui/react";
+import TutorProfileInfo from "./TutorProfileInfo";
 import TutorProfileSubject from "./TutorProfileSubject";
 
 const TutorProfile = () => {
@@ -6,6 +7,7 @@ const TutorProfile = () => {
     <>
       <Flex w={"100%"} direction={"column"}>
         <TutorProfileSubject />
+        <TutorProfileInfo />
       </Flex>
     </>
   );

@@ -18,6 +18,7 @@ export interface paths {
     get: operations["TutorProfileController_tutorProfiles"];
     put: operations["TutorProfileController_updateTutorProfile"];
     post: operations["TutorProfileController_createTutorProfile"];
+    delete: operations["TutorProfileController_deleteTutorProfileSubject"];
   };
   "/learner-profile": {
     put: operations["LearnerProfileController_updateLearnerProfile"];
@@ -118,12 +119,17 @@ export interface components {
       subjectId: string;
       subject?: components["schemas"]["SubjectEntity"] | null;
     };
+    /** @enum {string} */
+    JobMethod: "ONLINE" | "OFFLINE" | "BOTH";
     TutorProfileEntity: {
       userId: string;
       id: string;
       bio: string;
       user?: components["schemas"]["UserEntity"];
       tutorProfileSubject?: components["schemas"]["TutorProfileSubjectEntity"][] | null;
+      /** Format: int64 */
+      tutorFee?: number;
+      jobMethod?: components["schemas"]["JobMethod"];
     };
     WorkExperienceEntity: {
       description: string;
@@ -168,6 +174,10 @@ export interface components {
     UpdateTutorProfileInput: {
       bio?: string;
       subjectIds?: string[];
+    };
+    DeleteTutorProfileSubjectInput: {
+      subjectId: string;
+      tutorProfileId: string;
     };
     PageInfoType: {
       hasNextPage: boolean;
@@ -245,8 +255,6 @@ export interface components {
     GetChatsInput: Record<string, never>;
     /** @enum {string} */
     JobType: "QA" | "TUTOR";
-    /** @enum {string} */
-    JobMethod: "ONLINE" | "OFFLINE" | "BOTH";
     CreateJobInput: {
       subjectId: string;
       description: string;
@@ -433,6 +441,28 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["TutorProfileEntity"];
         };
+      };
+      401: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  TutorProfileController_deleteTutorProfileSubject: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DeleteTutorProfileSubjectInput"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
       };
       401: {
         content: {

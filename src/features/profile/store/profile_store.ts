@@ -1,6 +1,7 @@
 import {
   CreateEducationInput,
   CreateWorkExperienceInput,
+  DeleteTutorProfileSubjectInput,
   UpdateEducationInput,
   UpdateTutorProfileInput,
   UpdateWorkExperienceInput,
@@ -92,6 +93,17 @@ export class ProfileStore implements Store {
 
     if (result.ok) {
       StoreUtils.successToast("Updated tutor profile successfully");
+      return result.value;
+    } else {
+      StoreUtils.handleError(result.error);
+    }
+  }
+
+  async deleteTutorProfileSubject(input: DeleteTutorProfileSubjectInput) {
+    const result = await ProfileRepository.deleteTutorProfileSubject(input);
+
+    if (result.ok) {
+      StoreUtils.successToast("Deleted subject successfully");
       return result.value;
     } else {
       StoreUtils.handleError(result.error);

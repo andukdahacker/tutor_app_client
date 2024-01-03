@@ -24,6 +24,16 @@ export class AuthStore {
   user: User | null | undefined = null;
   isLoading = false;
 
+  deleteTutorProfileSubject(subjectId: string) {
+    if (this.user) {
+      const newSubjectList = this.user.tutorProfile.tutorProfileSubject?.filter(
+        (e) => e.subjectId != subjectId
+      );
+
+      this.user.tutorProfile.tutorProfileSubject = newSubjectList;
+    }
+  }
+
   updateLearnerProfile(learnerProfile: LearnerProfile) {
     if (this.user) {
       this.user.learnerProfile = learnerProfile;

@@ -7,6 +7,7 @@ import {
 import {
   CreateEducationInput,
   CreateWorkExperienceInput,
+  DeleteTutorProfileSubjectInput,
   UpdateEducationInput,
   UpdateTutorProfileInput,
   UpdateWorkExperienceInput,
@@ -217,6 +218,31 @@ export class ProfileRepository {
           ...input,
         },
       });
+
+      if (response.error) {
+        return {
+          ok: false,
+          error: new Error(response.error.message),
+        };
+      }
+
+      return {
+        ok: true,
+        value: response.data,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: new Error(),
+      };
+    }
+  }
+
+  static async deleteTutorProfileSubject(
+    input: DeleteTutorProfileSubjectInput
+  ): Promise<Result<{ subjectId: string; tutorId: string }>> {
+    try {
+      const response = await client.DELETE("/tutor-profile", { body: input });
 
       if (response.error) {
         return {
