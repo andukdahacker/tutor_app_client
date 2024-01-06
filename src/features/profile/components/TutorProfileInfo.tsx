@@ -20,9 +20,12 @@ const TutorProfileInfo = () => {
           {isOwner && <AddTutorInfoButton />}
         </HStack>
         <Divider />
-        <HStack>
+        <HStack mt={6}>
           <Text>Tutor fee: </Text>
           <Text>{authState.user?.tutorProfile.tutorFee}</Text>
+        </HStack>
+        <HStack mt={6}>
+          <Text>Job method: {authState.user?.tutorProfile?.jobMethod}</Text>
         </HStack>
       </Flex>
     </>

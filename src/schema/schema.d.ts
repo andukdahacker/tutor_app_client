@@ -174,6 +174,9 @@ export interface components {
     UpdateTutorProfileInput: {
       bio?: string;
       subjectIds?: string[];
+      /** Format: int64 */
+      tutorFee?: number;
+      jobMethod?: components["schemas"]["JobMethod"];
     };
     DeleteTutorProfileSubjectInput: {
       subjectId: string;
