@@ -108,7 +108,7 @@ export class FindRepository {
     input: FindManyTutorsInput
   ): Promise<Result<Paginated<TutorProfile>>> {
     try {
-      const response = await client.GET("/tutor-profile", {
+      const response = await client.GET("/tutor-profile/list", {
         params: {
           query: {
             ...input,

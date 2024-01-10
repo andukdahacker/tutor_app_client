@@ -15,7 +15,6 @@ import { Education } from "../../../domain/entities";
 import { CreateEducationInput } from "../../../domain/inputs";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { DateTimeUtils } from "../../../shared/utils/datetime_utils";
-import { AuthContext } from "../../auth/components/context/AuthContext";
 import { ProfileContext } from "../context/profile_context";
 
 interface EducationFormProps {
@@ -45,26 +44,17 @@ const EducationForm = ({ onClose, education }: EducationFormProps) => {
   });
 
   const { profileStore } = useStoreContext(ProfileContext);
-  const { authStore } = useStoreContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
     if (education) {
-      const updatedEducation = await profileStore.updateEducation({
+      await profileStore.updateEducation({
         ...data,
         id: education.id,
       });
-
-      if (updatedEducation) {
-        authStore.updateEducation(updatedEducation);
-      }
     } else {
-      const newEducation = await profileStore.createEducation(data);
-
-      if (newEducation) {
-        authStore.addEducation(newEducation);
-      }
+      await profileStore.createEducation(data);
     }
     setIsLoading(false);
 

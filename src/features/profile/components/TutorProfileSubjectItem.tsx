@@ -17,7 +17,7 @@ import {
 import { useState } from "react";
 import { TutorProfileSubject } from "../../../domain/entities";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { AuthContext } from "../../auth/components/context/AuthContext";
+import useUser from "../../../shared/hooks/useUser";
 import { ProfileContext } from "../context/profile_context";
 
 interface TutorProfileSubjectItemProps {
@@ -30,24 +30,21 @@ const TutorProfileSubjectItem = ({
   const subject = tutorProfileSubject.subject;
 
   const { profileStore } = useStoreContext(ProfileContext);
-  const { authStore } = useStoreContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
 
+  const user = useUser();
   const { onClose, onOpen, isOpen } = useDisclosure();
 
-  const isOwner =
-    authStore.user?.tutorProfile.id == tutorProfileSubject.tutorId;
+  const isOwner = user?.tutorProfile.id == tutorProfileSubject.tutorId;
 
   const deleteTutorProfileSubject = async () => {
     setIsLoading(true);
-    const result = await profileStore.deleteTutorProfileSubject({
+    await profileStore.deleteTutorProfileSubject({
       subjectId: tutorProfileSubject.subjectId,
       tutorProfileId: tutorProfileSubject.tutorId,
     });
     setIsLoading(false);
-    if (result) {
-      authStore.deleteTutorProfileSubject(result.subjectId);
-    }
+
     onClose();
   };
 

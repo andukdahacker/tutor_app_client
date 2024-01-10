@@ -1,15 +1,14 @@
 import { Divider, Flex, HStack, Spacer, Text } from "@chakra-ui/react";
 import { useParams } from "react-router";
-import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { AuthContext } from "../../auth/components/context/AuthContext";
+import useUser from "../../../shared/hooks/useUser";
 import TutorProfileSubjectAddButton from "./TutorProfileSubjectAddButton";
 import TutorProfileSubjectList from "./TutorProfileSubjectList";
 
 const TutorProfileSubject = () => {
-  const { authStore } = useStoreContext(AuthContext);
   const { userId } = useParams();
 
-  const isOwner = authStore.user?.id == userId;
+  const user = useUser();
+  const isOwner = user?.id == userId;
   return (
     <>
       <Flex w={"100%"} direction={"column"}>

@@ -15,7 +15,6 @@ import { useSnapshot } from "valtio";
 import { Subject } from "../../../domain/entities";
 import useDebounce from "../../../shared/hooks/useDebounce";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { AuthContext } from "../../auth/components/context/AuthContext";
 import SuggestedSubjects from "../../find/components/SuggestedSubjects";
 import { ProfileContext } from "../context/profile_context";
 
@@ -27,7 +26,6 @@ const AddTutorProfileSubjecForm = ({
   onClose,
 }: AddTutorProfileSubjecFormProps) => {
   const { subjectStore, profileStore } = useStoreContext(ProfileContext);
-  const { authStore } = useStoreContext(AuthContext);
   const subjectsState = useSnapshot(subjectStore);
 
   const [subject, setSubject] = useState<string>("");
@@ -42,14 +40,11 @@ const AddTutorProfileSubjecForm = ({
 
   const handleAddSubjects = async () => {
     setIsLoading(true);
-    const profile = await profileStore.updateTutorProfile({
+    await profileStore.updateTutorProfile({
       subjectIds: selectedSubjects.map((e) => e.id),
     });
 
     setIsLoading(false);
-    if (profile) {
-      authStore.updateTutorProfile(profile);
-    }
 
     onClose();
   };

@@ -16,16 +16,19 @@ import {
 import { useParams } from "react-router-dom";
 import { useSnapshot } from "valtio";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { AuthContext } from "../../auth/components/context/AuthContext";
+import useUser from "../../../shared/hooks/useUser";
+import { ProfileContext } from "../context/profile_context";
 import EducationCard from "./EducationCard";
 import EducationForm from "./EducationForm";
 
 const EducationList = () => {
   const params = useParams();
-  const { authStore } = useStoreContext(AuthContext);
-  const { user } = useSnapshot(authStore);
 
-  const isOwner = authStore.user?.id == params.userId;
+  const user = useUser();
+  const isOwner = user?.id == params.userId;
+
+  const { profileStore } = useStoreContext(ProfileContext);
+  const { education } = useSnapshot(profileStore);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -43,7 +46,7 @@ const EducationList = () => {
         </HStack>
         <Divider w={"100%"} />
         <Flex w={"100%"} direction={"column"}>
-          {user?.education?.map((ed) => {
+          {education?.map((ed) => {
             return <EducationCard education={ed} key={ed.id} />;
           })}
         </Flex>

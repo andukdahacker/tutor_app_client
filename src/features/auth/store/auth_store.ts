@@ -1,15 +1,9 @@
-import {
-  Education,
-  LearnerProfile,
-  TutorProfile,
-  User,
-  WorkExperience,
-} from "../../../domain/entities";
+import { User } from "../../../domain/entities";
 import { LoginInput, SignUpInput } from "../../../domain/inputs";
 import { RoutesPath, router } from "../../../routes/router";
 import StoreUtils from "../../../shared/utils/store_utils";
 import AuthRepository from "../data/auth_repository";
-import { ACCESS_TOKEN_KEY } from "./constants";
+import { ACCESS_TOKEN_KEY, USER_ID } from "./constants";
 
 export class AuthStore {
   constructor() {
@@ -23,83 +17,6 @@ export class AuthStore {
   isAuthenticated = false;
   user: User | null | undefined = null;
   isLoading = false;
-
-  deleteTutorProfileSubject(subjectId: string) {
-    if (this.user) {
-      const newSubjectList = this.user.tutorProfile.tutorProfileSubject?.filter(
-        (e) => e.subjectId != subjectId
-      );
-
-      this.user.tutorProfile.tutorProfileSubject = newSubjectList;
-    }
-  }
-
-  updateLearnerProfile(learnerProfile: LearnerProfile) {
-    if (this.user) {
-      this.user.learnerProfile = learnerProfile;
-    }
-  }
-
-  updateTutorProfile(tutorProfile: TutorProfile) {
-    if (this.user) {
-      this.user.tutorProfile = tutorProfile;
-      console.log(this.user.tutorProfile.tutorProfileSubject);
-    }
-  }
-
-  addWorkExperience(workExperience: WorkExperience) {
-    if (this.user) {
-      this.user.workExperience.push(workExperience);
-    }
-  }
-
-  updateWorkExperience(workExperience: WorkExperience) {
-    if (this.user) {
-      const index = this.user.workExperience.findIndex(
-        (e) => e.id == workExperience.id
-      );
-
-      if (index > -1) {
-        this.user.workExperience[index] = workExperience;
-      }
-    }
-  }
-
-  deleteWorkExperience(workExperience: WorkExperience) {
-    if (this.user) {
-      const index = this.user.workExperience.findIndex(
-        (e) => e.id == workExperience.id
-      );
-
-      if (index > -1) {
-        this.user.workExperience.splice(index, 1);
-      }
-    }
-  }
-
-  addEducation(education: Education) {
-    if (this.user) {
-      this.user.education.push(education);
-    }
-  }
-
-  updateEducation(education: Education) {
-    if (this.user) {
-      const index = this.user.education.findIndex((e) => e.id == education.id);
-
-      this.user.education[index] = education;
-    }
-  }
-
-  deleteEducation(education: Education) {
-    if (this.user) {
-      const index = this.user.education.findIndex((e) => e.id == education.id);
-
-      if (index > -1) {
-        this.user.education.splice(index, 1);
-      }
-    }
-  }
 
   hideLoading() {
     this.isLoading = false;
@@ -142,6 +59,7 @@ export class AuthStore {
     if (result.ok) {
       StoreUtils.successToast("Logged in successfully");
       localStorage.setItem(ACCESS_TOKEN_KEY, result.value?.access_token ?? "");
+      localStorage.setItem(USER_ID, result.value?.user?.id ?? "");
       this.isAuthenticated = true;
       this.user = result.value?.user;
       router.navigate(RoutesPath.findPage);

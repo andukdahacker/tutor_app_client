@@ -1,8 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import { AuthProvider } from "../features/auth/components/context/AuthProvider";
+import DashboardProvider from "../features/dashboard/context/dashboard_provider";
 import { FindProvider } from "../features/find/components/context/FindProvider";
 import ProfileProvider from "../features/profile/context/profile_provider";
+import DashboardPage from "./DashboardPage";
 import ErrorPage from "./ErrorPage";
 import FindPage from "./FindPage";
 import LandingPage from "./LandingPage";
@@ -13,6 +15,7 @@ export const RoutesPath = {
   root: "/",
   findPage: "find",
   profilePage: "profile/:userId",
+  dashboardPage: "dashboard/:userId",
 };
 
 export const router = createBrowserRouter([
@@ -42,6 +45,14 @@ export const router = createBrowserRouter([
           <ProfileProvider>
             <ProfilePage />
           </ProfileProvider>
+        ),
+      },
+      {
+        path: RoutesPath.dashboardPage,
+        element: (
+          <DashboardProvider>
+            <DashboardPage />
+          </DashboardProvider>
         ),
       },
     ],

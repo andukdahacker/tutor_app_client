@@ -20,7 +20,7 @@ import { useRef } from "react";
 import { Job } from "../../../domain/entities";
 import { CurrencyUtils } from "../../../shared/utils/currency_utils";
 import { DateTimeUtils } from "../../../shared/utils/datetime_utils";
-import JobActionButton from "../../job/components/JobActionButton";
+import JobActionButton from "./JobActionButton";
 
 interface CardProps {
   job: Job;
@@ -94,7 +94,7 @@ const JobCard = (props: CardProps) => {
           <JobActionButton
             job={job}
             jobConnection={
-              job.jobConnections.length > 0 ? job.jobConnections[0] : undefined
+              job.jobConnections?.length > 0 ? job.jobConnections[0] : undefined
             }
           />
         </Flex>
@@ -177,7 +177,7 @@ const JobCard = (props: CardProps) => {
               >
                 <Avatar size={["lg", "xl", "2xl"]} />
                 <VStack>
-                  <Text>{job.learner.user?.username}</Text>
+                  <Text>{job.learner?.user?.username}</Text>
                   <Text>Age</Text>
                   <Text>Location</Text>
                 </VStack>

@@ -1,9 +1,8 @@
 import { Flex, HStack, Spacer, Text } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { Education } from "../../../domain/entities";
-import useStoreContext from "../../../shared/hooks/useStoreContext";
+import useUser from "../../../shared/hooks/useUser";
 import { DateTimeUtils } from "../../../shared/utils/datetime_utils";
-import { AuthContext } from "../../auth/components/context/AuthContext";
 import EducationCardDeleteButton from "./EducationCardDeleteButton";
 import EducationCardEditButton from "./EducationCardEditButton";
 
@@ -21,9 +20,8 @@ const EducationCard = ({ education }: EducationCardProps) => {
 
   const params = useParams();
 
-  const { authStore } = useStoreContext(AuthContext);
-
-  const isOwner = authStore.user?.id == params.userId;
+  const user = useUser();
+  const isOwner = user?.id == params.userId;
 
   return (
     <>

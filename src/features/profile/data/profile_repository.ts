@@ -16,6 +16,52 @@ import client from "../../../shared/data/client";
 import { Result } from "../../../shared/data/result";
 
 export class ProfileRepository {
+  static async getLearnerProfile(): Promise<Result<LearnerProfile>> {
+    try {
+      const response = await client.GET("/learner-profile");
+
+      if (response.error) {
+        return {
+          ok: false,
+          error: new Error(response.error.message),
+        };
+      }
+
+      return {
+        ok: true,
+        value: response.data,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: new Error(),
+      };
+    }
+  }
+
+  static async getTutorProfile(): Promise<Result<TutorProfile>> {
+    try {
+      const response = await client.GET("/tutor-profile");
+
+      if (response.error) {
+        return {
+          ok: false,
+          error: new Error(response.error.message),
+        };
+      }
+
+      return {
+        ok: true,
+        value: response.data,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: new Error(),
+      };
+    }
+  }
+
   static async updateBio(bio: string): Promise<Result<LearnerProfile>> {
     try {
       const response = await client.PUT("/learner-profile", { body: { bio } });

@@ -8,13 +8,15 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useSnapshot } from "valtio";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { AuthContext } from "../../auth/components/context/AuthContext";
+import { ProfileContext } from "../context/profile_context";
 import AddTutorInfoForm from "./AddTutorInfoForm";
 
 const AddTutorInfoButton = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { authStore } = useStoreContext(AuthContext);
+  const { profileStore } = useStoreContext(ProfileContext);
+  const { tutorProfile } = useSnapshot(profileStore);
   return (
     <>
       <Button onClick={onOpen}>Add</Button>
@@ -26,8 +28,8 @@ const AddTutorInfoButton = () => {
           <ModalBody>
             <AddTutorInfoForm
               onClose={onClose}
-              tutorFee={authStore.user?.tutorProfile.tutorFee}
-              jobMethod={authStore.user?.tutorProfile?.jobMethod}
+              tutorFee={tutorProfile?.tutorFee}
+              jobMethod={tutorProfile?.jobMethod}
             />
           </ModalBody>
         </ModalContent>

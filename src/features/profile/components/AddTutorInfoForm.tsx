@@ -13,7 +13,6 @@ import {
 import { useState } from "react";
 import { JobMethod } from "../../../domain/entities";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { AuthContext } from "../../auth/components/context/AuthContext";
 import { ProfileContext } from "../context/profile_context";
 
 interface AddTutorInfoFormProps {
@@ -35,21 +34,15 @@ const AddTutorInfoForm = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const { profileStore } = useStoreContext(ProfileContext);
-  const { authStore } = useStoreContext(AuthContext);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    const newProfile = await profileStore.updateTutorProfile({
+    await profileStore.updateTutorProfile({
       tutorFee: parseInt(fee),
       jobMethod,
     });
     setIsLoading(false);
-
-    if (newProfile) {
-      authStore.updateTutorProfile(newProfile);
-    }
-
     onClose();
   };
 

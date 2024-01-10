@@ -16,7 +16,6 @@ import { WorkExperience } from "../../../domain/entities";
 import { CreateWorkExperienceInput } from "../../../domain/inputs";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { DateTimeUtils } from "../../../shared/utils/datetime_utils";
-import { AuthContext } from "../../auth/components/context/AuthContext";
 import { ProfileContext } from "../context/profile_context";
 
 interface WorkExperienceFormProps {
@@ -54,29 +53,19 @@ const WorkExperienceForm = ({
 
   const { profileStore } = useStoreContext(ProfileContext);
 
-  const { authStore } = useStoreContext(AuthContext);
-
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
     if (workExperience) {
-      const updatedWorkExperience = await profileStore.updateWorkExperience({
+      await profileStore.updateWorkExperience({
         ...data,
         workExperienceId: workExperience.id,
       });
-
-      if (updatedWorkExperience) {
-        authStore.updateWorkExperience(updatedWorkExperience);
-      }
     } else {
-      const newWorkExperience = await profileStore.createWorkExperience({
+      await profileStore.createWorkExperience({
         ...data,
         fromDate: data.fromDate,
         toDate: data.isCurrent ? "" : data.toDate,
       });
-
-      if (newWorkExperience) {
-        authStore.addWorkExperience(newWorkExperience);
-      }
     }
 
     setIsLoading(false);

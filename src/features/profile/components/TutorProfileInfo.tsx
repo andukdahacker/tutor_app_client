@@ -3,14 +3,14 @@ import { useParams } from "react-router";
 import { useSnapshot } from "valtio";
 import useIsOwner from "../../../shared/hooks/useIsOwner";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { AuthContext } from "../../auth/components/context/AuthContext";
+import { ProfileContext } from "../context/profile_context";
 import AddTutorInfoButton from "./AddTutorInfoButton";
 
 const TutorProfileInfo = () => {
   const { userId } = useParams();
   const isOwner = useIsOwner(userId ?? "");
-  const { authStore } = useStoreContext(AuthContext);
-  const authState = useSnapshot(authStore);
+  const { profileStore } = useStoreContext(ProfileContext);
+  const { tutorProfile } = useSnapshot(profileStore);
   return (
     <>
       <Flex direction={"column"}>
@@ -22,10 +22,10 @@ const TutorProfileInfo = () => {
         <Divider />
         <HStack mt={6}>
           <Text>Tutor fee: </Text>
-          <Text>{authState.user?.tutorProfile.tutorFee}</Text>
+          <Text>{tutorProfile?.tutorFee}</Text>
         </HStack>
         <HStack mt={6}>
-          <Text>Job method: {authState.user?.tutorProfile?.jobMethod}</Text>
+          <Text>Job method: {tutorProfile?.jobMethod}</Text>
         </HStack>
       </Flex>
     </>

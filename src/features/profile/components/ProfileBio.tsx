@@ -16,16 +16,17 @@ import {
 import { useParams } from "react-router";
 import { useSnapshot } from "valtio";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { AuthContext } from "../../auth/components/context/AuthContext";
+import { USER_ID } from "../../auth/store/constants";
+import { ProfileContext } from "../context/profile_context";
 import ProfileBioForm from "./ProfileBioForm";
 
 const ProfileBio = () => {
   const params = useParams();
-  const { authStore } = useStoreContext(AuthContext);
-  const { user } = useSnapshot(authStore);
+  const { profileStore } = useStoreContext(ProfileContext);
+  const { learnerProfile } = useSnapshot(profileStore);
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const isOwner = authStore.user?.id == params.userId;
+  const isOwner = localStorage.getItem(USER_ID) == params.userId;
 
   return (
     <>
@@ -46,7 +47,7 @@ const ProfileBio = () => {
             </>
           )}
         </HStack>
-        <Text mt={6}>{user?.learnerProfile?.bio ?? ""}</Text>
+        <Text mt={6}>{learnerProfile?.bio ?? ""}</Text>
       </Flex>
 
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -55,10 +56,7 @@ const ProfileBio = () => {
           <ModalHeader>Update profile bio</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ProfileBioForm
-              bio={user?.learnerProfile?.bio ?? ""}
-              onClose={onClose}
-            />
+            <ProfileBioForm bio={learnerProfile?.bio ?? ""} onClose={onClose} />
           </ModalBody>
         </ModalContent>
       </Modal>

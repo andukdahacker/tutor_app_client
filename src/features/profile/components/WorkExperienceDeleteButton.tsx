@@ -13,7 +13,6 @@ import {
 import { useState } from "react";
 import { WorkExperience } from "../../../domain/entities";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { AuthContext } from "../../auth/components/context/AuthContext";
 import { ProfileContext } from "../context/profile_context";
 
 interface WorkExperienceDeleteButtonProps {
@@ -25,13 +24,11 @@ const WorkExperienceDeleteButton = ({
 }: WorkExperienceDeleteButtonProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { profileStore } = useStoreContext(ProfileContext);
-  const { authStore } = useStoreContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
     setIsLoading(true);
     await profileStore.deleteWorkExperience(workExperience.id);
-    authStore.deleteWorkExperience(workExperience);
     setIsLoading(false);
     onClose();
   };

@@ -15,12 +15,16 @@ export interface paths {
     post: operations["UserController_uploadAvatar"];
   };
   "/tutor-profile": {
-    get: operations["TutorProfileController_tutorProfiles"];
+    get: operations["TutorProfileController_getTutorProfile"];
     put: operations["TutorProfileController_updateTutorProfile"];
     post: operations["TutorProfileController_createTutorProfile"];
     delete: operations["TutorProfileController_deleteTutorProfileSubject"];
   };
+  "/tutor-profile/list": {
+    get: operations["TutorProfileController_tutorProfiles"];
+  };
   "/learner-profile": {
+    get: operations["LearnerProfileController_getLearnerProfile"];
     put: operations["LearnerProfileController_updateLearnerProfile"];
     post: operations["LearnerProfileController_createLearnerProfile"];
   };
@@ -101,17 +105,52 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
-    CreateTutorProfileInput: Record<string, never>;
+    SubjectEntity: {
+      id: string;
+      name: string;
+      description: string;
+    };
+    /** @enum {string} */
+    JobType: "QA" | "TUTOR";
+    /** @enum {string} */
+    JobMethod: "ONLINE" | "OFFLINE" | "BOTH";
+    /** @enum {string} */
+    JobStatus: "OPEN" | "EMPLOYED" | "DONE";
+    /** @enum {string} */
+    ConnectionStatus: "REQUESTED" | "ACCEPTED" | "DECLINED";
+    /** @enum {string} */
+    JobConnectionType: "TUTOR_TO_JOB" | "JOB_TO_TUTOR";
+    JobConnectionEntity: {
+      jobId: string;
+      tutorId: string;
+      status: components["schemas"]["ConnectionStatus"];
+      type: components["schemas"]["JobConnectionType"];
+      createdAt: number;
+    };
+    JobEntity: {
+      id: string;
+      learner: components["schemas"]["LearnerProfileEntity"];
+      learnerId: string;
+      subjectId: string;
+      subject: components["schemas"]["SubjectEntity"];
+      title: string;
+      description: string;
+      /** Format: int64 */
+      fee: number;
+      numberOfSessions: number;
+      createdAt: number;
+      updatedAt: number;
+      jobType: components["schemas"]["JobType"];
+      jobMethod: components["schemas"]["JobMethod"];
+      jobStatus: components["schemas"]["JobStatus"];
+      jobConnections: components["schemas"]["JobConnectionEntity"][];
+    };
     LearnerProfileEntity: {
       id: string;
       bio: string;
       userId: string;
       user: components["schemas"]["UserEntity"];
-    };
-    SubjectEntity: {
-      id: string;
-      name: string;
-      description: string;
+      jobs: components["schemas"]["JobEntity"][];
     };
     TutorProfileSubjectEntity: {
       tutorId: string;
@@ -119,8 +158,6 @@ export interface components {
       subjectId: string;
       subject?: components["schemas"]["SubjectEntity"] | null;
     };
-    /** @enum {string} */
-    JobMethod: "ONLINE" | "OFFLINE" | "BOTH";
     TutorProfileEntity: {
       userId: string;
       id: string;
@@ -171,6 +208,7 @@ export interface components {
       message: string;
       error: string;
     };
+    CreateTutorProfileInput: Record<string, never>;
     UpdateTutorProfileInput: {
       bio?: string;
       subjectIds?: string[];
@@ -217,23 +255,12 @@ export interface components {
       token: string;
       password: string;
     };
-    /** @enum {string} */
-    JobConnectionType: "TUTOR_TO_JOB" | "JOB_TO_TUTOR";
     CreateJobConnectInput: {
       jobId: string;
       tutorUserId: string;
       tutorId: string;
       learnerUserId: string;
       type: components["schemas"]["JobConnectionType"];
-    };
-    /** @enum {string} */
-    ConnectionStatus: "REQUESTED" | "ACCEPTED" | "DECLINED";
-    JobConnectionEntity: {
-      jobId: string;
-      tutorId: string;
-      status: components["schemas"]["ConnectionStatus"];
-      type: components["schemas"]["JobConnectionType"];
-      createdAt: number;
     };
     AcceptJobConnectionInput: Record<string, never>;
     DeclineJobConnectionInput: Record<string, never>;
@@ -256,8 +283,6 @@ export interface components {
     GetManyNotificationsInput: Record<string, never>;
     CreateChatInput: Record<string, never>;
     GetChatsInput: Record<string, never>;
-    /** @enum {string} */
-    JobType: "QA" | "TUTOR";
     CreateJobInput: {
       subjectId: string;
       description: string;
@@ -267,26 +292,6 @@ export interface components {
       numberOfSessions: number;
       jobType: components["schemas"]["JobType"];
       jobMethod: components["schemas"]["JobMethod"];
-    };
-    /** @enum {string} */
-    JobStatus: "OPEN" | "EMPLOYED" | "DONE";
-    JobEntity: {
-      id: string;
-      learner: components["schemas"]["LearnerProfileEntity"];
-      learnerId: string;
-      subjectId: string;
-      subject: components["schemas"]["SubjectEntity"];
-      title: string;
-      description: string;
-      /** Format: int64 */
-      fee: number;
-      numberOfSessions: number;
-      createdAt: number;
-      updatedAt: number;
-      jobType: components["schemas"]["JobType"];
-      jobMethod: components["schemas"]["JobMethod"];
-      jobStatus: components["schemas"]["JobStatus"];
-      jobConnections: components["schemas"]["JobConnectionEntity"][];
     };
     /** @enum {string} */
     SortBy: "asc" | "desc";
@@ -381,20 +386,11 @@ export interface operations {
       };
     };
   };
-  TutorProfileController_tutorProfiles: {
-    parameters: {
-      query: {
-        searchString: string;
-        stringCursor?: string;
-        take: number;
-      };
-    };
+  TutorProfileController_getTutorProfile: {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Paginated"] & {
-            nodes?: components["schemas"]["TutorProfileEntity"][];
-          };
+          "application/json": components["schemas"]["TutorProfileEntity"];
         };
       };
       401: {
@@ -470,6 +466,48 @@ export interface operations {
       401: {
         content: {
           "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  TutorProfileController_tutorProfiles: {
+    parameters: {
+      query: {
+        searchString: string;
+        stringCursor?: string;
+        take: number;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["Paginated"] & {
+            nodes?: components["schemas"]["TutorProfileEntity"][];
+          };
+        };
+      };
+      401: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  LearnerProfileController_getLearnerProfile: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["LearnerProfileEntity"];
         };
       };
       500: {

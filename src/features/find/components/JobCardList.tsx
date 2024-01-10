@@ -5,7 +5,7 @@ import { useSnapshot } from "valtio";
 import useDebounce from "../../../shared/hooks/useDebounce";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
 import { AuthContext } from "../../auth/components/context/AuthContext";
-import JobCard from "./JobCard";
+import JobCard from "../../job/components/JobCard";
 import { FindContext } from "./context/FindContext";
 
 const JobCardList = () => {
@@ -25,14 +25,16 @@ const JobCardList = () => {
         sortBy: findState.sortBy,
         jobMethod: findState.jobMethod,
         jobType: findState.jobType,
-        tutorId: authStore.user?.tutorProfile.id ?? "",
+        tutorId: authState.user?.tutorProfile.id ?? "",
         minFee: findState.minFee,
         maxFee: findState.maxFee,
       });
     };
 
-    fetchData();
-  }, []);
+    if (authState.user?.tutorProfile.id) {
+      fetchData();
+    }
+  }, [authState.user?.tutorProfile?.id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +44,7 @@ const JobCardList = () => {
         sortBy: findState.sortBy,
         jobMethod: findState.jobMethod,
         jobType: findState.jobType,
-        tutorId: authStore.user?.tutorProfile.id ?? "",
+        tutorId: authState.user?.tutorProfile.id ?? "",
         minFee: findState.minFee,
         maxFee: findState.maxFee,
       });

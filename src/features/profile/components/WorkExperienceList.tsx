@@ -16,18 +16,20 @@ import {
 import { useParams } from "react-router-dom";
 import { useSnapshot } from "valtio";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { AuthContext } from "../../auth/components/context/AuthContext";
+import useUser from "../../../shared/hooks/useUser";
+import { ProfileContext } from "../context/profile_context";
 import WorkExperienceCard from "./WorkExperienceCard";
 import WorkExperienceForm from "./WorkExperienceForm";
 
 const WorkExperienceList = () => {
   const params = useParams();
-  const { authStore } = useStoreContext(AuthContext);
-  const { user } = useSnapshot(authStore);
+  const user = useUser();
+  const { profileStore } = useStoreContext(ProfileContext);
+  const { workExperience } = useSnapshot(profileStore);
 
-  const isOwner = authStore.user?.id == params.userId;
-
+  const isOwner = user?.id == params.userId;
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
       <Flex direction={"column"}>
@@ -42,7 +44,7 @@ const WorkExperienceList = () => {
         </HStack>
         <Divider w={"100%"} />
         <Flex w={"100%"} direction={"column"}>
-          {user?.workExperience?.map((we) => {
+          {workExperience?.map((we) => {
             return <WorkExperienceCard workExperiece={we} key={we.id} />;
           })}
         </Flex>

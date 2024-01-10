@@ -1,16 +1,16 @@
 import { Wrap } from "@chakra-ui/react";
 import { useSnapshot } from "valtio";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { AuthContext } from "../../auth/components/context/AuthContext";
+import { ProfileContext } from "../context/profile_context";
 import TutorProfileSubjectItem from "./TutorProfileSubjectItem";
 
 const TutorProfileSubjectList = () => {
-  const { authStore } = useStoreContext(AuthContext);
-  const { user } = useSnapshot(authStore);
+  const { profileStore } = useStoreContext(ProfileContext);
+  const { tutorProfile } = useSnapshot(profileStore);
   return (
     <>
       <Wrap mt={6} mb={6}>
-        {user?.tutorProfile.tutorProfileSubject?.map((e) => {
+        {tutorProfile?.tutorProfileSubject?.map((e) => {
           return (
             <TutorProfileSubjectItem
               tutorProfileSubject={e}

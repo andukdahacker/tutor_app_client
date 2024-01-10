@@ -1,9 +1,8 @@
 import { Flex, HStack, Spacer, Text } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { WorkExperience } from "../../../domain/entities";
-import useStoreContext from "../../../shared/hooks/useStoreContext";
+import useUser from "../../../shared/hooks/useUser";
 import { DateTimeUtils } from "../../../shared/utils/datetime_utils";
-import { AuthContext } from "../../auth/components/context/AuthContext";
 import WorkExperienceEditButton from "./WorkExperienceCardEdit";
 import WorkExperienceDeleteButton from "./WorkExperienceDeleteButton";
 
@@ -21,9 +20,8 @@ const WorkExperienceCard = ({ workExperiece }: WorkExperienceCardProps) => {
 
   const params = useParams();
 
-  const { authStore } = useStoreContext(AuthContext);
-
-  const isOwner = authStore.user?.id == params.userId;
+  const user = useUser();
+  const isOwner = user?.id == params.userId;
 
   return (
     <>

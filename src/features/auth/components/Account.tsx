@@ -41,12 +41,17 @@ const Account = () => {
           >
             Profile
           </MenuItem>
-          <MenuItem>Dashboard</MenuItem>
+          <MenuItem
+            onClick={() => router.navigate(`/dashboard/${authState.user?.id}`)}
+          >
+            Dashboard
+          </MenuItem>
           <MenuItem onClick={onOpen}>
             <LogOutButton />
           </MenuItem>
         </MenuList>
       </Menu>
+
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}

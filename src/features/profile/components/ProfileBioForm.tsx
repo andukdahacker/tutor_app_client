@@ -8,7 +8,6 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { AuthContext } from "../../auth/components/context/AuthContext";
 import { ProfileContext } from "../context/profile_context";
 
 interface ProfileBioFormProps {
@@ -23,7 +22,6 @@ const ProfileBioForm = ({ bio, onClose }: ProfileBioFormProps) => {
     },
   });
 
-  const { authStore } = useStoreContext(AuthContext);
   const { profileStore } = useStoreContext(ProfileContext);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -33,12 +31,9 @@ const ProfileBioForm = ({ bio, onClose }: ProfileBioFormProps) => {
       <form
         onSubmit={handleSubmit(async (data) => {
           setIsLoading(true);
-          const learner = await profileStore.updateBio(data.bio);
+          await profileStore.updateBio(data.bio);
           setIsLoading(false);
-          if (learner) {
-            authStore.updateLearnerProfile(learner);
-            onClose();
-          }
+          onClose();
         })}
       >
         <FormControl pb={10}>
