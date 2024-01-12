@@ -76,13 +76,18 @@ export interface paths {
     get: operations["JobController_jobs"];
     post: operations["JobController_createJob"];
   };
+  "/job/learner": {
+    get: operations["JobController_getJobsByLearnerId"];
+  };
   "/subject": {
     get: operations["SubjectController_subjects"];
     post: operations["SubjectController_createSubject"];
   };
+  "/work-experience/list": {
+    get: operations["WorkExperienceController_createWorkExperience"];
+  };
   "/work-experience": {
     put: operations["WorkExperienceController_updateWorkExperience"];
-    post: operations["WorkExperienceController_createWorkExperience"];
   };
   "/work-experience/{id}": {
     delete: operations["WorkExperienceController_deleteWorkExperience"];
@@ -683,6 +688,7 @@ export interface operations {
       query: {
         tutorId?: string;
         jobId?: string;
+        asLearner: boolean;
         type?: components["schemas"]["JobConnectionType"];
         status?: components["schemas"]["ConnectionStatus"];
         take: number;
@@ -838,7 +844,6 @@ export interface operations {
   JobController_jobs: {
     parameters: {
       query: {
-        tutorId: string;
         take: number;
         stringCursor?: string;
         searchString: string;
@@ -879,6 +884,33 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["JobEntity"];
+        };
+      };
+      401: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  JobController_getJobsByLearnerId: {
+    parameters: {
+      query: {
+        take: number;
+        stringCursor?: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["Paginated"] & {
+            nodes?: components["schemas"]["JobEntity"][];
+          };
         };
       };
       401: {
@@ -945,10 +977,10 @@ export interface operations {
       };
     };
   };
-  WorkExperienceController_updateWorkExperience: {
+  WorkExperienceController_createWorkExperience: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UpdateWorkExperienceInput"];
+        "application/json": components["schemas"]["CreateWorkExperienceInput"];
       };
     };
     responses: {
@@ -969,10 +1001,10 @@ export interface operations {
       };
     };
   };
-  WorkExperienceController_createWorkExperience: {
+  WorkExperienceController_updateWorkExperience: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["CreateWorkExperienceInput"];
+        "application/json": components["schemas"]["UpdateWorkExperienceInput"];
       };
     };
     responses: {

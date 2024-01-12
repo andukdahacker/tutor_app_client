@@ -4,16 +4,13 @@ import { useSnapshot } from "valtio";
 
 import useDebounce from "../../../shared/hooks/useDebounce";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import { AuthContext } from "../../auth/components/context/AuthContext";
 import JobCard from "../../job/components/JobCard";
 import { FindContext } from "./context/FindContext";
 
 const JobCardList = () => {
   const { jobStore, findStore } = useStoreContext(FindContext);
-  const { authStore } = useStoreContext(AuthContext);
   const findState = useSnapshot(findStore);
   const jobState = useSnapshot(jobStore);
-  const authState = useSnapshot(authStore);
 
   const debounced = useDebounce(findState.searchString, 500);
 
@@ -25,16 +22,13 @@ const JobCardList = () => {
         sortBy: findState.sortBy,
         jobMethod: findState.jobMethod,
         jobType: findState.jobType,
-        tutorId: authState.user?.tutorProfile.id ?? "",
         minFee: findState.minFee,
         maxFee: findState.maxFee,
       });
     };
 
-    if (authState.user?.tutorProfile.id) {
-      fetchData();
-    }
-  }, [authState.user?.tutorProfile?.id]);
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +38,6 @@ const JobCardList = () => {
         sortBy: findState.sortBy,
         jobMethod: findState.jobMethod,
         jobType: findState.jobType,
-        tutorId: authState.user?.tutorProfile.id ?? "",
         minFee: findState.minFee,
         maxFee: findState.maxFee,
       });
@@ -78,7 +71,6 @@ const JobCardList = () => {
                 sortBy: findState.sortBy,
                 jobMethod: findState.jobMethod,
                 jobType: findState.jobType,
-                tutorId: authState.user?.tutorProfile.id ?? "",
                 maxFee: findState.maxFee,
                 minFee: findState.minFee,
               })

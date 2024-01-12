@@ -17,7 +17,6 @@ import {
 import { useState } from "react";
 import { TutorProfileSubject } from "../../../domain/entities";
 import useStoreContext from "../../../shared/hooks/useStoreContext";
-import useUser from "../../../shared/hooks/useUser";
 import { ProfileContext } from "../context/profile_context";
 
 interface TutorProfileSubjectItemProps {
@@ -32,10 +31,9 @@ const TutorProfileSubjectItem = ({
   const { profileStore } = useStoreContext(ProfileContext);
   const [isLoading, setIsLoading] = useState(false);
 
-  const user = useUser();
   const { onClose, onOpen, isOpen } = useDisclosure();
 
-  const isOwner = user?.tutorProfile.id == tutorProfileSubject.tutorId;
+  const isOwner = profileStore.tutorProfile?.id == tutorProfileSubject.tutorId;
 
   const deleteTutorProfileSubject = async () => {
     setIsLoading(true);

@@ -40,3 +40,9 @@ export type UpdateTutorProfileInput =
 
 export type DeleteTutorProfileSubjectInput =
   components["schemas"]["DeleteTutorProfileSubjectInput"];
+
+export type FindJobsByLearnerInput =
+  operations["JobController_getJobsByLearnerId"]["parameters"]["query"];
+
+export type FindJobConnectionsInput =
+  operations["JobConnectionController_jobConnections"]["parameters"]["query"];

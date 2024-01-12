@@ -15,7 +15,7 @@ const LearnerDashboard = () => {
             <LearnerJobList />
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            <div></div>
           </TabPanel>
         </TabPanels>
       </Tabs>
