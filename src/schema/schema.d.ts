@@ -14,8 +14,10 @@ export interface paths {
   "/user/upload/avatar": {
     post: operations["UserController_uploadAvatar"];
   };
-  "/tutor-profile": {
+  "/tutor-profile/{userId}": {
     get: operations["TutorProfileController_getTutorProfile"];
+  };
+  "/tutor-profile": {
     put: operations["TutorProfileController_updateTutorProfile"];
     post: operations["TutorProfileController_createTutorProfile"];
     delete: operations["TutorProfileController_deleteTutorProfileSubject"];
@@ -23,8 +25,10 @@ export interface paths {
   "/tutor-profile/list": {
     get: operations["TutorProfileController_tutorProfiles"];
   };
-  "/learner-profile": {
+  "/learner-profile/{userId}": {
     get: operations["LearnerProfileController_getLearnerProfile"];
+  };
+  "/learner-profile": {
     put: operations["LearnerProfileController_updateLearnerProfile"];
     post: operations["LearnerProfileController_createLearnerProfile"];
   };
@@ -62,6 +66,12 @@ export interface paths {
   "/job-connection/decline": {
     put: operations["JobConnectionController_declineJobConnection"];
   };
+  "/job-connection/tutor": {
+    get: operations["JobConnectionController_tutorJobConnections"];
+  };
+  "/job-connection/job": {
+    get: operations["JobConnectionController_jobJobConnections"];
+  };
   "/job-connection/delete": {
     post: operations["JobConnectionController_deleteConnection"];
   };
@@ -73,21 +83,24 @@ export interface paths {
     post: operations["ChatController_createChat"];
   };
   "/job": {
-    get: operations["JobController_jobs"];
     post: operations["JobController_createJob"];
+  };
+  "/job/list": {
+    get: operations["JobController_jobs"];
   };
   "/job/learner": {
     get: operations["JobController_getJobsByLearnerId"];
+  };
+  "/job/{jobId}": {
+    get: operations["JobController_findJobById"];
   };
   "/subject": {
     get: operations["SubjectController_subjects"];
     post: operations["SubjectController_createSubject"];
   };
-  "/work-experience/list": {
-    get: operations["WorkExperienceController_createWorkExperience"];
-  };
   "/work-experience": {
     put: operations["WorkExperienceController_updateWorkExperience"];
+    post: operations["WorkExperienceController_createWorkExperience"];
   };
   "/work-experience/{id}": {
     delete: operations["WorkExperienceController_deleteWorkExperience"];
@@ -121,13 +134,31 @@ export interface components {
     JobMethod: "ONLINE" | "OFFLINE" | "BOTH";
     /** @enum {string} */
     JobStatus: "OPEN" | "EMPLOYED" | "DONE";
+    TutorProfileSubjectEntity: {
+      tutorId: string;
+      tutorProfile?: components["schemas"]["TutorProfileEntity"] | null;
+      subjectId: string;
+      subject?: components["schemas"]["SubjectEntity"] | null;
+    };
+    TutorProfileEntity: {
+      userId: string;
+      id: string;
+      bio: string;
+      user?: components["schemas"]["UserEntity"];
+      tutorProfileSubject?: components["schemas"]["TutorProfileSubjectEntity"][] | null;
+      /** Format: int64 */
+      tutorFee?: number;
+      jobMethod?: components["schemas"]["JobMethod"];
+    };
     /** @enum {string} */
     ConnectionStatus: "REQUESTED" | "ACCEPTED" | "DECLINED";
     /** @enum {string} */
     JobConnectionType: "TUTOR_TO_JOB" | "JOB_TO_TUTOR";
     JobConnectionEntity: {
       jobId: string;
+      job?: components["schemas"]["JobEntity"];
       tutorId: string;
+      tutor?: components["schemas"]["TutorProfileEntity"];
       status: components["schemas"]["ConnectionStatus"];
       type: components["schemas"]["JobConnectionType"];
       createdAt: number;
@@ -154,24 +185,8 @@ export interface components {
       id: string;
       bio: string;
       userId: string;
-      user: components["schemas"]["UserEntity"];
+      user?: components["schemas"]["UserEntity"] | null;
       jobs: components["schemas"]["JobEntity"][];
-    };
-    TutorProfileSubjectEntity: {
-      tutorId: string;
-      tutorProfile?: components["schemas"]["TutorProfileEntity"] | null;
-      subjectId: string;
-      subject?: components["schemas"]["SubjectEntity"] | null;
-    };
-    TutorProfileEntity: {
-      userId: string;
-      id: string;
-      bio: string;
-      user?: components["schemas"]["UserEntity"];
-      tutorProfileSubject?: components["schemas"]["TutorProfileSubjectEntity"][] | null;
-      /** Format: int64 */
-      tutorFee?: number;
-      jobMethod?: components["schemas"]["JobMethod"];
     };
     WorkExperienceEntity: {
       description: string;
@@ -268,7 +283,13 @@ export interface components {
       type: components["schemas"]["JobConnectionType"];
     };
     AcceptJobConnectionInput: Record<string, never>;
-    DeclineJobConnectionInput: Record<string, never>;
+    DeclineJobConnectionInput: {
+      jobId: string;
+      tutorUserId: string;
+      tutorId: string;
+      learnerUserId: string;
+      type: components["schemas"]["JobConnectionType"];
+    };
     DeleteJobConnectionInput: {
       jobId: string;
       tutorId: string;
@@ -392,6 +413,11 @@ export interface operations {
     };
   };
   TutorProfileController_getTutorProfile: {
+    parameters: {
+      path: {
+        userId: string;
+      };
+    };
     responses: {
       200: {
         content: {
@@ -509,6 +535,11 @@ export interface operations {
     };
   };
   LearnerProfileController_getLearnerProfile: {
+    parameters: {
+      path: {
+        userId: string;
+      };
+    };
     responses: {
       200: {
         content: {
@@ -688,9 +719,9 @@ export interface operations {
       query: {
         tutorId?: string;
         jobId?: string;
-        asLearner: boolean;
         type?: components["schemas"]["JobConnectionType"];
         status?: components["schemas"]["ConnectionStatus"];
+        jobStatus?: components["schemas"]["JobStatus"];
         take: number;
         stringCursor?: string;
       };
@@ -772,6 +803,60 @@ export interface operations {
       };
     };
   };
+  JobConnectionController_tutorJobConnections: {
+    parameters: {
+      query: {
+        tutorId?: string;
+        jobId?: string;
+        type?: components["schemas"]["JobConnectionType"];
+        status?: components["schemas"]["ConnectionStatus"];
+        jobStatus?: components["schemas"]["JobStatus"];
+        take: number;
+        stringCursor?: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["Paginated"] & {
+            nodes?: components["schemas"]["JobConnectionEntity"][];
+          };
+        };
+      };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  JobConnectionController_jobJobConnections: {
+    parameters: {
+      query: {
+        tutorId?: string;
+        jobId?: string;
+        type?: components["schemas"]["JobConnectionType"];
+        status?: components["schemas"]["ConnectionStatus"];
+        jobStatus?: components["schemas"]["JobStatus"];
+        take: number;
+        stringCursor?: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["Paginated"] & {
+            nodes?: components["schemas"]["JobConnectionEntity"][];
+          };
+        };
+      };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
   JobConnectionController_deleteConnection: {
     requestBody: {
       content: {
@@ -841,6 +926,30 @@ export interface operations {
       };
     };
   };
+  JobController_createJob: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateJobInput"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["JobEntity"];
+        };
+      };
+      401: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
   JobController_jobs: {
     parameters: {
       query: {
@@ -874,30 +983,6 @@ export interface operations {
       };
     };
   };
-  JobController_createJob: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateJobInput"];
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["JobEntity"];
-        };
-      };
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
   JobController_getJobsByLearnerId: {
     parameters: {
       query: {
@@ -916,6 +1001,25 @@ export interface operations {
       401: {
         content: {
           "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  JobController_findJobById: {
+    parameters: {
+      path: {
+        jobId: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["JobEntity"];
         };
       };
       500: {
@@ -977,10 +1081,10 @@ export interface operations {
       };
     };
   };
-  WorkExperienceController_createWorkExperience: {
+  WorkExperienceController_updateWorkExperience: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["CreateWorkExperienceInput"];
+        "application/json": components["schemas"]["UpdateWorkExperienceInput"];
       };
     };
     responses: {
@@ -1001,10 +1105,10 @@ export interface operations {
       };
     };
   };
-  WorkExperienceController_updateWorkExperience: {
+  WorkExperienceController_createWorkExperience: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UpdateWorkExperienceInput"];
+        "application/json": components["schemas"]["CreateWorkExperienceInput"];
       };
     };
     responses: {

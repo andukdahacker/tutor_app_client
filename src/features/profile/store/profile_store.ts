@@ -22,8 +22,8 @@ export class ProfileStore implements Store {
   workExperience: WorkExperience[] = [];
   education: Education[] = [];
 
-  async getLearnerProfile() {
-    const result = await ProfileRepository.getLearnerProfile();
+  async getLearnerProfile(userId: string) {
+    const result = await ProfileRepository.getLearnerProfile(userId);
 
     if (result.ok) {
       this.learnerProfile = result.value;
@@ -32,8 +32,8 @@ export class ProfileStore implements Store {
     }
   }
 
-  async getTutorProfile() {
-    const result = await ProfileRepository.getTutorProfile();
+  async getTutorProfile(userId: string) {
+    const result = await ProfileRepository.getTutorProfile(userId);
 
     if (result.ok) {
       this.tutorProfile = result.value;

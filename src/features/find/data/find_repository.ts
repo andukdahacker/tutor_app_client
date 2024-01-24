@@ -20,7 +20,7 @@ export class FindRepository {
     input: FindManyJobsInput
   ): Promise<Result<Paginated<Job>>> {
     try {
-      const response = await client.GET("/job", {
+      const response = await client.GET("/job/list", {
         params: { query: { ...input } },
       });
 

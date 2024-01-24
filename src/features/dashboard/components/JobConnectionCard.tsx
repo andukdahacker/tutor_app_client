@@ -1,23 +1,21 @@
 import { Badge, Box, Button, Flex, Text } from "@chakra-ui/react";
-import { useRef } from "react";
-import { Job } from "../../../domain/entities";
+import { JobConnection } from "../../../domain/entities";
 import { router } from "../../../routes/router";
 import { CurrencyUtils } from "../../../shared/utils/currency_utils";
 import { DateTimeUtils } from "../../../shared/utils/datetime_utils";
 
-interface CardProps {
-  job: Job;
+interface JobConnectionCardProps {
+  jobConnection: JobConnection;
 }
 
-const JobCard = (props: CardProps) => {
-  const btnRef = useRef(null);
-  const job = props.job;
+const JobConnectionCard = ({ jobConnection }: JobConnectionCardProps) => {
+  const job = jobConnection.job;
 
-  const latestUpdate =
-    job.createdAt == job.updatedAt
+  const latestUpdate = job
+    ? job.createdAt == job.updatedAt
       ? `Posted ${DateTimeUtils.ago(job.createdAt)} ago`
-      : `Updated ${DateTimeUtils.ago(job.updatedAt)} ago`;
-
+      : `Updated ${DateTimeUtils.ago(job.updatedAt)} ago`
+    : "";
   return (
     <>
       <Box
@@ -27,7 +25,7 @@ const JobCard = (props: CardProps) => {
         borderRadius="8px"
         shadow="sm"
       >
-        <Text fontWeight="bold">{props.job.title}</Text>
+        <Text fontWeight="bold">{job?.title}</Text>
 
         <Text my="2" color="blackAlpha.500" fontSize="12px">
           {latestUpdate}
@@ -36,7 +34,7 @@ const JobCard = (props: CardProps) => {
         <Flex gap="24px" my="2">
           <Box>
             <Text fontWeight="bold" fontSize="12px">
-              {CurrencyUtils.format(props.job.fee)}
+              {job ? CurrencyUtils.format(job.fee) : ""}
             </Text>
             <Text fontWeight="normal" fontSize="12px" color="blackAlpha.500">
               Hourly
@@ -45,7 +43,7 @@ const JobCard = (props: CardProps) => {
 
           <Box>
             <Text fontWeight="bold" fontSize="12px">
-              {props.job.numberOfSessions ?? "Unknown number of"}
+              {job?.numberOfSessions ?? "Unknown number of"}
             </Text>
             <Text fontWeight="normal" fontSize="12px" color="blackAlpha.500">
               Sessions
@@ -54,12 +52,12 @@ const JobCard = (props: CardProps) => {
         </Flex>
 
         <Text color="gray.500" fontSize="12px" noOfLines={2}>
-          {props.job.description ?? "No description"}
+          {job?.description ?? "No description"}
         </Text>
 
         <Flex gap="10px" my={4}>
           <Badge backgroundColor="cyan.500" color="white">
-            {props.job.subject.name}
+            {job?.subject.name}
           </Badge>
         </Flex>
 
@@ -68,8 +66,7 @@ const JobCard = (props: CardProps) => {
             size="sm"
             variant="outline"
             colorScheme="blue"
-            ref={btnRef}
-            onClick={() => router.navigate(`/job/${job.id}`)}
+            onClick={() => router.navigate(`/job/${job?.id}`)}
           >
             See more
           </Button>
@@ -79,4 +76,4 @@ const JobCard = (props: CardProps) => {
   );
 };
 
-export default JobCard;
+export default JobConnectionCard;

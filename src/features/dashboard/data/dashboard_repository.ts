@@ -63,7 +63,34 @@ class DashboardRepository {
     }
   }
 
-  static async getTutorAppliedJobs() {}
+  static async getTutorJobConnections(
+    input: FindJobConnectionsInput
+  ): Promise<Result<Paginated<JobConnection>>> {
+    try {
+      const response = await client.GET("/job-connection/tutor", {
+        params: {
+          query: input,
+        },
+      });
+
+      if (response.error) {
+        return {
+          ok: false,
+          error: new Error(response.error.message),
+        };
+      }
+
+      return {
+        ok: true,
+        value: response.data,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: new Error(),
+      };
+    }
+  }
 }
 
 export default DashboardRepository;

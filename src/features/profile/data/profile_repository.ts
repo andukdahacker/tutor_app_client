@@ -16,9 +16,17 @@ import client from "../../../shared/data/client";
 import { Result } from "../../../shared/data/result";
 
 export class ProfileRepository {
-  static async getLearnerProfile(): Promise<Result<LearnerProfile>> {
+  static async getLearnerProfile(
+    userId: string
+  ): Promise<Result<LearnerProfile>> {
     try {
-      const response = await client.GET("/learner-profile");
+      const response = await client.GET("/learner-profile/{userId}", {
+        params: {
+          path: {
+            userId,
+          },
+        },
+      });
 
       if (response.error) {
         return {
@@ -39,9 +47,15 @@ export class ProfileRepository {
     }
   }
 
-  static async getTutorProfile(): Promise<Result<TutorProfile>> {
+  static async getTutorProfile(userId: string): Promise<Result<TutorProfile>> {
     try {
-      const response = await client.GET("/tutor-profile");
+      const response = await client.GET("/tutor-profile/{userId}", {
+        params: {
+          path: {
+            userId,
+          },
+        },
+      });
 
       if (response.error) {
         return {

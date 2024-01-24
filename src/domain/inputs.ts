@@ -46,3 +46,6 @@ export type FindJobsByLearnerInput =
 
 export type FindJobConnectionsInput =
   operations["JobConnectionController_jobConnections"]["parameters"]["query"];
+
+export type DeclineJobConnectionInput =
+  components["schemas"]["DeclineJobConnectionInput"];

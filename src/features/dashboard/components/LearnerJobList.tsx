@@ -20,11 +20,7 @@ const LearnerJobList = () => {
     <>
       <SimpleGrid columns={[1, 2, 3]} spacing={[20, 16]} mt={8} mb={8}>
         {jobs.map((job) => {
-          return (
-            <>
-              <LearnerJobCard job={job} key={job.id} />
-            </>
-          );
+          return <LearnerJobCard job={job} key={job.id} />;
         })}
       </SimpleGrid>
       {pageInfo?.hasNextPage && (

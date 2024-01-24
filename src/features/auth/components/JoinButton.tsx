@@ -11,9 +11,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import SignUpForm from "./SignUpForm";
+import { useEffect } from "react";
 
 const JoinButton = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+    useEffect(() => {}, []);
 
   return (
     <>

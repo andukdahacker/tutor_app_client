@@ -1,5 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import LearnerDashboard from "../features/dashboard/components/LearnerDashboard";
+import TutorDashboard from "../features/dashboard/components/TutorDashboard";
 
 const DashboardPage = () => {
   return (
@@ -15,7 +16,7 @@ const DashboardPage = () => {
             <LearnerDashboard />
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            <TutorDashboard />
           </TabPanel>
         </TabPanels>
       </Tabs>
