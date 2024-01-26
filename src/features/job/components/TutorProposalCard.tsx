@@ -21,6 +21,7 @@ interface TutorProposalCardProps {
 const TutorProposalCard = ({ connection }: TutorProposalCardProps) => {
   const { jobDetailStore } = useStoreContext(JobDetailContext);
   const [isLoadingDecline, setIsLoadingDecline] = useState(false);
+  const [isLoadingAccept, setIsLoadingAccept] = useState(false);
   const user = useUser();
   const tutor = connection.tutor;
   if (!tutor) return <></>;
@@ -81,7 +82,25 @@ const TutorProposalCard = ({ connection }: TutorProposalCardProps) => {
           >
             Decline
           </Button>
-          <Button colorScheme="green">Accept</Button>
+          <Button
+            colorScheme="green"
+            isLoading={isLoadingAccept}
+            onClick={async () => {
+              setIsLoadingAccept(true);
+
+              await jobDetailStore.acceptJobConnection({
+                jobId: connection.jobId,
+                tutorId: connection.tutorId,
+                learnerUserId: user?.id ?? "",
+                tutorUserId: tutor?.userId ?? "",
+                type: "TUTOR_TO_JOB",
+              });
+
+              setIsLoadingAccept(false);
+            }}
+          >
+            Accept
+          </Button>
         </Flex>
       </Box>
     </>

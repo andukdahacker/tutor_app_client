@@ -22,11 +22,13 @@ import JobDetailContext from "../features/job/context/job_detail_context";
 import useStoreContext from "../shared/hooks/useStoreContext";
 import useUser from "../shared/hooks/useUser";
 import { CurrencyUtils } from "../shared/utils/currency_utils";
+import JobDetailTutorCard from "../features/job/components/JobDetailTutorCard";
 
 const JobDetailPage = () => {
   const { jobId } = useParams();
   const { jobDetailStore } = useStoreContext(JobDetailContext);
-  const { job } = useSnapshot(jobDetailStore);
+
+  const { job, acceptedJobConnection } = useSnapshot(jobDetailStore);
   const [isLoading, setIsLoading] = useState(false);
 
   const user = useUser();
@@ -100,7 +102,7 @@ const JobDetailPage = () => {
                   </Flex>
                   <Flex direction={"column"}>
                     <Text>Subject</Text>
-                    <Tag>{job.subject.name}</Tag>
+                    <Tag>{job.subject?.name}</Tag>
                   </Flex>
                   <Flex direction={"column"}>
                     <Text>Description</Text>
@@ -115,7 +117,7 @@ const JobDetailPage = () => {
               </TabPanel>
             )}
             <TabPanel>
-              <p>three!</p>
+              <JobDetailTutorCard jobConnection={acceptedJobConnection} />
             </TabPanel>
           </TabPanels>
         </Tabs>

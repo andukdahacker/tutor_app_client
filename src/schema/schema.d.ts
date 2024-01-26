@@ -66,6 +66,9 @@ export interface paths {
   "/job-connection/decline": {
     put: operations["JobConnectionController_declineJobConnection"];
   };
+  "/job-connection/disconnect": {
+    put: operations["JobConnectionController_disconnectJobConnection"];
+  };
   "/job-connection/tutor": {
     get: operations["JobConnectionController_tutorJobConnections"];
   };
@@ -74,6 +77,9 @@ export interface paths {
   };
   "/job-connection/delete": {
     post: operations["JobConnectionController_deleteConnection"];
+  };
+  "/job-connection/accepted/{jobId}": {
+    get: operations["JobConnectionController_getAcceptedConnection"];
   };
   "/notification": {
     get: operations["NotificationController_getManyNotifications"];
@@ -282,13 +288,27 @@ export interface components {
       learnerUserId: string;
       type: components["schemas"]["JobConnectionType"];
     };
-    AcceptJobConnectionInput: Record<string, never>;
+    AcceptJobConnectionInput: {
+      jobId: string;
+      tutorUserId: string;
+      tutorId: string;
+      learnerUserId: string;
+      type: components["schemas"]["JobConnectionType"];
+    };
+    AcceptJobConnectionResponse: {
+      jobConnection: components["schemas"]["JobConnectionEntity"];
+      job: components["schemas"]["JobEntity"];
+    };
     DeclineJobConnectionInput: {
       jobId: string;
       tutorUserId: string;
       tutorId: string;
       learnerUserId: string;
       type: components["schemas"]["JobConnectionType"];
+    };
+    DisconnectJobConnectionInput: {
+      jobId: string;
+      tutorId: string;
     };
     DeleteJobConnectionInput: {
       jobId: string;
@@ -774,7 +794,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["JobConnectionEntity"];
+          "application/json": components["schemas"]["AcceptJobConnectionResponse"];
         };
       };
       500: {
@@ -788,6 +808,25 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["DeclineJobConnectionInput"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["JobConnectionEntity"];
+        };
+      };
+      500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  JobConnectionController_disconnectJobConnection: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DisconnectJobConnectionInput"];
       };
     };
     responses: {
@@ -875,6 +914,25 @@ export interface operations {
         };
       };
       500: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  JobConnectionController_getAcceptedConnection: {
+    parameters: {
+      path: {
+        jobId: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["JobConnectionEntity"];
+        };
+      };
+      401: {
         content: {
           "application/json": components["schemas"]["ErrorResponse"];
         };
