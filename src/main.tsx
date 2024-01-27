@@ -3,30 +3,25 @@ import {
   ColorModeScript,
   createStandaloneToast,
   extendTheme,
-} from "@chakra-ui/react";
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import { router } from "./routes/router";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+} from '@chakra-ui/react';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './routes/router';
 
 export const { ToastContainer, toast } = createStandaloneToast();
 
 const themeConfig = extendTheme({
-  initialColorMode: "light",
+  initialColorMode: 'light',
   useSystemColorMode: false,
 });
 
-const queryClient = new QueryClient();
-
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ColorModeScript initialColorMode="light" />
-    <QueryClientProvider client={queryClient}>
-      <ChakraProvider theme={themeConfig}>
-        <RouterProvider router={router} />
-      </ChakraProvider>
-    </QueryClientProvider>
+    <ChakraProvider theme={themeConfig}>
+      <RouterProvider router={router} />
+    </ChakraProvider>
     <ToastContainer />
   </React.StrictMode>,
 );
