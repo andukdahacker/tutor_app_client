@@ -7,37 +7,35 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react';
-import { JobConnection } from '../../../domain/entities';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import { useSnapshot } from 'valtio';
 import useStoreContext from '../../../shared/hooks/useStoreContext';
 import JobDetailContext from '../context/job_detail_context';
-import { useParams } from 'react-router';
 
 interface JobDetailTutorCardProps {
-  jobConnection?: JobConnection;
+  resetTab: () => void;
 }
 
-const JobDetailTutorCard = ({ jobConnection }: JobDetailTutorCardProps) => {
-  const tutor = jobConnection?.tutor;
+const JobDetailTutorCard = ({ resetTab }: JobDetailTutorCardProps) => {
   const { jobDetailStore } = useStoreContext(JobDetailContext);
+  const { acceptedJobConnection } = useSnapshot(jobDetailStore);
+  const tutor = acceptedJobConnection?.tutor;
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingRemove, setIsLoadingRemove] = useState(false);
   const { jobId } = useParams();
 
-  const { isLoading } = useQuery({
-    queryKey: ['acceptedJob'],
-    queryFn: async () => {
-      await jobDetailStore.getAcceptedJobConnection({ jobId: jobId ?? '' });
-    },
-    enabled: !tutor,
-  });
+  useEffect(() => {
+    async function fetchData(jobId: string) {
+      setIsLoading(true);
+      await jobDetailStore.getAcceptedJobConnection({ jobId });
+      setIsLoading(false);
+    }
 
-  const {} = useMutation({
-    mutationFn: async () => {
-      await jobDetailStore.disconnectJobConnection({
-        jobId: jobConnection?.jobId ?? '',
-        tutorId: jobConnection?.tutorId ?? '',
-      });
-    },
-  });
+    if (jobId) {
+      fetchData(jobId);
+    }
+  }, [jobId]);
 
   if (isLoading) return <Spinner />;
 
@@ -52,7 +50,20 @@ const JobDetailTutorCard = ({ jobConnection }: JobDetailTutorCardProps) => {
           />
           <Text>{tutor?.user?.username ?? ''}</Text>
         </Flex>
-        <Button onClick={() => {}}>Remove</Button>
+        <Button
+          isLoading={isLoadingRemove}
+          onClick={async () => {
+            setIsLoadingRemove(true);
+            await jobDetailStore.disconnectJobConnection({
+              jobId: acceptedJobConnection?.jobId ?? '',
+              tutorId: acceptedJobConnection?.tutorId ?? '',
+            });
+            setIsLoadingRemove(false);
+            resetTab();
+          }}
+        >
+          Remove
+        </Button>
       </CardBody>
     </Card>
   );

@@ -13,23 +13,24 @@ import {
   Tag,
   Text,
   VStack,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { useSnapshot } from "valtio";
-import JobDetailConnectionList from "../features/job/components/JobDetailConnectionList";
-import JobDetailContext from "../features/job/context/job_detail_context";
-import useStoreContext from "../shared/hooks/useStoreContext";
-import useUser from "../shared/hooks/useUser";
-import { CurrencyUtils } from "../shared/utils/currency_utils";
-import JobDetailTutorCard from "../features/job/components/JobDetailTutorCard";
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import { useSnapshot } from 'valtio';
+import JobDetailConnectionList from '../features/job/components/JobDetailConnectionList';
+import JobDetailTutorCard from '../features/job/components/JobDetailTutorCard';
+import JobDetailContext from '../features/job/context/job_detail_context';
+import useStoreContext from '../shared/hooks/useStoreContext';
+import useUser from '../shared/hooks/useUser';
+import { CurrencyUtils } from '../shared/utils/currency_utils';
 
 const JobDetailPage = () => {
   const { jobId } = useParams();
   const { jobDetailStore } = useStoreContext(JobDetailContext);
 
-  const { job, acceptedJobConnection } = useSnapshot(jobDetailStore);
+  const { job } = useSnapshot(jobDetailStore);
   const [isLoading, setIsLoading] = useState(false);
+  const [tabIndex, setTabIndex] = useState(0);
 
   const user = useUser();
 
@@ -51,19 +52,19 @@ const JobDetailPage = () => {
     <Box p={10}>
       <Text>{job.title}</Text>
       <Flex>
-        <Flex direction={"column"}>
+        <Flex direction={'column'}>
           <Card>
             <CardBody>
               <Flex>
                 <Avatar
-                  size={"lg"}
-                  name={user?.username ?? ""}
-                  src={user?.avatar ?? ""}
+                  size={'lg'}
+                  name={user?.username ?? ''}
+                  src={user?.avatar ?? ''}
                   mr={10}
                 />
 
-                <Flex direction={"column"}>
-                  <Text>{user?.username ?? ""}</Text>
+                <Flex direction={'column'}>
+                  <Text>{user?.username ?? ''}</Text>
                   <Text>Age: </Text>
                   <Text>Location: </Text>
                 </Flex>
@@ -71,19 +72,19 @@ const JobDetailPage = () => {
             </CardBody>
           </Card>
         </Flex>
-        <Tabs>
+        <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
           <TabList>
             <Tab>Job Info</Tab>
 
             {isOwner && (
-              <Tab isDisabled={job.jobStatus !== "OPEN"}>Applications</Tab>
+              <Tab isDisabled={job.jobStatus !== 'OPEN'}>Applications</Tab>
             )}
-            <Tab isDisabled={job.jobStatus == "OPEN"}>Tutor</Tab>
+            <Tab isDisabled={job.jobStatus == 'OPEN'}>Tutor</Tab>
           </TabList>
 
           <TabPanels>
             <TabPanel>
-              <Flex direction={"column"}>
+              <Flex direction={'column'}>
                 <Box>
                   <Text>Job Info</Text>
                   <Flex>
@@ -100,11 +101,11 @@ const JobDetailPage = () => {
                       <Text>Status</Text>
                     </VStack>
                   </Flex>
-                  <Flex direction={"column"}>
+                  <Flex direction={'column'}>
                     <Text>Subject</Text>
                     <Tag>{job.subject?.name}</Tag>
                   </Flex>
-                  <Flex direction={"column"}>
+                  <Flex direction={'column'}>
                     <Text>Description</Text>
                     <Text>{job.description}</Text>
                   </Flex>
@@ -117,7 +118,13 @@ const JobDetailPage = () => {
               </TabPanel>
             )}
             <TabPanel>
-              <JobDetailTutorCard jobConnection={acceptedJobConnection} />
+              {job.jobStatus == 'EMPLOYED' && (
+                <JobDetailTutorCard
+                  resetTab={() => {
+                    setTabIndex(0);
+                  }}
+                />
+              )}
             </TabPanel>
           </TabPanels>
         </Tabs>

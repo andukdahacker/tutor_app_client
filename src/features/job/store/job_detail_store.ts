@@ -106,6 +106,7 @@ class JobDetailStore implements Store {
 
     if (result.ok) {
       StoreUtils.successToast('Disconnected successfully');
+      await this.findJobById(this.job?.id ?? '');
     } else {
       StoreUtils.handleError(result.error);
     }
